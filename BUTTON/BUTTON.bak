@@ -1,0 +1,257 @@
+/************************************************************
+* 组织名称： (C), 1988-1999, Tech. Co., Ltd.
+* 文件名称: test.cpp
+* 作者:
+* 版本 :
+* 日期:
+* 描述: // 模块描述
+* 主要函数及其功能 : // 主要函数及其功能
+  1. -------
+* 历史修改记录: // 历史修改记录
+* <作者> <时间> <版本 > <描述>
+* David 96/10/12 1.0 build this moudle
+***********************************************************/
+#include "BUTTON.h"
+#include "../DISPLAY/DISPLAY.h"
+#include "../MOTOR/MOTOR.h"
+static unsigned char firstMeunNum=1;
+static unsigned char SecondMeunNum=1;
+float kp,ki,kd;
+u8 meun=1;
+static bit BUTTON1_bit=0;
+    static bit BUTTON2_bit=0;
+    static bit BUTTON3_bit=0;
+    static bit BUTTON4_bit=0;
+//extern  struct PID pid;
+/*************************************************
+* 函数名称: // 函数名称
+* 描述: // 函数功能、性能等的描述
+* 被本函数调用的函数: // 被本函数调用的函数清单
+* 调用本函数的函数: // 调用本函数的函数清单
+* 输入: // 输入参数说明，包括每个参数的作 // 用、取值说明及参数间关系。
+* 输出: // 对输出参数的说明。
+* 返回值: // 函数返回值的说明
+* 其他说明: // 其它说明
+*************************************************/
+void Button_config()
+{
+    GPIO_InitTypeDef    GPIO_InitStructure;     //结构定义
+    GPIO_InitStructure.Pin  = BUTTON1_GPIO_PIN | BUTTON2_GPIO_PIN | BUTTON3_GPIO_PIN|BUTTON4_GPIO_PIN;      //指定要初始化的IO, GPIO_Pin_0 ~ GPIO_Pin_7, 或操作
+    GPIO_InitStructure.Mode = GPIO_PullUp;       //指定IO的输入或输出方式,GPIO_PullUp,GPIO_HighZ,GPIO_OUT_OD,GPIO_OUT_PP
+    GPIO_Inilize(GPIO_P2,&GPIO_InitStructure);  //初始化
+    P23=1;
+    P24=1;
+    P25=1;
+    P26=1;
+}
+/*************************************************
+* 函数名称: // 函数名称
+* 描述: // 函数功能、性能等的描述
+* 被本函数调用的函数: // 被本函数调用的函数清单
+* 调用本函数的函数: // 调用本函数的函数清单
+* 输入: // 输入参数说明，包括每个参数的作 // 用、取值说明及参数间关系。
+* 输出: // 对输出参数的说明。
+* 返回值: // 函数返回值的说明
+* 其他说明: // 其它说明
+*************************************************/
+bit digitalRead(pin)//读取按键状态函数,按下按键返回1，没按下返回0
+{
+
+	if(!pin){
+	delay_ms(10); //去抖
+	if(!pin)
+    return !pin;
+	}
+
+}
+bit getButtonState(u8 BUTTON_data){
+ switch(BUTTON_data)
+ {
+		case BUTTON1_GPIO_PIN:
+		return 	 BUTTON1_bit;
+		break;
+		case BUTTON2_GPIO_PIN:
+		return 	 BUTTON2_bit;
+		break;
+		case BUTTON3_GPIO_PIN:
+		return 	 BUTTON3_bit;
+		break;
+		case BUTTON4_GPIO_PIN:
+		return 	 BUTTON4_bit;
+		break;
+
+    
+ }
+}
+/*************************************************
+* 函数名称: void  buttonScan(void )//按键扫描函数
+* 描述: 按键检测程序
+* 输入: 无
+* 输出: 无
+* 返回值: 无
+* 其他说明: 此按键检测程序没有使用到定时器，而是使用了简单的while循环来防止长按，
+*                       将在后续的工程中改进此函数
+*************************************************/
+
+void  buttonScan(void )//按键扫描函数
+{
+    kp=getPID_data(KP);
+	ki=getPID_data(KI);
+	kd=getPID_data(KD);
+    if(digitalRead(BUTTON1))
+    {
+        if(!BUTTON1_bit)
+        {
+            BUTTON1_bit=1;
+#ifdef DISPLAY_DEBUG
+            LCD12864_HAIZI_SET();
+            LCD12864_COM_Write(0x90);
+            LCD12864_write_word("button1 is on ");
+            PrintString1("button1 is on ");
+#endif
+			switch(meun)
+	{
+	case 1:
+	{
+	  kp+=0.1f ;
+	  setPID_data(KP,kp);
+	  LCD12864_COM_Write(0x80); //设置指针
+      LCD12864_NUMI_Write(kp);
+	 } ;break;
+	 case 2 :{
+	  ki+=0.005f ;
+	  setPID_data(KI,ki);
+	  LCD12864_COM_Write(0x90); //设置指针
+      LCD12864_NUMI_Write(ki);
+
+	 };break;
+	 case 3:{
+	   kd+=0.1f ;
+	  setPID_data(KD,kd);
+	  LCD12864_COM_Write(0x88); //设置指针
+      LCD12864_NUMI_Write(kd);
+
+	 };break;
+	 case 4:
+	 {
+
+	 };break;
+	  }
+        }
+    }
+    else
+    {
+        BUTTON1_bit=0;
+    }
+    if(digitalRead(BUTTON2))
+    {
+        if(!BUTTON2_bit)
+        {
+            BUTTON2_bit=1;
+#ifdef DISPLAY_DEBUG
+            LCD12864_HAIZI_SET();
+            LCD12864_COM_Write(0x90);
+            LCD12864_write_word("button2 is on ");
+            PrintString1("button2 is on ");
+#endif
+			switch(meun)
+	{
+	case 1:
+	{
+
+	  kp-=0.1f ;
+	  setPID_data(KP,kp);
+	  LCD12864_COM_Write(0x80); //设置指针
+      LCD12864_NUMI_Write(kp);
+	 } ;break;
+	 case 2 :{
+	  ki-=0.005f ;
+	  setPID_data(KI,ki);
+	  LCD12864_COM_Write(0x90); //设置指针
+      LCD12864_NUMI_Write(ki);
+
+	 };break;
+	 case 3:{
+	   kd-=0.1f ;
+	  setPID_data(KD,kd);
+	  LCD12864_COM_Write(0x88); //设置指针
+      LCD12864_NUMI_Write(kd);
+
+	 };break;
+	  }
+        }
+    }
+    else
+    {
+        BUTTON2_bit=0;
+    }
+    if(digitalRead(BUTTON3))
+    {
+        if(!BUTTON3_bit)
+        {
+            BUTTON3_bit=1;
+#ifdef DISPLAY_DEBUG
+            LCD12864_HAIZI_SET();
+            LCD12864_COM_Write(0x90);
+            LCD12864_write_word("button3 is on ");
+            PrintString1("button3 is on ");
+#endif
+			if(meun>=4)
+			{
+			meun=4;
+			}else{
+			   meun++;
+			   }
+	        }
+    }
+    else
+    {
+        BUTTON3_bit=0;
+    }
+    if(digitalRead(BUTTON4))
+    {
+        if(!BUTTON4_bit)
+        {
+            BUTTON4_bit=1;
+#ifdef DISPLAY_DEBUG
+            LCD12864_HAIZI_SET();
+            LCD12864_COM_Write(0x90);
+            LCD12864_write_word("button4 is on ");
+            PrintString1("button4 is on ");
+#endif
+			if(meun<=1)
+	{
+	   meun=1;
+	} else{
+	   meun--;
+
+	   }
+        }
+    }
+    else
+    {
+        BUTTON4_bit=0;
+    }
+}
+/*************************************************
+* 函数名称: // 函数名称
+* 描述: // 函数功能、性能等的描述
+* 被本函数调用的函数: // 被本函数调用的函数清单
+* 调用本函数的函数: // 调用本函数的函数清单
+* 输入: // 输入参数说明，包括每个参数的作 // 用、取值说明及参数间关系。
+* 输出: // 对输出参数的说明。
+* 返回值: // 函数返回值的说明
+* 其他说明: // 其它说明
+*************************************************/
+unsigned char getMeunNum(meunNum)//菜单级数记录
+{
+    switch(meunNum)
+    {
+    case FIRST_MEUN_NUM:
+        return firstMeunNum;
+        break;
+    case SECOND_MEUN_NUM:
+        return SecondMeunNum;
+        break;
+    }
+}

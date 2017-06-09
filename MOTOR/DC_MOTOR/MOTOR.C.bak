@@ -1,0 +1,263 @@
+/************************************************************
+* 组织名称： (C), 1988-1999, Tech. Co., Ltd.
+* 文件名称: MOTOR.C
+* 作者:  周晨阳
+* 版本:  1.3
+* 日期:  17/4/29
+* 描述:  和电机有关的控制函数都在这里，还有pid算法控制也在其中
+* 主要函数及其功能 : // 主要函数及其功能
+  1. -------
+* 历史修改记录: // 历史修改记录
+* <作者> <时间> <版本 > <描述>
+* 周晨阳 17/4/29 1.0 创建此描述
+* 周晨阳 17/5/4  1.1 积分方面加入了积分分离法，pid效果明显提升
+* 周晨阳 17/5/3  1.2 改进了pwm发生函数和开环控制角度的函数，加了死区控制
+* 周晨阳 17/5/7  1.3 将角度设置由原来的整数升级成浮点数，提高了精度
+***********************************************************/
+#include "MOTOR.h"
+#include "../ANGLE/ANGLE.h"
+#include <math.h>
+#define  INTEGRAL_SEPARATE //使用积分分离法
+//pid算法的静态结构体
+static float Ki_temp,Kp_temp,Kd_temp;
+static struct
+{
+    float setAngle;//设定角度值
+    float actualAngle;//实际角度值
+    float err;//偏差值
+    float err_last;//上一次偏差值
+    float Kp,Ki,Kd;//比例，积分，微分系数
+    float integral;//积分值,位置式pid算法
+    float output;  //实际输出因子
+} pid;
+void stopMotor(void)
+{
+   CLOSE_PWM();
+
+}
+void startMotor(void)
+{
+   OPEN_PWM();
+}
+/*************************************************
+* 函数名称: void setMotorSpeed(bit motor,float speed)
+* 描述: 设置电机速度函数
+* 输入: motor：电机，头文件中定义
+				speed：速度 0~1   
+* 其他说明: 
+*若要关闭电机请使用电机关闭函数，此函数无法关闭电机
+*************************************************/                                                          
+void setMotorSpeed(bit motor,float speed)
+{
+	
+		if(speed>0.99f)
+			{
+		   speed=0.99f;
+	    }
+		if(!speed)
+		{
+			
+			speed=0.01f;
+		}
+		
+		if(motor)
+		{
+			PWM_duty(PWM_2,speed*0.65f);
+		}
+		else
+		{
+			PWM_duty(PWM_4,speed*0.63f);
+		}
+}
+
+/*************************************************
+* 函数名称: bit setBoardWithAngle(unsigned char angle)
+* 描述: 开环的风摆角度控制函数
+* 输入: 角度
+* 返回值: 当函数执行完后返回1
+* 其他说明: 
+*						此函数不单独使用，外界无法调用此函数，
+*						请使用下面的带pid算法的函数setBoardWithAngleAndPID（）
+*           此函数存在的目的是pid算法的需要。
+*************************************************/
+static bit setBoardWithAngle(float angle)
+{
+	static float ANGLE;
+	   ANGLE=angle;
+    if(ANGLE>=179.9f)
+    {
+        ANGLE=179.9f;
+#ifdef MOTOR_DEBUG
+        PrintString1("angle is over maximum adjusting\n");
+#endif
+    }
+    if(ANGLE<=0.1f)
+    {
+        ANGLE=0.1f;
+#ifdef MOTOR_DEBUG
+        PrintString1("angle is over miximum adjusting\n");
+#endif
+    }
+    setMotorSpeed(LEFT_MOTOR,ANGLE/180.0f);
+    setMotorSpeed(RIGHT_MOTOR,1.0f-ANGLE/180.0f);
+    return 1;
+}
+
+/*************************************************
+* 函数名称: bit setBoardWithAngleAndPID(unsigned char angle)
+* 描述: 带pid算法的风摆角度调整函数
+* 输入: 无
+* 返回值: 执行一次角度调整后，返回1
+* 其他说明: 在执行调整时会向串口发送正在调整的提示。
+***函数更新****
+  作者  |  时间  |  说明
+*周晨阳	   5/16		请使用pid设置函数setPID_data（）
+									设置需要稳定的角度，不要向此函数传值*
+*************************************************/
+bit setBoardWithAngleAndPID(float angle)
+{    
+	static float ANGLE;
+	ANGLE=angle;
+
+	if(ANGLE>145.0f)
+    {
+        ANGLE=145.0f;
+#ifdef MOTOR_DEBUG
+        PrintString1("angle is over maximum adjusting\n");
+#endif
+    }
+    if(ANGLE<35.0f)
+    {
+        ANGLE=35.0f;
+#ifdef MOTOR_DEBUG
+        PrintString1("angle is over miximum adjusting\n");
+#endif
+    }
+		
+		
+  //  pid.setAngle      =           ANGLE;
+    pid.actualAngle   =           getAngle(LAST_ANGLE);
+    pid.err           =           pid.setAngle-pid.actualAngle;
+#ifdef  INTEGRAL_SEPARATE
+    if(abs(pid.err)<10.0f)//积分分离法，防止误差过大时积分累积过大造成震荡，同时减小比例和微分
+    {   pid.Ki        =        Ki_temp;
+        pid.integral  +=       pid.err;
+        pid.Kp        =        Kp_temp-0.5f;
+        pid.Kd        =        Kd_temp-0.1f;
+    }
+    else//误差过大时去除积分项和累计误差 ，仅使用比例和微分 ，同时在原基础上加大微分的作用
+    {
+        pid.Ki        =        0;
+	    pid.integral  =        0;
+        pid.Kd        =        Kd_temp+0.5f;
+    }
+#else
+		 pid.integral  +=       pid.err;
+#endif
+    pid.output        =    pid.Kp*pid.err+pid.Ki*pid.integral+pid.Kd*(pid.err-pid.err_last);
+    setBoardWithAngle(pid.output+ANGLE);
+    pid.err_last=pid.err;
+    return 1;
+}
+
+/*************************************************
+* 函数名称:double getPID_data(u8 DATA)
+* 描述: 读取pid参数      
+* 输入: 见宏定义      
+* 输出: 
+* 返回值: 相应pid参数
+* 其他说明: 若没有设置pid参数就直接读取，则结果未知。
+*************************************************/
+
+float getPID_data(u8 DATA)
+{
+    switch(DATA)
+    {
+    case SET_ANGLE:
+        return pid.setAngle;
+        break;
+    case ERR:
+        return pid.err;
+        break;
+    case ERR_LAST:
+        return pid.err_last;
+        break;
+    case KP:
+        return pid.Kp;
+        break;
+    case KI:
+        return pid.Ki;
+        break;
+    case KD:
+        return pid.Kd;
+        break;
+    case INTEGRAL:
+        return pid.integral;
+        break;
+    case OUTPUT:
+        return pid.output;
+        break;
+    default:
+        return 0;
+        break;
+    }
+}
+/*************************************************
+* 函数名称:void setPID_data(u8 DATA,float value)
+* 描述:  设置pid三个参数的函数，一次性只能设置一个参数
+*        可作为调整PID参数的接口。
+* 输入: u8 DATA ：需要更改的参数名称，为宏定义,
+        float value：参数值
+* 输出: 无
+* 返回值: 无
+* 其他说明: 无
+*************************************************/
+void setPID_data(u8 DATA,float value)
+{
+    switch(DATA)
+    {
+    case KP:
+        pid.Kp=value;
+				Kp_temp=value;
+        break;
+    case KI:
+        pid.Ki=value;
+				Ki_temp=value;
+        break;
+    case KD:
+        pid.Kd=value;
+				Kd_temp=value;
+        break;
+		case SET_ANGLE:
+			  pid.setAngle=value;
+    default:
+        break;
+    }
+}
+//PID算法初始化函数  .
+/*************************************************
+* 函数名称: void PID_config(float kp,float ki,float kd)
+* 描述:   pid算法初始化函数，参数是三个，P,I,D,
+*         此函数只能作为初始化，不能作为调整这三个值的接口
+          如果需要调整这三个值，请使用setPID_data()函数
+* 输入: float kp,float ki,float kd
+* 输出: 无
+* 返回值: 无
+* 其他说明: 无
+*************************************************/
+void PID_config(float kp,float ki,float kd)//pid算法初始化函数，参数是三个，PID
+{
+    pid.setAngle=70;//若最终没有设置角度则默认70度
+    pid.actualAngle=0;
+    pid.err=0;
+    pid.err_last=0;
+    pid.output=0;
+    pid.integral=0;
+    pid.Kp=kp;
+    pid.Ki=ki;
+    pid.Kd=kd;
+    Kp_temp=pid.Kp;
+	  Ki_temp=pid.Ki;
+    Kd_temp=pid.Kd;
+}
+

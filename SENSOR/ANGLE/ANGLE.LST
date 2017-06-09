@@ -1,0 +1,13 @@
+CX51 COMPILER V8.05a   ANGLE                                                               05/19/2017 12:33:14 PAGE 1   
+
+
+CX51 COMPILER V8.05a, COMPILATION OF MODULE ANGLE
+OBJECT MODULE PLACED IN K:\单片机相关\风摆控制装置_STC15W\ANGLE\ANGLE.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\cx51.exe K:\单片机相关\风摆控制装置_STC15W\ANGLE\ANGLE.C?
+
+line level    source
+
+*** ERROR C318 OF K:\单片机相关\风摆控制装置_STC15W\ANGLE\ANGLE.C?: can't open file 'K:\单片机相关\风摆控制装置_STC15W\A
+             -NGLE\ANGLE.C?'
+
+CX51 COMPILATION COMPLETE.  0 WARNING(S),  1 ERROR(S)

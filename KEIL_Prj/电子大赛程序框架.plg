@@ -1,0 +1,20 @@
+<html>
+<body>
+<pre>
+<h1>礦ision3 Build Log</h1>
+<h2>Project:</h2>
+K:\单片机相关\电子大赛程序框架\KEIL_Prj\电子大赛程序框架.uv2
+Project File Date:  06/24/2017
+
+<h2>Output:</h2>
+compiling timer.c...
+..\HARDWARE\BSP\TIMER.C(94): error C200: left side of '.' requires struct/union
+..\HARDWARE\BSP\timer.c - 1 Error(s), 0 Warning(s).
+compiling timer.c...
+..\HARDWARE\BSP\TIMER.C(187): warning C206: 'Timer3_Stop': missing function-prototype
+..\HARDWARE\BSP\TIMER.C(263): warning C206: 'Timer3_Run': missing function-prototype
+..\HARDWARE\BSP\timer.c - 0 Error(s), 2 Warning(s).
+compiling timer.c...
+..\HARDWARE\BSP\timer.c - 0 Error(s), 0 Warning(s).
+compiling timer.c...
+..\HARDWARE\BSP\timer.c - 0 Error(s), 0 Warning(s).

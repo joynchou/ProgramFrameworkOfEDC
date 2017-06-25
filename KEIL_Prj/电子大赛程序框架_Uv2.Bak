@@ -1,0 +1,196 @@
+### uVision2 Project, (C) Keil Software
+### Do not modify !
+
+Target (µç×Ó´óÈü³ÌÐò¿ò¼Ü), 0x0000 // Tools: 'MCS-51'
+
+Group (software)
+Group (OS)
+Group (COMMON_SOFTWARE)
+Group (TASK)
+Group (ABS_TASK)
+Group (hardware)
+Group (MAIN)
+Group (DEVICES)
+Group (USER)
+Group (BSP)
+
+File 2,2,<..\SOFTWARE\RTOS\Conf_tny.A51><Conf_tny.A51>
+File 3,1,<..\SOFTWARE\COMMON_SOFTWARE\DATA_SCOPE\DataScope_DP.c><DataScope_DP.c>
+File 4,1,<..\SOFTWARE\TASK\task.c><task.c>
+File 7,1,<..\SOFTWARE\MAIN\MAIN.C><MAIN.C>
+File 8,1,<..\HARDWARE\DEVICES\BUTTON\BUTTON.C><BUTTON.C>
+File 9,1,<..\HARDWARE\USER\USER.C><USER.C>
+File 10,1,<..\HARDWARE\BSP\ADC.c><ADC.c>
+File 10,1,<..\HARDWARE\BSP\delay.c><delay.c>
+File 10,1,<..\HARDWARE\BSP\GPIO.c><GPIO.c>
+File 10,1,<..\HARDWARE\BSP\PCA.c><PCA.c>
+File 10,1,<..\HARDWARE\BSP\stc15_exti.c><stc15_exti.c>
+File 10,1,<..\HARDWARE\BSP\stc15_iic.c><stc15_iic.c>
+File 10,1,<..\HARDWARE\BSP\stc15_pwm.c><stc15_pwm.c>
+File 10,1,<..\HARDWARE\BSP\stc15_spi.c><stc15_spi.c>
+File 10,1,<..\HARDWARE\BSP\timer.c><timer.c>
+File 10,1,<..\HARDWARE\BSP\USART1.C><USART1.C>
+
+
+Options 1,0,0  // Target 'µç×Ó´óÈü³ÌÐò¿ò¼Ü'
+ Device (STC15W4K32S4)
+ Vendor (STC)
+ Cpu (IRAM(0-0xFF) XRAM(0-0xEFF) IROM(0-0xEFF8) CLOCK(35000000) MODP2)
+ FlashUt ()
+ StupF ("LIB\STARTUP.A51" ("Standard 8051 Startup Code"))
+ FlashDR ()
+ DevID ()
+ Rgf (STC15F2K60S2.H)
+ Mem ()
+ C ()
+ A ()
+ RL ()
+ OH ()
+ DBC_IFX ()
+ DBC_CMS ()
+ DBC_AMS ()
+ DBC_LMS ()
+ UseEnv=0
+ EnvBin ()
+ EnvInc ()
+ EnvLib ()
+ EnvReg (ÿSTC\)
+ OrgReg (ÿSTC\)
+ TgStat=16
+ OutDir (.\)
+ OutName (µç×Ó´óÈü³ÌÐò¿ò¼Ü)
+ GenApp=1
+ GenLib=0
+ GenHex=1
+ Debug=1
+ Browse=1
+ LstDir (.\)
+ HexSel=0
+ MG32K=0
+ TGMORE=0
+ RunUsr 0 0 <>
+ RunUsr 1 0 <>
+ BrunUsr 0 0 <>
+ BrunUsr 1 0 <>
+ CrunUsr 0 0 <>
+ CrunUsr 1 0 <>
+ SVCSID <>
+ MODEL5=2
+ RTOS5=1
+ ROMSZ5=2
+ DHOLD5=0
+ XHOLD5=0
+ T51FL=624
+ XT51FL=0
+ CBANKS5=0
+ XBANKS5=0
+ RCB51 { 0,0,0,0,0,255,255,0,0 }
+ RXB51 { 0,0,0,0,0,0,0,0,0 }
+ OCM51 { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }
+ OCR51 { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }
+ IRO51 { 1,0,0,0,0,249,239,0,0 }
+ IRA51 { 0,0,0,0,0,0,1,0,0 }
+ XRA51 { 0,0,0,0,0,0,15,0,0 }
+ XRA512 { 0,0,0,0,0,0,0,0,0 }
+ IROM512 { 0,0,0,0,0,0,0,0,0 }
+ C51FL=21630224
+ C51VA=0
+ C51MSC ()
+ C51DEF ()
+ C51UDF ()
+ INCC5 ()
+ AX51FL=4
+ AX51MSC ()
+ AX51SET ()
+ AX51RST ()
+ INCA5 ()
+ PropFld { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }
+ IncBld=1
+ AlwaysBuild=0
+ GenAsm=0
+ AsmAsm=0
+ PublicsOnly=0
+ StopCode=3
+ CustArgs ()
+ LibMods ()
+ BankNo=65535
+ LX51FL=292
+ LX51OVL ()
+ LX51MSC ()
+ LX51DWN ()
+ LX51LFI ()
+ LX51ASN ()
+ LX51RES ()
+ LX51CCL ()
+ LX51UCL ()
+ LX51CSC ()
+ LX51UCS ()
+ LX51COB ()
+ LX51XDB ()
+ LX51PDB ()
+ LX51BIB ()
+ LX51DAB ()
+ LX51IDB ()
+ LX51PRC ()
+ LX51STK ()
+ LX51COS ()
+ LX51XDS ()
+ LX51BIS ()
+ LX51DAS ()
+ LX51IDS ()
+  OPTDL (S8051.DLL)()(DP51.DLL)(-pDP8051)(S8051.DLL)()(TP51.DLL)(-p51)
+  OPTDBG 48125,0,()()()()()()()()()() ()()()()
+ FLASH1 { 0,0,0,0,0,0,0,0,255,255,255,255,0,0,0,0,0,0,0,0 }
+ FLASH2 ()
+ FLASH3 ()
+ FLASH4 ()
+EndOpt
+
+Options 1,1,0  // Group 'software'
+ PropFld { 0,128,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }
+ IncBld=2
+ AlwaysBuild=2
+ GenAsm=2
+ AsmAsm=2
+ PublicsOnly=2
+ StopCode=11
+ CustArgs ()
+ LibMods ()
+ BankNo=65535
+ C51FL=176988842
+ C51VA=0
+ C51MSC ()
+ C51DEF ()
+ C51UDF ()
+ INCC5 ()
+ AX51FL=170
+ AX51MSC ()
+ AX51SET ()
+ AX51RST ()
+ INCA5 ()
+EndOpt
+
+Options 1,6,0  // Group 'hardware'
+ PropFld { 0,128,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }
+ IncBld=2
+ AlwaysBuild=2
+ GenAsm=2
+ AsmAsm=2
+ PublicsOnly=2
+ StopCode=11
+ CustArgs ()
+ LibMods ()
+ BankNo=65535
+ C51FL=177005226
+ C51VA=0
+ C51MSC ()
+ C51DEF ()
+ C51UDF ()
+ INCC5 ()
+ AX51FL=170
+ AX51MSC ()
+ AX51SET ()
+ AX51RST ()
+ INCA5 ()
+EndOpt
+

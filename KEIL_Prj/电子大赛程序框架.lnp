@@ -1,0 +1,17 @@
+".\Conf_tny.obj",
+".\DataScope_DP.obj",
+".\task.obj",
+".\BUTTON.obj",
+".\USER.obj",
+".\ADC.obj",
+".\delay.obj",
+".\GPIO.obj",
+".\PCA.obj",
+".\stc15_exti.obj",
+".\stc15_iic.obj",
+".\stc15_pwm.obj",
+".\stc15_spi.obj",
+".\timer.obj",
+".\USART1.obj" 
+TO "电子大赛程序框架" Rtx51Tiny 
+RAMSIZE(256) 

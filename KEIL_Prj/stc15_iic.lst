@@ -1,0 +1,251 @@
+C51 COMPILER V8.05a   STC15_IIC                                                            06/25/2017 19:15:09 PAGE 1   
+
+
+C51 COMPILER V8.05a, COMPILATION OF MODULE STC15_IIC
+OBJECT MODULE PLACED IN .\stc15_iic.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE ..\HARDWARE\BSP\stc15_iic.c LARGE BROWSE DEBUG OBJECTEXTEND PRINT(.\stc1
+                    -5_iic.lst) TABS(2) OBJECT(.\stc15_iic.obj)
+
+line level    source
+
+   1          /************************************************************
+   2          * 组织名称： (C), 1988-1999, Tech. Co., Ltd.
+   3          * 文件名称: test.cpp
+   4          * 作者:
+   5          * 版本 :
+   6          * 日期:
+   7          * 描述: // 模块描述
+   8          * 主要函数及其功能 : // 主要函数及其功能
+   9            1. -------
+  10          * 历史修改记录: // 历史修改记录
+  11          * <作者> <时间> <版本 > <描述>
+  12          * David 96/10/12 1.0 build this moudle
+  13          ***********************************************************/
+  14          #include    "stc15_iic.h"
+  15          /* ***************************************************** */
+  16          // 函数名称：Delay5US()
+  17          // 函数功能：5微秒延时,如果自己的主频有变，请自行修改
+  18          // 入口参数：无
+  19          // 出口参数：无
+  20          /* ***************************************************** */
+  21          void Delay5US(void)     //@11.0592MHz
+  22          {
+  23   1          u8 i;
+  24   1          _nop_();
+  25   1          i = 11;
+  26   1          while (--i)
+  27   1          {
+  28   2              ;
+  29   2          }
+  30   1      }
+  31          /* ***************************************************** */
+  32          // 函数名称：IIC_Start()
+  33          // 函数功能：IIC起动
+  34          // 入口参数：无
+  35          // 出口参数：无
+  36          /* ***************************************************** */
+  37          void IIC_Start(void)
+  38          {
+  39   1          SDA = 1;
+  40   1          Delay5US();
+  41   1          SCL = 1;
+  42   1          Delay5US();
+  43   1          SDA = 0;
+  44   1          Delay5US();
+  45   1      }
+  46          /* ***************************************************** */
+  47          // 函数名称：IIC_Stop()
+  48          // 函数功能：IIC停止
+  49          // 入口参数：无
+  50          // 出口参数：无
+  51          /* ***************************************************** */
+  52          void IIC_Stop(void)
+  53          {
+  54   1          SDA = 0;
+C51 COMPILER V8.05a   STC15_IIC                                                            06/25/2017 19:15:09 PAGE 2   
+
+  55   1          Delay5US();
+  56   1          SCL = 1;
+  57   1          Delay5US();
+  58   1          SDA =1;
+  59   1      }
+  60          /* ***************************************************** */
+  61          // 函数名称：IIC_Ack()
+  62          // 函数功能：IIC应答
+  63          // 入口参数：无
+  64          // 出口参数：无
+  65          /* ***************************************************** */
+  66          void IIC_Ack(void)
+  67          {
+  68   1          SCL = 0;                // 为产生脉冲准备
+  69   1          SDA = 0;                // 产生应答信号
+  70   1          Delay5US();             // 延时你懂得
+  71   1          SCL = 1;
+  72   1          Delay5US();
+  73   1          SCL = 0;
+  74   1          Delay5US();     // 产生高脉冲
+  75   1          SDA = 1;                // 释放总线
+  76   1      }
+  77          /* ***************************************************** */
+  78          // 函数名称：IIC_RdAck()
+  79          // 函数功能：读IIC应答
+  80          // 入口参数：无
+  81          // 出口参数：是否应答真值
+  82          /* ***************************************************** */
+  83          BOOL IIC_RdAck(void)
+  84          {
+  85   1          BOOL AckFlag;
+  86   1          u8 uiVal = 0;
+  87   1          SCL = 0;
+  88   1          Delay5US();
+  89   1          SDA = 1;
+  90   1          SCL = 1;
+  91   1          Delay5US();
+  92   1          while((1 == SDA) && (uiVal < 255))
+  93   1          {
+  94   2              uiVal ++;
+  95   2              AckFlag = SDA;
+  96   2          }
+  97   1          SCL = 0;
+  98   1          return AckFlag;     // 应答返回：0;不应答返回：1
+  99   1      }
+ 100          /* ***************************************************** */
+ 101          // 函数名称：IIC_Nack()
+ 102          // 函数功能：IIC不应答
+ 103          // 入口参数：无
+ 104          // 出口参数：无
+ 105          /* ***************************************************** */
+ 106          void IIC_Nack(void)
+ 107          {
+ 108   1          SDA = 1;
+ 109   1          SCL = 0;
+ 110   1          Delay5US();
+ 111   1          SCL = 1;
+ 112   1          Delay5US();
+ 113   1          SCL = 0;
+ 114   1      }
+ 115          /* ***************************************************** */
+ 116          // 函数名称：OutputOneByte()
+C51 COMPILER V8.05a   STC15_IIC                                                            06/25/2017 19:15:09 PAGE 3   
+
+ 117          // 函数功能：从IIC器件中读出一个字节
+ 118          // 入口参数：无
+ 119          // 出口参数：读出的一个字节（uByteVal）
+ 120          /* ***************************************************** */
+ 121          u8 OutputOneByte(void)
+ 122          {
+ 123   1          u8 uByteVal = 0;
+ 124   1          u8 iCount;
+ 125   1          SDA = 1;
+ 126   1          for (iCount = 0; iCount < 8; iCount++)
+ 127   1          {
+ 128   2              SCL = 0;
+ 129   2              Delay5US();
+ 130   2              SCL = 1;
+ 131   2              Delay5US();
+ 132   2              uByteVal <<= 1;
+ 133   2              if(SDA)
+ 134   2              {
+ 135   3                  uByteVal |= 0x01;
+ 136   3              }
+ 137   2          }
+ 138   1          SCL = 0;
+ 139   1          return(uByteVal);
+ 140   1      }
+ 141          /* ***************************************************** */
+ 142          // 函数名称：InputOneByte()
+ 143          // 函数功能：向IIC器件写入一个字节
+ 144          // 入口参数：待写入的一个字节（uByteVal）
+ 145          // 出口参数：无
+ 146          /* ***************************************************** */
+ 147          void InputOneByte(u8 uByteVal)
+ 148          {
+ 149   1          u8 iCount;
+ 150   1          for(iCount = 0; iCount < 8; iCount++)
+ 151   1          {
+ 152   2              SCL = 0;
+ 153   2              Delay5US();
+ 154   2              SDA = (uByteVal & 0x80) >> 7;
+ 155   2              Delay5US();
+ 156   2              SCL = 1;
+ 157   2              Delay5US();
+ 158   2              uByteVal <<= 1;
+ 159   2          }
+ 160   1          SCL = 0;
+ 161   1      }
+ 162          /* ***************************************************** */
+ 163          // 函数名称：IIC_WrDevAddAndDatAdd()
+ 164          // 函数功能：向IIC器件写入器件和数据地址
+ 165          // 入口参数：器件地址（uDevAdd），数据地址（uDatAdd）
+ 166          // 出口参数：写入是否成功真值
+ 167          /* ***************************************************** */
+ 168          BOOL IIC_WrDevAddAndDatAdd(u8 uDevAdd,u8 uDatAdd)
+ 169          {
+ 170   1          IIC_Start();            // 发送开始信号
+ 171   1          InputOneByte(uDevAdd);  // 输入器件地址
+ 172   1          IIC_RdAck();            // 读应答信号
+ 173   1          InputOneByte(uDatAdd);  // 输入数据地址
+ 174   1          IIC_RdAck();            // 读应答信号
+ 175   1          return TRUE;
+ 176   1      }
+ 177          /* ***************************************************** */
+ 178          // 函数名称：IIC_WrDatToAdd()
+C51 COMPILER V8.05a   STC15_IIC                                                            06/25/2017 19:15:09 PAGE 4   
+
+ 179          // 函数功能：向IIC器件写数据
+ 180          // 入口参数：器件ID(uDevID)、数据存储起始地址(uStaAddVal)
+ 181          //           待存数据(*p)、连续存储数据的个数(uiLenVal)
+ 182          // 出口参数：无
+ 183          /* ***************************************************** */
+ 184          void IIC_WrDatToAdd(u8 uDevID, u8 uStaAddVal, u8 *p, u8 ucLenVal)
+ 185          {
+ 186   1          u8 iCount;
+ 187   1          IIC_WrDevAddAndDatAdd(uDevID | IIC_WRITE,uStaAddVal);
+ 188   1          // IIC_WRITE 为写命令后缀符
+ 189   1          for(iCount = 0; iCount < ucLenVal; iCount++)
+ 190   1          {
+ 191   2              InputOneByte(*p++);
+ 192   2              IIC_RdAck();
+ 193   2          }
+ 194   1          IIC_Stop();
+ 195   1      }
+ 196          /* ***************************************************** */
+ 197          // 函数名称：IIC_RdDatFromAdd()
+ 198          // 函数功能：向IIC器件读数据
+ 199          // 入口参数：器件ID(uDevID)、数据存储地址(uStaAddVal)
+ 200          //           待存数据(*p)、连续存储数据的个数(uiLenVal)
+ 201          // 出口参数：无
+ 202          /* ***************************************************** */
+ 203          void IIC_RdDatFromAdd(u8 uDevID, u8 uStaAddVal, u8 *p, u8 uiLenVal)
+ 204          {
+ 205   1          u8 iCount;
+ 206   1          IIC_WrDevAddAndDatAdd(uDevID | IIC_WRITE,uStaAddVal);
+ 207   1          IIC_Start();
+ 208   1          InputOneByte(uDevID | IIC_READ);
+ 209   1          // IIC_READ 为写命令后缀符
+ 210   1          IIC_RdAck();
+ 211   1          for(iCount = 0; iCount < uiLenVal; iCount++)
+ 212   1          {
+ 213   2              *p++ = OutputOneByte();
+ 214   2              if(iCount != (uiLenVal - 1))
+ 215   2              {
+ 216   3                  IIC_Ack();
+ 217   3              }
+ 218   2          }
+ 219   1          IIC_Nack();
+ 220   1          IIC_Stop();
+ 221   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    321    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----      12
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----       1
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

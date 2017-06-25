@@ -1,0 +1,43 @@
+C51 COMPILER V8.05a   MAIN                                                                 06/25/2017 19:15:09 PAGE 1   
+
+
+C51 COMPILER V8.05a, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\MAIN.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE ..\SOFTWARE\MAIN\MAIN.C LARGE BROWSE DEBUG OBJECTEXTEND PRINT(.\MAIN.lst
+                    -) TABS(2) OBJECT(.\MAIN.obj)
+
+line level    source
+
+   1          /************************************************************
+   2          * 组织名称：电子大赛小组
+   3          * 文件名称: MAIN.C
+   4          * 作者:     电子大赛小组
+   5          * 版本 :    1.0
+   6          * 日期:     10/06/17
+   7          * 描述:    
+   8          * 历史修改记录: 
+   9          * <作者> <时间> <版本 > <描述>
+  10          ***********************************************************/
+  11          /*************************************************
+  12          * 函数名称: void main()
+  13          * 描述: 
+  14          *************************************************/
+  15          
+  16          void main()
+  17          {     
+  18   1         
+  19   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =      1    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

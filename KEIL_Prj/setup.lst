@@ -1,0 +1,46 @@
+C51 COMPILER V8.05a   SETUP                                                                06/25/2017 21:02:31 PAGE 1   
+
+
+C51 COMPILER V8.05a, COMPILATION OF MODULE SETUP
+OBJECT MODULE PLACED IN .\setup.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE ..\SOFTWARE\TASK\setup.c LARGE BROWSE DEBUG OBJECTEXTEND PRINT(.\setup.l
+                    -st) TABS(2) OBJECT(.\setup.obj)
+
+line level    source
+
+   1          #include "setup.h"
+   2          #include "../../BSP/USART1.h"
+*** WARNING C318 IN LINE 2 OF ..\SOFTWARE\TASK\setup.c: can't open file '../../BSP/USART1.h'
+   3          #include "../../BSP/timer.h"
+*** WARNING C318 IN LINE 3 OF ..\SOFTWARE\TASK\setup.c: can't open file '../../BSP/timer.h'
+   4          
+   5          /*************  串口1初始化函数 *****************/
+   6          /*************************************************
+   7          * 函数名称: void    UART1_init(unsigned long BandRate)
+   8          * 描述: 串口1初始化函数
+   9          * 输入: unsigned long BandRate ：串口的波特率，请在数值后加字母"L"，防止出问题
+  10          * 输出: 调用此函数会发送一段测试语句 “ STC15w4k58s4 UART1 is open ”
+  11          * 返回值: 无
+  12          * 其他说明: 无
+  13          *************************************************/
+  14          void    UART1_init(unsigned long BandRate)
+  15          {
+  16   1        COMx_InitDefine     COMx_InitStructure;
+*** ERROR C202 IN LINE 16 OF ..\SOFTWARE\TASK\SETUP.C: 'COMx_InitDefine': undefined identifier
+*** ERROR C141 IN LINE 16 OF ..\SOFTWARE\TASK\SETUP.C: syntax error near 'COMx_InitStructure'
+  17   1        COMx_InitStructure.UART_Mode = UART_8bit_BRTx;
+  18   1        COMx_InitStructure.UART_BRT_Use = BRT_Timer2;
+  19   1        COMx_InitStructure.UART_BaudRate = BandRate;
+  20   1        COMx_InitStructure.UART_RxEnable = ENABLE;
+  21   1        COMx_InitStructure.BaudRateDouble = DISABLE;
+  22   1        COMx_InitStructure.UART_Interrupt = ENABLE;
+  23   1        COMx_InitStructure.UART_Polity = PolityHigh;
+  24   1        COMx_InitStructure.UART_P_SW = UART1_SW_P30_P31;
+  25   1        COMx_InitStructure.UART_RXD_TXD_Short = DISABLE;
+  26   1        USART_Configuration(USART1, &COMx_InitStructure);
+*** ERROR C202 IN LINE 26 OF ..\SOFTWARE\TASK\SETUP.C: 'USART1': undefined identifier
+  27   1        PrintString1("STC15w4k58s4's UART1 is open \r\n");   //串口测试
+  28   1      }
+  29          
+
+C51 COMPILATION COMPLETE.  2 WARNING(S),  3 ERROR(S)

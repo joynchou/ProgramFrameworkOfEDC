@@ -1,0 +1,49 @@
+C51 COMPILER V8.05a   TASK                                                                 06/25/2017 21:02:31 PAGE 1   
+
+
+C51 COMPILER V8.05a, COMPILATION OF MODULE TASK
+OBJECT MODULE PLACED IN .\task.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE ..\SOFTWARE\TASK\task.c LARGE BROWSE DEBUG OBJECTEXTEND PRINT(.\task.lst
+                    -) TABS(2) OBJECT(.\task.obj)
+
+line level    source
+
+   1          #include "task.h"
+   2          #include <rtx51tny.h>                 /* RTX-51 tiny functions & defines      */
+   3          #include "../COMMON_SOFTWARE/DATA_SCOPE/DataScope_DP.h"
+   4          
+   5          //串口示波器数据发送函数
+   6          void taskStart() _task_ 0
+   7          {
+   8   1        os_create_task (1);
+   9   1        os_delete_task (0); 
+  10   1      }
+  11          void sendScopeData(void) _task_ 1
+  12          {
+  13   1        u8 a; //
+*** ERROR C202 IN LINE 13 OF ..\SOFTWARE\TASK\TASK.C: 'u8': undefined identifier
+*** ERROR C141 IN LINE 13 OF ..\SOFTWARE\TASK\TASK.C: syntax error near 'a'
+  14   1        u8 Send_Count;
+*** ERROR C202 IN LINE 14 OF ..\SOFTWARE\TASK\TASK.C: 'u8': undefined identifier
+*** ERROR C141 IN LINE 14 OF ..\SOFTWARE\TASK\TASK.C: syntax error near 'Send_Count'
+  15   1        /*
+  16   1        DataScope_Get_Channel_Data(yourData, 1);  //误差数据
+  17   1        DataScope_Get_Channel_Data(yourData, 2);  //实际输出数据
+  18   1        DataScope_Get_Channel_Data(yourData, 3);  //积分数据
+  19   1        DataScope_Get_Channel_Data(yourData, 4);  //设定角度
+  20   1        DataScope_Get_Channel_Data(yourData, 5);  //实际角度
+  21   1        ...
+  22   1        */
+  23   1        Send_Count = DataScope_Data_Generate(5); //
+*** ERROR C202 IN LINE 23 OF ..\SOFTWARE\TASK\TASK.C: 'Send_Count': undefined identifier
+  24   1        for (a = 0; a < Send_Count; a++)
+*** ERROR C202 IN LINE 24 OF ..\SOFTWARE\TASK\TASK.C: 'a': undefined identifier
+  25   1        {
+  26   2          TX1_write2buff(DataScope_OutPut_Buffer[a]); //发送一通道数据到串口示波器
+*** ERROR C202 IN LINE 26 OF ..\SOFTWARE\TASK\TASK.C: 'a': undefined identifier
+  27   2        }
+  28   1        os_wait(K_IVL,10,0);
+  29   1      }
+  30          
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  7 ERROR(S)

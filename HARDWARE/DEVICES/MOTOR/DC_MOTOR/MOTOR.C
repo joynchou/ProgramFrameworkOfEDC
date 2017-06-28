@@ -13,14 +13,12 @@
 ***********************************************************/
 #include "MOTOR.h"
 #ifdef DC_MOTOR
-#include "../ANGLE/ANGLE.h"
-#include <math.h>
 static bit MotorState=OFF;//电机状态标志位，OFF 为关闭，ON 为开启
 //pid算法的静态结构体
 
-bit getMotorState(Motor *motor)
+bit getMotorState(u8 motor)
 {
-	 return motor->MotorState;
+	 return MotorState;
 	
 }
 void stopMotor(u8 motor)

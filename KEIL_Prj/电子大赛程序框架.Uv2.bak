@@ -12,21 +12,21 @@ Group (hardware)
 Group (DEVICES)
 Group (BSP)
 
-File 3,1,<..\SOFTWARE\TASK\task.c><task.c>
-File 3,1,<..\SOFTWARE\TASK\setup.c><setup.c>
-File 4,2,<..\SOFTWARE\RTOS\Conf_tny.A51><Conf_tny.A51>
-File 5,1,<..\SOFTWARE\COMMON_SOFTWARE\DATA_SCOPE\DataScope_DP.c><DataScope_DP.c>
-File 7,1,<..\HARDWARE\DEVICES\BUTTON\BUTTON.C><BUTTON.C>
-File 8,1,<..\HARDWARE\BSP\ADC.c><ADC.c>
-File 8,1,<..\HARDWARE\BSP\delay.c><delay.c>
-File 8,1,<..\HARDWARE\BSP\GPIO.c><GPIO.c>
-File 8,1,<..\HARDWARE\BSP\PCA.c><PCA.c>
-File 8,1,<..\HARDWARE\BSP\stc15_exti.c><stc15_exti.c>
-File 8,1,<..\HARDWARE\BSP\stc15_iic.c><stc15_iic.c>
-File 8,1,<..\HARDWARE\BSP\stc15_pwm.c><stc15_pwm.c>
-File 8,1,<..\HARDWARE\BSP\stc15_spi.c><stc15_spi.c>
-File 8,1,<..\HARDWARE\BSP\timer.c><timer.c>
-File 8,1,<..\HARDWARE\BSP\USART1.C><USART1.C>
+File 3,1,<..\SOFTWARE\TASK\task.c><task.c> 0x0 
+File 3,1,<..\SOFTWARE\TASK\setup.c><setup.c> 0x0 
+File 4,2,<..\SOFTWARE\RTOS\Conf_tny.A51><Conf_tny.A51> 0x0 
+File 5,1,<..\SOFTWARE\COMMON_SOFTWARE\DATA_SCOPE\DataScope_DP.c><DataScope_DP.c> 0x0 
+File 7,1,<..\HARDWARE\DEVICES\BUTTON\BUTTON.C><BUTTON.C> 0x0 
+File 8,1,<..\HARDWARE\BSP\ADC.c><ADC.c> 0x0 
+File 8,1,<..\HARDWARE\BSP\delay.c><delay.c> 0x0 
+File 8,1,<..\HARDWARE\BSP\GPIO.c><GPIO.c> 0x0 
+File 8,1,<..\HARDWARE\BSP\PCA.c><PCA.c> 0x0 
+File 8,1,<..\HARDWARE\BSP\stc15_exti.c><stc15_exti.c> 0x0 
+File 8,1,<..\HARDWARE\BSP\stc15_iic.c><stc15_iic.c> 0x0 
+File 8,1,<..\HARDWARE\BSP\stc15_pwm.c><stc15_pwm.c> 0x0 
+File 8,1,<..\HARDWARE\BSP\stc15_spi.c><stc15_spi.c> 0x0 
+File 8,1,<..\HARDWARE\BSP\timer.c><timer.c> 0x0 
+File 8,1,<..\HARDWARE\BSP\USART1.C><USART1.C> 0x0 
 
 
 Options 1,0,0  // Target '电子大赛程序框架'
@@ -69,8 +69,6 @@ Options 1,0,0  // Target '电子大赛程序框架'
  RunUsr 1 0 <>
  BrunUsr 0 0 <>
  BrunUsr 1 0 <>
- CrunUsr 0 0 <>
- CrunUsr 1 0 <>
  SVCSID <>
  MODEL5=2
  RTOS5=1

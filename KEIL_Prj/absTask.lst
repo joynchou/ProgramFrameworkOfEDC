@@ -1,0 +1,59 @@
+C51 COMPILER V8.05a   ABSTASK                                                              06/28/2017 20:35:46 PAGE 1   
+
+
+C51 COMPILER V8.05a, COMPILATION OF MODULE ABSTASK
+OBJECT MODULE PLACED IN .\absTask.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE ..\SOFTWARE\ABS_TASK\absTask.c LARGE BROWSE DEBUG OBJECTEXTEND PRINT(.\a
+                    -bsTask.lst) TABS(2) OBJECT(.\absTask.obj)
+
+line level    source
+
+   1          #include "../TASK/TASK.h"
+   2          #include <rtx51tny.h>                 /* RTX-51 tiny functions & defines      */
+   3          
+   4          //串口示波器数据发送函数
+   5          void taskStart() _task_ 0
+   6          {
+   7   1        setup();
+   8   1        os_create_task (1);
+   9   1        os_delete_task (0); 
+  10   1      }
+  11          void task1(void) _task_ 1
+  12          {   for(;;)
+  13   1        {
+  14   2         sendScopeData();
+  15   2         os_wait(K_IVL,10,0);
+  16   2        }
+  17   1      }
+  18          void task2(void) _task_ 2
+  19          {
+  20   1         for(;;)
+  21   1        {
+  22   2          
+  23   2          
+  24   2        }
+  25   1        
+  26   1      }
+  27          void task3(void) _task_ 3
+  28          {
+  29   1        for(;;)
+  30   1        {
+  31   2          
+  32   2          
+  33   2        }
+  34   1        
+  35   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     32    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

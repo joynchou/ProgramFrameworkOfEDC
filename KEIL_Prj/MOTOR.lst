@@ -1,0 +1,98 @@
+C51 COMPILER V8.05a   MOTOR                                                                06/28/2017 20:35:46 PAGE 1   
+
+
+C51 COMPILER V8.05a, COMPILATION OF MODULE MOTOR
+OBJECT MODULE PLACED IN .\MOTOR.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE ..\HARDWARE\DEVICES\MOTOR\DC_MOTOR\MOTOR.C LARGE BROWSE DEBUG OBJECTEXTE
+                    -ND PRINT(.\MOTOR.lst) TABS(2) OBJECT(.\MOTOR.obj)
+
+line level    source
+
+   1          /************************************************************
+   2          * 组织名称： (C), 1988-1999, Tech. Co., Ltd.
+   3          * 文件名称: MOTOR.C
+   4          * 作者:  周晨阳
+   5          * 版本:  1.3
+   6          * 日期:  17/4/29
+   7          * 描述:  和电机有关的控制函数都在这里，还有pid算法控制也在其中
+   8          * 主要函数及其功能 : // 主要函数及其功能
+   9          * 1. -------
+  10          * 历史修改记录: // 历史修改记录
+  11          * <作者> <时间> <版本 > <描述>
+  12          * 周晨阳 17/6/216 1.0 创建此描述
+  13          ***********************************************************/
+  14          #include "MOTOR.h"
+  15          #ifdef DC_MOTOR
+              static bit MotorState=OFF;//电机状态标志位，OFF 为关闭，ON 为开启
+              //pid算法的静态结构体
+              
+              bit getMotorState(u8 motor)
+              {
+                 return MotorState;
+                
+              }
+              void stopMotor(u8 motor)
+              {
+                setMotorSpeed(LEFT_MOTOR,0.01f);
+                setMotorSpeed(RIGHT_MOTOR,0.01f);
+                MotorState=OFF;
+              
+              
+              }
+              void startMotor(u8 motor)
+              {
+                 OPEN_PWM();
+                 MotorState=ON;
+              }
+              /*************************************************
+              * 函数名称: void setMotorSpeed(bit motor,float speed)
+              * 描述: 设置电机速度函数
+              * 输入: motor：电机，头文件中定义
+                      speed：速度 0~1   
+              * 其他说明: 
+              *若要关闭电机请使用电机关闭函数，此函数无法关闭电机
+              *************************************************/                                                        
+             -  
+              void setMotorSpeed(bit motor,float speed)
+              {
+                
+                  if(speed>0.95f)
+                    {
+                     speed=0.95f;
+                    }
+                  if(speed<0.05f)
+                  {
+C51 COMPILER V8.05a   MOTOR                                                                06/28/2017 20:35:46 PAGE 2   
+
+                    
+                    speed=0.05f;
+                  }
+                  
+                  if(motor)
+                  {
+                  //  PWM_duty(PWM_2,speed*0.65f);//根据不同电机乘于不同的增益
+                    PWM_duty(PWM_2,speed);//根据不同电机乘于不同的增益
+                  }
+                  else
+                  {
+                  //  PWM_duty(PWM_4,speed*0.63f);
+                    PWM_duty(PWM_4,speed);
+                  }
+              }
+              #endif
+  70          
+  71          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   ----    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

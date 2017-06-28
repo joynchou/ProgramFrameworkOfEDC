@@ -21,7 +21,7 @@ unsigned char DataScope_OutPut_Buffer[42] = {0};       //串口发送缓冲区
 //beg:指定从数组第几个元素开始写入
 //函数无返回
 //对此函数进行了修改，原本是有问题的，后来发现point数组的顺序反了，现在能正常使用了
-void Float2Byte(float *target,unsigned char *buf,unsigned char beg)
+static void Float2Byte(float *target,unsigned char *buf,unsigned char beg)
 {
   unsigned char *point;
   point = (unsigned char*)target;   //得到float的地址

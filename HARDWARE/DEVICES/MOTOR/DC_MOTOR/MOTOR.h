@@ -10,8 +10,9 @@
 ***********************************************************/
 #ifndef _MOTOR_H_
 #define _MOTOR_H_
-#include "../../USER/USER.h"
-#include "../USER/STC15_PWM.H"                             /*********对外参数和接口函数***********/
+#include <math.h>
+#include "../../../BSP/config.h"
+#include "../../../BSP/STC15_PWM.h"
 /************************************
 硬件PWMio引脚（没有pwm1）
 PWM_N| io  | 第二组
@@ -27,12 +28,6 @@ PWM7 :P1.7 -> P0.6
 #define RIGHT_MOTOR  0
 #define STOP         0
 
-typedef struct Motor
-{
-	bit MotorState;
-};
-Motor leftMotor;
-Motor rightMotor;
 
 void stopMotor(u8 motor);
 void startMotor(u8 motor);

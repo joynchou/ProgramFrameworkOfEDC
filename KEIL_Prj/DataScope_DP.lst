@@ -1,4 +1,4 @@
-C51 COMPILER V8.05a   DATASCOPE_DP                                                         06/25/2017 21:02:31 PAGE 1   
+C51 COMPILER V8.05a   DATASCOPE_DP                                                         06/28/2017 20:35:46 PAGE 1   
 
 
 C51 COMPILER V8.05a, COMPILATION OF MODULE DATASCOPE_DP
@@ -31,7 +31,7 @@ line level    source
               //beg:指定从数组第几个元素开始写入
               //函数无返回
               //对此函数进行了修改，原本是有问题的，后来发现point数组的顺序反了，现在能正常使用了
-              void Float2Byte(float *target,unsigned char *buf,unsigned char beg)
+              static void Float2Byte(float *target,unsigned char *buf,unsigned char beg)
               {
                 unsigned char *point;
                 point = (unsigned char*)target;   //得到float的地址
@@ -62,7 +62,7 @@ line level    source
                           break;
                         case 3:
                           Float2Byte(&Data,DataScope_OutPut_Buffer,9);
-C51 COMPILER V8.05a   DATASCOPE_DP                                                         06/25/2017 21:02:31 PAGE 2   
+C51 COMPILER V8.05a   DATASCOPE_DP                                                         06/28/2017 20:35:46 PAGE 2   
 
                           break;
                         case 4:
@@ -126,7 +126,7 @@ line level    source
                           break;
                         case 6:
                           DataScope_OutPut_Buffer[25] = 25;
-C51 COMPILER V8.05a   DATASCOPE_DP                                                         06/25/2017 21:02:31 PAGE 3   
+C51 COMPILER V8.05a   DATASCOPE_DP                                                         06/28/2017 20:35:46 PAGE 3   
 
                           return 26;
                           break;

@@ -1,4 +1,4 @@
-C51 COMPILER V8.05a   BUTTON                                                               06/25/2017 19:28:55 PAGE 1   
+C51 COMPILER V8.05a   BUTTON                                                               06/28/2017 16:04:24 PAGE 1   
 
 
 C51 COMPILER V8.05a, COMPILATION OF MODULE BUTTON
@@ -62,7 +62,7 @@ line level    source
               static bit BUTTON4_bit=0;
               /*************************************************
               * 函数名称: bit getButtonState(u8 BUTTON_data)
-C51 COMPILER V8.05a   BUTTON                                                               06/25/2017 19:28:55 PAGE 2   
+C51 COMPILER V8.05a   BUTTON                                                               06/28/2017 16:04:24 PAGE 2   
 
               * 描述: 按键状态读取
               * 输入: 按键引脚宏
@@ -126,7 +126,7 @@ line level    source
                   {
                       BUTTON2_bit=0;
                   }
-C51 COMPILER V8.05a   BUTTON                                                               06/25/2017 19:28:55 PAGE 3   
+C51 COMPILER V8.05a   BUTTON                                                               06/28/2017 16:04:24 PAGE 3   
 
                   if(digitalRead(BUTTON3))
                   {

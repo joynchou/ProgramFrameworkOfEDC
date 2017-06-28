@@ -1,7 +1,4 @@
 #include "setup.h"
-#include "../../BSP/USART1.h"
-#include "../../BSP/timer.h"
-
 /*************  串口1初始化函数 *****************/
 /*************************************************
 * 函数名称: void    UART1_init(unsigned long BandRate)
@@ -25,5 +22,12 @@ void    UART1_init(unsigned long BandRate)
   COMx_InitStructure.UART_RXD_TXD_Short = DISABLE;
   USART_Configuration(USART1, &COMx_InitStructure);
   PrintString1("STC15w4k58s4's UART1 is open \r\n");   //串口测试
+}
+void setup(void)
+{
+	 UART1_init();
+   Button_config() ;
+   timerInit();
+
 }
 

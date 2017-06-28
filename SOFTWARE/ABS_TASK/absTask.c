@@ -1,27 +1,35 @@
-#include "absTask.h"
-void mode_1(void)
+#include "../TASK/TASK.h"
+#include <rtx51tny.h>                 /* RTX-51 tiny functions & defines      */
+
+//串口示波器数据发送函数
+void taskStart() _task_ 0
 {
-	static bit mode_1_step1 = 0;
-	static bit mode_1_step2 = 0;
-	static bit mode_1_step3 = 0;
-	static bit mode_1_step4 = 0;
-
-
-
+	setup();
+	os_create_task (1);
+	os_delete_task (0); 
 }
-void mode_2(void)
-{
-
+void task1(void) _task_ 1
+{   for(;;)
+	{
+	 sendScopeData();
+	 os_wait(K_IVL,10,0);
+	}
 }
-void mode_3(void)
+void task2(void) _task_ 2
 {
-
+	 for(;;)
+	{
+		
+		
+	}
+	
 }
-void mode_4(void)
+void task3(void) _task_ 3
 {
-
-}
-void mode_5(void)
-{
-
+	for(;;)
+	{
+		
+		
+	}
+	
 }

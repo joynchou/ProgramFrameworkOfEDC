@@ -591,6 +591,16 @@
             </File>
           </Files>
         </Group>
+        <Group>
+          <GroupName>COMMON_HARDWARE</GroupName>
+          <Files>
+            <File>
+              <FileName>fixedPulser.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\HARDWARE\COMMON_HARDWARE\fixedPulser.c</FilePath>
+            </File>
+          </Files>
+        </Group>
       </Groups>
     </Target>
   </Targets>

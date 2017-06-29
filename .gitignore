@@ -3,3 +3,10 @@
 *.bak
 *.joyn
 *.uvopt
+*.bak
+*.bak
+*.lst
+*.obj
+*.uvopt
+*.uvproj
+*.joyn

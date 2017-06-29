@@ -1,4 +1,4 @@
-C51 COMPILER V8.05a   STC15_PWM                                                            06/25/2017 19:15:09 PAGE 1   
+C51 COMPILER V8.05a   STC15_PWM                                                            06/28/2017 22:06:39 PAGE 1   
 
 
 C51 COMPILER V8.05a, COMPILATION OF MODULE STC15_PWM
@@ -62,7 +62,7 @@ line level    source
   52   1        if(ENABLE==PWMx->PWM_0ISR_EN)             //ENABLE=使能PWM计数器归零中断  DISABLE=关闭PWM计数器归零中断 
              -但 CBIF仍然会被硬件置位
   53   1          {
-C51 COMPILER V8.05a   STC15_PWM                                                            06/25/2017 19:15:09 PAGE 2   
+C51 COMPILER V8.05a   STC15_PWM                                                            06/28/2017 22:06:39 PAGE 2   
 
   54   2            PWMCR|=(1<<6);
   55   2          }
@@ -126,7 +126,7 @@ line level    source
  111   2            PWMCKS&=(~(1<<4));
  112   2          }
  113   1        else
-C51 COMPILER V8.05a   STC15_PWM                                                            06/25/2017 19:15:09 PAGE 3   
+C51 COMPILER V8.05a   STC15_PWM                                                            06/28/2017 22:06:39 PAGE 3   
 
  114   1          {
  115   2            PWMCKS|=(1<<4);
@@ -190,7 +190,7 @@ line level    source
  171   3                else
  172   3                  {
  173   4                    PWM3CR&=(~(1<<2));
-C51 COMPILER V8.05a   STC15_PWM                                                            06/25/2017 19:15:09 PAGE 4   
+C51 COMPILER V8.05a   STC15_PWM                                                            06/28/2017 22:06:39 PAGE 4   
 
  174   4                  }
  175   3                if(ENABLE==PWMx->PWM_T1x_EN)              //ENABLE=使能第一翻转中断
@@ -254,7 +254,7 @@ line level    source
              -M第二选择IO口
  232   3                  {
  233   4                    PWM5CR&=(~(1<<3));
-C51 COMPILER V8.05a   STC15_PWM                                                            06/25/2017 19:15:09 PAGE 5   
+C51 COMPILER V8.05a   STC15_PWM                                                            06/28/2017 22:06:39 PAGE 5   
 
  234   4                  }
  235   3                else
@@ -318,7 +318,7 @@ line level    source
  292   3                  {
  293   4                    PWM6CR|=(1<<0);
  294   4                  }
-C51 COMPILER V8.05a   STC15_PWM                                                            06/25/2017 19:15:09 PAGE 6   
+C51 COMPILER V8.05a   STC15_PWM                                                            06/28/2017 22:06:39 PAGE 6   
 
  295   3                else
  296   3                  {
@@ -382,7 +382,7 @@ line level    source
  352          * 描述: 配置需要使用的pwm通道
  353          * 输入: u8 PWM_N，N的范围是2~7
  354          * 返回值: 无
-C51 COMPILER V8.05a   STC15_PWM                                                            06/25/2017 19:15:09 PAGE 7   
+C51 COMPILER V8.05a   STC15_PWM                                                            06/28/2017 22:06:39 PAGE 7   
 
  355          * 其他说明: 将会自动初始化相应的io引脚
  356          *************************************************/
@@ -446,7 +446,7 @@ line level    source
  409   3              };
  410   2              break;
  411   2          }
-C51 COMPILER V8.05a   STC15_PWM                                                            06/25/2017 19:15:09 PAGE 8   
+C51 COMPILER V8.05a   STC15_PWM                                                            06/28/2017 22:06:39 PAGE 8   
 
  412   1        PWM_UNLOCK;
  413   1        PWM_InitStructure.PWM_GOTO_ADC=DISABLE;
@@ -510,7 +510,7 @@ line level    source
  471   2              PWM4T1H=(u8)(period1>>8);
  472   2              PWM4T2L=(u8)(period2);
  473   2              PWM4T2H=(u8)(period2>>8);
-C51 COMPILER V8.05a   STC15_PWM                                                            06/25/2017 19:15:09 PAGE 9   
+C51 COMPILER V8.05a   STC15_PWM                                                            06/28/2017 22:06:39 PAGE 9   
 
  474   2              return 0;
  475   2              break;
@@ -574,7 +574,7 @@ line level    source
  533   2              return PWM_info.PWM_4_duty;
  534   2              break;
  535   2            case PWM_5:
-C51 COMPILER V8.05a   STC15_PWM                                                            06/25/2017 19:15:09 PAGE 10  
+C51 COMPILER V8.05a   STC15_PWM                                                            06/28/2017 22:06:39 PAGE 10  
 
  536   2              return PWM_info.PWM_5_duty;
  537   2              break;
@@ -638,7 +638,7 @@ line level    source
                     PrintString1("duty is over the miximum\n");
               #endif
  597   2          }
-C51 COMPILER V8.05a   STC15_PWM                                                            06/25/2017 19:15:09 PAGE 11  
+C51 COMPILER V8.05a   STC15_PWM                                                            06/28/2017 22:06:39 PAGE 11  
 
  598   1        switch(PWM_N)
  599   1          {
@@ -702,7 +702,7 @@ MODULE INFORMATION:   STATIC OVERLAYABLE
    DATA SIZE        =   ----    ----
    IDATA SIZE       =   ----    ----
    BIT SIZE         =      1    ----
-C51 COMPILER V8.05a   STC15_PWM                                                            06/25/2017 19:15:09 PAGE 12  
+C51 COMPILER V8.05a   STC15_PWM                                                            06/28/2017 22:06:39 PAGE 12  
 
 END OF MODULE INFORMATION.
 

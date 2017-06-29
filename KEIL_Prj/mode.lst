@@ -1,4 +1,4 @@
-C51 COMPILER V8.05a   MODE                                                                 06/28/2017 20:19:39 PAGE 1   
+C51 COMPILER V8.05a   MODE                                                                 06/28/2017 22:06:38 PAGE 1   
 
 
 C51 COMPILER V8.05a, COMPILATION OF MODULE MODE
@@ -29,7 +29,7 @@ line level    source
   19          {
   20   1        
   21   1      }
-  22          void modelauncher(void)
+  22          void modeLauncher(void)
   23          {
   24   1        
   25   1      }

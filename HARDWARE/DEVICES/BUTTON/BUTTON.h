@@ -15,6 +15,6 @@
 #define BUTTON4 P26
 /*********对外参数和接口函数***********/
 extern void  buttonScan(void );
-extern void Button_config();
+extern void Button_config(void);
 extern bit getButtonState(u8 BUTTON_data); //读取按键状态函数,按下按键返回1，没按下返回0
 #endif

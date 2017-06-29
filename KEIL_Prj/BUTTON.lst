@@ -1,4 +1,4 @@
-C51 COMPILER V8.05a   BUTTON                                                               06/28/2017 16:04:24 PAGE 1   
+C51 COMPILER V8.05a   BUTTON                                                               06/28/2017 22:26:26 PAGE 1   
 
 
 C51 COMPILER V8.05a, COMPILATION OF MODULE BUTTON
@@ -22,154 +22,155 @@ line level    source
   12          * 周晨阳
   13          ***********************************************************/
   14          #include "BUTTON.h"
-  15          #ifdef BUTTON
-              //extern  struct PID pid;
-              /*************************************************
-              * 函数名称: void Button_config()
-              * 描述: 片上按键io初始化函数
-              * 其他说明: 初始化 P23,24,25,26为按键
-              *************************************************/
-              void Button_config()
-              {
-                  GPIO_InitTypeDef    GPIO_InitStructure;     //结构定义
-                  GPIO_InitStructure.Pin  = BUTTON1_GPIO_PIN | BUTTON2_GPIO_PIN | BUTTON3_GPIO_PIN|BUTTON4_GPIO_PIN;    
+  15          #define BUTTON
+  16          #ifdef BUTTON
+  17          //extern  struct PID pid;
+  18          /*************************************************
+  19          * 函数名称: void Button_config()
+  20          * 描述: 片上按键io初始化函数
+  21          * 其他说明: 初始化 P23,24,25,26为按键
+  22          *************************************************/
+  23          void Button_config(void)
+  24          {
+  25   1          GPIO_InitTypeDef    GPIO_InitStructure;     //结构定义
+  26   1          GPIO_InitStructure.Pin  = BUTTON1_GPIO_PIN | BUTTON2_GPIO_PIN | BUTTON3_GPIO_PIN|BUTTON4_GPIO_PIN;    
              -  //指定要初始化的IO, GPIO_Pin_0 ~ GPIO_Pin_7, 或操作
-                  GPIO_InitStructure.Mode = GPIO_PullUp;       //指定IO的输入或输出方式,GPIO_PullUp,GPIO_HighZ,GPIO_OUT_
+  27   1          GPIO_InitStructure.Mode = GPIO_PullUp;       //指定IO的输入或输出方式,GPIO_PullUp,GPIO_HighZ,GPIO_OUT_
              -OD,GPIO_OUT_PP
-                  GPIO_Inilize(GPIO_P2,&GPIO_InitStructure);  //初始化
-                  P23=1;
-                  P24=1;
-                  P25=1;
-                  P26=1;
-              }
-              /*************************************************
-              * 函数名称:static bit digitalRead(pin)//读取按键状态函数,按下按键返回1，没按下返回0
-              * 描述: 带防抖的引脚电平读取函数
-              * 输入: 需要读取的pin* 输出:
-              * 返回值: 引脚电平，按下返回1，未按下返回0
-              * 其他说明: 内部函数，外部无须调用
-              *************************************************/
-              static bit digitalRead(pin)//读取按键状态函数,按下按键返回1，没按下返回0
-              {
-                  if(!pin)
-                  {
-                      return !pin;
-                  }
-              }
-              static bit BUTTON1_bit=0;
-              static bit BUTTON2_bit=0;
-              static bit BUTTON3_bit=0;
-              static bit BUTTON4_bit=0;
-              /*************************************************
-              * 函数名称: bit getButtonState(u8 BUTTON_data)
-C51 COMPILER V8.05a   BUTTON                                                               06/28/2017 16:04:24 PAGE 2   
+  28   1          GPIO_Inilize(GPIO_P2,&GPIO_InitStructure);  //初始化
+  29   1          P23=1;
+  30   1          P24=1;
+  31   1          P25=1;
+  32   1          P26=1;
+  33   1      }
+  34          /*************************************************
+  35          * 函数名称:static bit digitalRead(pin)//读取按键状态函数,按下按键返回1，没按下返回0
+  36          * 描述: 带防抖的引脚电平读取函数
+  37          * 输入: 需要读取的pin* 输出:
+  38          * 返回值: 引脚电平，按下返回1，未按下返回0
+  39          * 其他说明: 内部函数，外部无须调用
+  40          *************************************************/
+  41          static bit digitalRead(pin)//读取按键状态函数,按下按键返回1，没按下返回0
+  42          {
+  43   1          if(!pin)
+  44   1          {
+  45   2              return !pin;
+  46   2          }
+  47   1      }
+  48          static bit BUTTON1_bit=0;
+  49          static bit BUTTON2_bit=0;
+  50          static bit BUTTON3_bit=0;
+  51          static bit BUTTON4_bit=0;
+  52          /*************************************************
+C51 COMPILER V8.05a   BUTTON                                                               06/28/2017 22:26:26 PAGE 2   
 
-              * 描述: 按键状态读取
-              * 输入: 按键引脚宏
-              * 返回值: 按键状态，按下返回1，未按下返回0
-              * 其他说明: 此函数为外界接口函数
-              *************************************************/
-              bit getButtonState(u8 BUTTON_data)
-              {
-                  switch(BUTTON_data)
-                  {
-                  case BUTTON1_GPIO_PIN:
-                      return   BUTTON1_bit;
-                      break;
-                  case BUTTON2_GPIO_PIN:
-                      return   BUTTON2_bit;
-                      break;
-                  case BUTTON3_GPIO_PIN:
-                      return   BUTTON3_bit;
-                      break;
-                  case BUTTON4_GPIO_PIN:
-                      return   BUTTON4_bit;
-                      break;
-                  }
-              }
-              /*************************************************
-              * 函数名称: void  buttonScan(void )//按键扫描函数
-              * 描述: 按键检测程序
-              * 输入: 无
-              * 输出: 无
-              * 返回值: 无
-              * 其他说明: 此按键检测程序没有使用到定时器，
-              *           将在后续的工程中改进此函数
-              *************************************************/
-              void  buttonScan(void )//按键扫描函数
-              {
-                  if(digitalRead(BUTTON1))
-                  {
-                      if(!BUTTON1_bit)
-                      {
-              #ifdef BUTTON_DEBUG
+  53          * 函数名称: bit getButtonState(u8 BUTTON_data)
+  54          * 描述: 按键状态读取
+  55          * 输入: 按键引脚宏
+  56          * 返回值: 按键状态，按下返回1，未按下返回0
+  57          * 其他说明: 此函数为外界接口函数
+  58          *************************************************/
+  59          bit getButtonState(u8 BUTTON_data)
+  60          {
+  61   1          switch(BUTTON_data)
+  62   1          {
+  63   2          case BUTTON1_GPIO_PIN:
+  64   2              return   BUTTON1_bit;
+  65   2              break;
+  66   2          case BUTTON2_GPIO_PIN:
+  67   2              return   BUTTON2_bit;
+  68   2              break;
+  69   2          case BUTTON3_GPIO_PIN:
+  70   2              return   BUTTON3_bit;
+  71   2              break;
+  72   2          case BUTTON4_GPIO_PIN:
+  73   2              return   BUTTON4_bit;
+  74   2              break;
+  75   2          }
+  76   1      }
+  77          /*************************************************
+  78          * 函数名称: void  buttonScan(void )//按键扫描函数
+  79          * 描述: 按键检测程序
+  80          * 输入: 无
+  81          * 输出: 无
+  82          * 返回值: 无
+  83          * 其他说明: 此按键检测程序没有使用到定时器，
+  84          *           将在后续的工程中改进此函数
+  85          *************************************************/
+  86          void  buttonScan(void )//按键扫描函数
+  87          {
+  88   1          if(digitalRead(BUTTON1))
+  89   1          {
+  90   2              if(!BUTTON1_bit)
+  91   2              {
+  92   3      #ifdef BUTTON_DEBUG
                           PrintString1("BUTTON1 is on\n");
               #endif
-                          BUTTON1_bit=1;
-                      }
-                  }
-                  else
-                  {
-                      BUTTON1_bit=0;
-                  }
-                  if(digitalRead(BUTTON2))
-                  {
-                      if(!BUTTON2_bit)
-                      {
-              #ifdef BUTTON_DEBUG
+  95   3                  BUTTON1_bit=1;
+  96   3              }
+  97   2          }
+  98   1          else
+  99   1          {
+ 100   2              BUTTON1_bit=0;
+ 101   2          }
+ 102   1          if(digitalRead(BUTTON2))
+ 103   1          {
+ 104   2              if(!BUTTON2_bit)
+ 105   2              {
+ 106   3      #ifdef BUTTON_DEBUG
                           PrintString1("BUTTON2 is on\n");
               #endif
-                          BUTTON2_bit=1;
-                      }
-                  }
-                  else
-                  {
-                      BUTTON2_bit=0;
-                  }
-C51 COMPILER V8.05a   BUTTON                                                               06/28/2017 16:04:24 PAGE 3   
+ 109   3                  BUTTON2_bit=1;
+ 110   3              }
+ 111   2          }
+ 112   1          else
+ 113   1          {
+ 114   2              BUTTON2_bit=0;
+C51 COMPILER V8.05a   BUTTON                                                               06/28/2017 22:26:26 PAGE 3   
 
-                  if(digitalRead(BUTTON3))
-                  {
-                      if(!BUTTON3_bit)
-                      {
-              #ifdef BUTTON_DEBUG
+ 115   2          }
+ 116   1          if(digitalRead(BUTTON3))
+ 117   1          {
+ 118   2              if(!BUTTON3_bit)
+ 119   2              {
+ 120   3      #ifdef BUTTON_DEBUG
                           PrintString1("BUTTON3 is on\n");
               #endif
-                          BUTTON3_bit=1;
-                         
-                      }
-                  }
-                  else
-                  {
-                      BUTTON3_bit=0;
-                  }
-                  if(digitalRead(BUTTON4))
-                  {
-                      if(!BUTTON4_bit)
-                      {
-              #ifdef BUTTON_DEBUG
+ 123   3                  BUTTON3_bit=1;
+ 124   3                 
+ 125   3              }
+ 126   2          }
+ 127   1          else
+ 128   1          {
+ 129   2              BUTTON3_bit=0;
+ 130   2          }
+ 131   1          if(digitalRead(BUTTON4))
+ 132   1          {
+ 133   2              if(!BUTTON4_bit)
+ 134   2              {
+ 135   3      #ifdef BUTTON_DEBUG
                           PrintString1("BUTTON4 is on\n");
               #endif
-                          BUTTON4_bit=1;
-                         
-                      }
-                  }
-                  else
-                  {
-                      BUTTON4_bit=0;
-                  }
-              }
-              #endif
+ 138   3                  BUTTON4_bit=1;
+ 139   3                 
+ 140   3              }
+ 141   2          }
+ 142   1          else
+ 143   1          {
+ 144   2              BUTTON4_bit=0;
+ 145   2          }
+ 146   1      }
+ 147          #endif
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =   ----    ----
+   CODE SIZE        =    150    ----
    CONSTANT SIZE    =   ----    ----
-   XDATA SIZE       =   ----    ----
+   XDATA SIZE       =   ----       2
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----
    IDATA SIZE       =   ----    ----
-   BIT SIZE         =   ----    ----
+   BIT SIZE         =      4    ----
 END OF MODULE INFORMATION.
 
 

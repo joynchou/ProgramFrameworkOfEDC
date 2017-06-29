@@ -12,6 +12,7 @@
 * 周晨阳
 ***********************************************************/
 #include "BUTTON.h"
+#define BUTTON
 #ifdef BUTTON
 //extern  struct PID pid;
 /*************************************************
@@ -19,7 +20,7 @@
 * 描述: 片上按键io初始化函数
 * 其他说明: 初始化 P23,24,25,26为按键
 *************************************************/
-void Button_config()
+void Button_config(void)
 {
     GPIO_InitTypeDef    GPIO_InitStructure;     //结构定义
     GPIO_InitStructure.Pin  = BUTTON1_GPIO_PIN | BUTTON2_GPIO_PIN | BUTTON3_GPIO_PIN|BUTTON4_GPIO_PIN;      //指定要初始化的IO, GPIO_Pin_0 ~ GPIO_Pin_7, 或操作

@@ -9,9 +9,6 @@ Project File Date:  06/28/2017
 <h2>Output:</h2>
 Build target '电子大赛程序框架'
 compiling absTask.c...
-assembling Conf_tny.A51...
-compiling DataScope_DP.c...
-compiling MOTOR.C...
 linking...
 *** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
     SEGMENT: ?PR?MODE1?MODE
@@ -23,6 +20,18 @@ linking...
     SEGMENT: ?PR?MODE4?MODE
 *** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
     SEGMENT: ?PR?MODELAUNCHER?MODE
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?BUTTON_CONFIG?BUTTON
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_GETBUTTONSTATE?BUTTON
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?BUTTONSCAN?BUTTON
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_GETSTEPMOTORSTATE?STEP_MOTOR
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_STOPSTEPMOTOR?STEP_MOTOR
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_STARTSTEPMOTOR?STEP_MOTOR
 *** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
     SEGMENT: ?PR?_ADC_INILIZE?ADC
 *** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
@@ -39,12 +48,6 @@ linking...
     SEGMENT: ?PR?_PCA_INIT?PCA
 *** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
     SEGMENT: ?PR?_PWMOUTPUT?PCA
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?_EXT_INILIZE?STC15_EXTI
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?_IIC_WRDATTOADD?STC15_IIC
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?_IIC_RDDATFROMADD?STC15_IIC
 *** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
     SEGMENT: ?PR?_PWM_CONFIG?STC15_PWM
 *** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
@@ -93,77 +96,109 @@ linking...
     SEGMENT: ?PR?_PRINTSTRING3?USART1
 *** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
     SEGMENT: ?PR?_PRINTSTRING4?USART1
-*** WARNING L1: UNRESOLVED EXTERNAL SYMBOL
-    SYMBOL:  DATASCOPE_OUTPUT_BUFFER
-    MODULE:  .\task.obj (TASK)
-*** WARNING L1: UNRESOLVED EXTERNAL SYMBOL
-    SYMBOL:  _DATASCOPE_DATA_GENERATE
-    MODULE:  .\task.obj (TASK)
-*** WARNING L1: UNRESOLVED EXTERNAL SYMBOL
-    SYMBOL:  _DATASCOPE_GET_CHANNEL_DATA
-    MODULE:  .\task.obj (TASK)
-*** WARNING L1: UNRESOLVED EXTERNAL SYMBOL
-    SYMBOL:  ?_DATASCOPE_GET_CHANNEL_DATA?BYTE
-    MODULE:  .\task.obj (TASK)
-*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
-    SYMBOL:  ?_DATASCOPE_GET_CHANNEL_DATA?BYTE
-    MODULE:  .\task.obj (TASK)
-    ADDRESS: 2C0FH
-*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
-    SYMBOL:  _DATASCOPE_GET_CHANNEL_DATA
-    MODULE:  .\task.obj (TASK)
-    ADDRESS: 2C1DH
-*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
-    SYMBOL:  _DATASCOPE_DATA_GENERATE
-    MODULE:  .\task.obj (TASK)
-    ADDRESS: 2C22H
-*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
-    SYMBOL:  DATASCOPE_OUTPUT_BUFFER
-    MODULE:  .\task.obj (TASK)
-    ADDRESS: 2C3DH
-*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
-    SYMBOL:  DATASCOPE_OUTPUT_BUFFER
-    MODULE:  .\task.obj (TASK)
-    ADDRESS: 2C43H
-*** WARNING L1: UNRESOLVED EXTERNAL SYMBOL
-    SYMBOL:  BUTTON_CONFIG
-    MODULE:  .\setup.obj (SETUP)
-*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
-    SYMBOL:  BUTTON_CONFIG
-    MODULE:  .\setup.obj (SETUP)
-    ADDRESS: 323BH
-Program Size: data=91.7 xdata=804 code=10905
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_MAKEPULSE?FIXEDPULSER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_OPENPULSER?FIXEDPULSER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_CLOSEPULSER?FIXEDPULSER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_GETPULSERSTATE?FIXEDPULSER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?PULSERINIT?FIXEDPULSER
+Program Size: data=92.2 xdata=862 code=11366
 creating hex file from "电子大赛程序框架"...
-"电子大赛程序框架" - 0 Error(s), 51 Warning(s).
+"电子大赛程序框架" - 0 Error(s), 48 Warning(s).
 </pre>
 </body>
 </html>
- warning C206: 'os_create_task': missing function-prototype
-..\SOFTWARE\ABS_TASK\ABSTASK.C(6): error C267: 'os_create_task': requires ANSI-style prototype
-..\SOFTWARE\ABS_TASK\absTask.c - 1 Error(s), 3 Warning(s).
-compiling absTask.c...
-..\SOFTWARE\ABS_TASK\absTask.c(1): warning C318: can't open file '../task.h'
-..\SOFTWARE\ABS_TASK\ABSTASK.C(5): warning C206: 'setup': missing function-prototype
-..\SOFTWARE\ABS_TASK\ABSTASK.C(6): warning C206: 'os_create_task': missing function-prototype
-..\SOFTWARE\ABS_TASK\ABSTASK.C(6): error C267: 'os_create_task': requires ANSI-style prototype
-..\SOFTWARE\ABS_TASK\absTask.c - 1 Error(s), 3 Warning(s).
-compiling absTask.c...
-..\SOFTWARE\ABS_TASK\absTask.c(1): warning C318: can't open file '../ABS_TASK/task.h'
-..\SOFTWARE\ABS_TASK\ABSTASK.C(5): warning C206: 'setup': missing function-prototype
-..\SOFTWARE\ABS_TASK\ABSTASK.C(6): warning C206: 'os_create_task': missing function-prototype
-..\SOFTWARE\ABS_TASK\ABSTASK.C(6): error C267: 'os_create_task': requires ANSI-style prototype
-..\SOFTWARE\ABS_TASK\absTask.c - 1 Error(s), 3 Warning(s).
-compiling absTask.c...
-..\SOFTWARE\ABS_TASK\absTask.c(1): warning C318: can't open file '../ABS_TASK/TASK.h'
-..\SOFTWARE\ABS_TASK\ABSTASK.C(5): warning C206: 'setup': missing function-prototype
-..\SOFTWARE\ABS_TASK\ABSTASK.C(6): warning C206: 'os_create_task': missing function-prototype
-..\SOFTWARE\ABS_TASK\ABSTASK.C(6): error C267: 'os_create_task': requires ANSI-style prototype
-..\SOFTWARE\ABS_TASK\absTask.c - 1 Error(s), 3 Warning(s).
-compiling absTask.c...
-..\SOFTWARE\ABS_TASK\ABSTASK.C(6): warning C206: 'os_create_task': missing function-prototype
-..\SOFTWARE\ABS_TASK\ABSTASK.C(6): error C267: 'os_create_task': requires ANSI-style prototype
-..\SOFTWARE\ABS_TASK\absTask.c - 1 Error(s), 1 Warning(s).
-compiling absTask.c...
-..\SOFTWARE\ABS_TASK\absTask.c - 0 Error(s), 0 Warning(s).
+
+ TO UNRESOLVED EXTERNAL
+    SYMBOL:  ?_DATASCOPE_GET_CHANNEL_DATA?BYTE
+    MODULE:  .\task.obj (TASK)
+    ADDRESS: 2AF0H
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  _DATASCOPE_GET_CHANNEL_DATA
+    MODULE:  .\task.obj (TASK)
+    ADDRESS: 2AFEH
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  _DATASCOPE_DATA_GENERATE
+    MODULE:  .\task.obj (TASK)
+    ADDRESS: 2B03H
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  DATASCOPE_OUTPUT_BUFFER
+    MODULE:  .\task.obj (TASK)
+    ADDRESS: 2B1EH
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  DATASCOPE_OUTPUT_BUFFER
+    MODULE:  .\task.obj (TASK)
+    ADDRESS: 2B24H
+Program Size: data=91.6 xdata=803 code=10468
+creating hex file from "电子大赛程序框架"...
+"电子大赛程序框架" - 0 Error(s), 54 Warning(s).
+ror(s), 54 Warning(s).
 compiling absTask.c...
 ..\SOFTWARE\ABS_TASK\absTask.c - 0 Error(s), 0 Warning(s).
+ 55 Warning(s).
+).
+程序框架" - 0 Error(s), 55 Warning(s).
+ - 0 Error(s), 0 Warning(s).
+4H
+Program Size: data=91.6 xdata=801 code=10483
+creating hex file from "电子大赛程序框架"...
+"电子大赛程序框架" - 0 Error(s), 57 Warning(s).
+r(s), 57 Warning(s).
+compiling setup.c...
+..\SOFTWARE\TASK\setup.c - 0 Error(s), 0 Warning(s).
+compiling setup.c...
+..\SOFTWARE\TASK\setup.c - 0 Error(s), 0 Warning(s).
+G L1: UNRESOLVED EXTERNAL SYMBOL
+    SYMBOL:  _DATASCOPE_GET_CHANNEL_DATA
+    MODULE:  .\task.obj (TASK)
+*** WARNING L1: UNRESOLVED EXTERNAL SYMBOL
+    SYMBOL:  ?_DATASCOPE_GET_CHANNEL_DATA?BYTE
+    MODULE:  .\task.obj (TASK)
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  ?_DATASCOPE_GET_CHANNEL_DATA?BYTE
+    MODULE:  .\task.obj (TASK)
+    ADDRESS: 2AF0H
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  _DATASCOPE_GET_CHANNEL_DATA
+    MODULE:  .\task.obj (TASK)
+    ADDRESS: 2AFEH
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  _DATASCOPE_DATA_GENERATE
+    MODULE:  .\task.obj (TASK)
+    ADDRESS: 2B03H
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  DATASCOPE_OUTPUT_BUFFER
+    MODULE:  .\task.obj (TASK)
+    ADDRESS: 2B1EH
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  DATASCOPE_OUTPUT_BUFFER
+    MODULE:  .\task.obj (TASK)
+    ADDRESS: 2B24H
+*** WARNING L1: UNRESOLVED EXTERNAL SYMBOL
+    SYMBOL:  BUTTON_CONFIG
+    MODULE:  .\setup.obj (SETUP)
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  BUTTON_CONFIG
+    MODULE:  .\setup.obj (SETUP)
+    ADDRESS: 302DH
+Program Size: data=91.6 xdata=801 code=10524
+creating hex file from "电子大赛程序框架"...
+"电子大赛程序框架" - 0 Error(s), 68 Warning(s).
+ missing return-expression
+..\HARDWARE\COMMON_HARDWARE\FIXEDPULSER.C(17): warning C280: 'Hz': unreferenced local variable
+..\HARDWARE\COMMON_HARDWARE\FIXEDPULSER.C(17): warning C280: 'count': unreferenced local variable
+..\HARDWARE\COMMON_HARDWARE\fixedPulser.c - 0 Error(s), 6 Warning(s).
+compiling fixedPulser.c...
+..\HARDWARE\COMMON_HARDWARE\FIXEDPULSER.C(7): error C141: syntax error near '}', expected ';'
+..\HARDWARE\COMMON_HARDWARE\FIXEDPULSER.C(12): error C141: syntax error near '}', expected ';'
+..\HARDWARE\COMMON_HARDWARE\FIXEDPULSER.C(16): error C141: syntax error near '}', expected ';'
+..\HARDWARE\COMMON_HARDWARE\FIXEDPULSER.C(20): error C141: syntax error near '}', expected ';'
+..\HARDWARE\COMMON_HARDWARE\fixedPulser.c - 4 Error(s), 0 Warning(s).
+compiling fixedPulser.c...
+..\HARDWARE\COMMON_HARDWARE\FIXEDPULSER.C(17): warning C280: 'Hz': unreferenced local variable
+..\HARDWARE\COMMON_HARDWARE\FIXEDPULSER.C(17): warning C280: 'count': unreferenced local variable
+..\HARDWARE\COMMON_HARDWARE\fixedPulser.c - 0 Error(s), 2 Warning(s).

@@ -19,7 +19,7 @@ void mode4(void)
 {
 	
 }
-void modelauncher(void)
+void modeLauncher(void)
 {
 	
 }

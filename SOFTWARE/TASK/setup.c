@@ -21,12 +21,12 @@ void    UART1_init(unsigned long BandRate)
   COMx_InitStructure.UART_P_SW = UART1_SW_P30_P31;
   COMx_InitStructure.UART_RXD_TXD_Short = DISABLE;
   USART_Configuration(USART1, &COMx_InitStructure);
-  PrintString1("STC15w4k58s4's UART1 is open \r\n");   //´®¿Ú²âÊÔ
+ // PrintString1("STC15w4k58s4's UART1 is open \r\n");   //´®¿Ú²âÊÔ
 }
 void setup(void)
 {
-	 UART1_init();
-   Button_config() ;
+	 UART1_init(115200L);
+  
    timerInit();
 
 }

@@ -1,4 +1,4 @@
-C51 COMPILER V8.05a   TASK                                                                 06/28/2017 20:19:38 PAGE 1   
+C51 COMPILER V8.05a   TASK                                                                 06/28/2017 22:31:39 PAGE 1   
 
 
 C51 COMPILER V8.05a, COMPILATION OF MODULE TASK
@@ -16,25 +16,26 @@ line level    source
    6   1        u8 a; //
    7   1        u8 Send_Count;
    8   1        
-   9   1        DataScope_Get_Channel_Data(123, 1); 
-  10   1        /*  
-  11   1        DataScope_Get_Channel_Data(yourData, 2);  
-  12   1        DataScope_Get_Channel_Data(yourData, 3);  
-  13   1        DataScope_Get_Channel_Data(yourData, 4);  
-  14   1        DataScope_Get_Channel_Data(yourData, 5);  
-  15   1        ...
-  16   1        */
-  17   1        Send_Count = DataScope_Data_Generate(1); //
-  18   1        for (a = 0; a < Send_Count; a++)
-  19   1        {
-  20   2          TX1_write2buff(DataScope_OutPut_Buffer[a]); //发送一通道数据到串口示波器
-  21   2        }
-  22   1        
-  23   1      }
+   9   1        DataScope_Get_Channel_Data(123.6f, 1); 
+  10   1          
+  11   1        DataScope_Get_Channel_Data(567, 2);  
+  12   1        /*
+  13   1        DataScope_Get_Channel_Data(yourData, 3);  
+  14   1        DataScope_Get_Channel_Data(yourData, 4);  
+  15   1        DataScope_Get_Channel_Data(yourData, 5);  
+  16   1        ...
+  17   1        */
+  18   1        Send_Count = DataScope_Data_Generate(2); //
+  19   1        for (a = 0; a < Send_Count; a++)
+  20   1        {
+  21   2          TX1_write2buff(DataScope_OutPut_Buffer[a]); //发送一通道数据到串口示波器
+  22   2        }
+  23   1        
+  24   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =     70    ----
+   CODE SIZE        =     87    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----       2
    PDATA SIZE       =   ----    ----

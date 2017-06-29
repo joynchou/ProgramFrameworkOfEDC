@@ -1,4 +1,4 @@
-C51 COMPILER V8.05a   MOTOR                                                                06/28/2017 20:35:46 PAGE 1   
+C51 COMPILER V8.05a   MOTOR                                                                06/28/2017 22:06:39 PAGE 1   
 
 
 C51 COMPILER V8.05a, COMPILATION OF MODULE MOTOR
@@ -62,7 +62,7 @@ line level    source
                     }
                   if(speed<0.05f)
                   {
-C51 COMPILER V8.05a   MOTOR                                                                06/28/2017 20:35:46 PAGE 2   
+C51 COMPILER V8.05a   MOTOR                                                                06/28/2017 22:06:39 PAGE 2   
 
                     
                     speed=0.05f;

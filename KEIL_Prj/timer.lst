@@ -1,4 +1,4 @@
-C51 COMPILER V8.05a   TIMER                                                                06/25/2017 19:15:10 PAGE 1   
+C51 COMPILER V8.05a   TIMER                                                                06/28/2017 22:06:40 PAGE 1   
 
 
 C51 COMPILER V8.05a, COMPILATION OF MODULE TIMER
@@ -62,7 +62,7 @@ line level    source
   52           
   53          
   54          void timerInit()
-C51 COMPILER V8.05a   TIMER                                                                06/25/2017 19:15:10 PAGE 2   
+C51 COMPILER V8.05a   TIMER                                                                06/28/2017 22:06:40 PAGE 2   
 
   55          {
   56   1        TIM_InitTypeDef   TIM_InitStructure1; //ÓÃ»§×Ô¶¨Òå¶¨Ê±Æ÷Ê¹ÓÃ
@@ -126,7 +126,7 @@ line level    source
  108   3              timer2_struct.Hz=Hz;  
  109   3             };
  110   2             break;
-C51 COMPILER V8.05a   TIMER                                                                06/25/2017 19:15:10 PAGE 3   
+C51 COMPILER V8.05a   TIMER                                                                06/28/2017 22:06:40 PAGE 3   
 
  111   2             
  112   2           }
@@ -190,7 +190,7 @@ line level    source
  170   2           break;
  171   2          
  172   2          default: return 0;
-C51 COMPILER V8.05a   TIMER                                                                06/25/2017 19:15:10 PAGE 4   
+C51 COMPILER V8.05a   TIMER                                                                06/28/2017 22:06:40 PAGE 4   
 
  173   2         }
  174   1        
@@ -254,7 +254,7 @@ line level    source
  232   1      }
  233          //µ±¶¨Ê±Æ÷±»Í£Ö¹Ê±·µ»Ø1
  234          bit isStopped(u8 whichtimer)
-C51 COMPILER V8.05a   TIMER                                                                06/25/2017 19:15:10 PAGE 5   
+C51 COMPILER V8.05a   TIMER                                                                06/28/2017 22:06:40 PAGE 5   
 
  235          {
  236   1         switch(whichtimer)
@@ -318,7 +318,7 @@ line level    source
  294          void Timer1_ISR (void) interrupt TIMER1_VECTOR
  295          {
  296   1      
-C51 COMPILER V8.05a   TIMER                                                                06/25/2017 19:15:10 PAGE 6   
+C51 COMPILER V8.05a   TIMER                                                                06/28/2017 22:06:40 PAGE 6   
 
  297   1         if(++Timer1_temp==timer1_struct.Timeout)
  298   1           {
@@ -382,7 +382,7 @@ line level    source
  356   2          if(TIMx->TIM_Polity == PolityHigh)    PT0 = 1;  //¸ßÓÅÏÈ¼¶ÖÐ¶Ï
  357   2          TMOD |= TIMx->TIM_Mode; //¹¤×÷Ä£Ê½,0: 16Î»×Ô¶¯ÖØ×°, 1: 16Î»¶¨Ê±/¼ÆÊý, 2: 8Î»×Ô¶¯ÖØ×°, 3: 16Î»×Ô¶¯ÖØ×°, ²
              -»¿ÉÆÁ±ÎÖÐ¶Ï
-C51 COMPILER V8.05a   TIMER                                                                06/25/2017 19:15:10 PAGE 7   
+C51 COMPILER V8.05a   TIMER                                                                06/28/2017 22:06:40 PAGE 7   
 
  358   2          if(TIMx->TIM_ClkSource == TIM_CLOCK_1T)   AUXR |=  0x80;  //1T
  359   2          if(TIMx->TIM_ClkSource == TIM_CLOCK_Ext)  TMOD |=  0x04;  //¶ÔÍâ¼ÆÊý»ò·ÖÆµ
@@ -446,7 +446,7 @@ line level    source
  417   2          TH3 = (u8)(TIMx->TIM_Value >> 8);
  418   2          TL3 = (u8)TIMx->TIM_Value;
  419   2          if(TIMx->TIM_Run == ENABLE) T4T3M |=  (1<<3); //¿ªÊ¼ÔËÐÐ
-C51 COMPILER V8.05a   TIMER                                                                06/25/2017 19:15:10 PAGE 8   
+C51 COMPILER V8.05a   TIMER                                                                06/28/2017 22:06:40 PAGE 8   
 
  420   2          return  0;    //³É¹¦
  421   2        }

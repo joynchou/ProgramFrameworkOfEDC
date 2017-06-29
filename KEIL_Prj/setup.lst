@@ -1,4 +1,4 @@
-C51 COMPILER V8.05a   SETUP                                                                06/28/2017 16:04:24 PAGE 1   
+C51 COMPILER V8.05a   SETUP                                                                06/28/2017 22:13:11 PAGE 1   
 
 
 C51 COMPILER V8.05a, COMPILATION OF MODULE SETUP
@@ -31,13 +31,12 @@ line level    source
   21   1        COMx_InitStructure.UART_P_SW = UART1_SW_P30_P31;
   22   1        COMx_InitStructure.UART_RXD_TXD_Short = DISABLE;
   23   1        USART_Configuration(USART1, &COMx_InitStructure);
-  24   1        PrintString1("STC15w4k58s4's UART1 is open \r\n");   //´®¿Ú²âÊÔ
+  24   1       // PrintString1("STC15w4k58s4's UART1 is open \r\n");   //´®¿Ú²âÊÔ
   25   1      }
   26          void setup(void)
   27          {
-  28   1         UART1_init();
-*** WARNING C209 IN LINE 28 OF ..\SOFTWARE\TASK\SETUP.C: '_UART1_init': too few actual parameters
-  29   1         Button_config() ;
+  28   1         UART1_init(115200L);
+  29   1        
   30   1         timerInit();
   31   1      
   32   1      }
@@ -45,8 +44,8 @@ line level    source
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =     62    ----
-   CONSTANT SIZE    =     32    ----
+   CODE SIZE        =     58    ----
+   CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----      13
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----
@@ -55,4 +54,4 @@ MODULE INFORMATION:   STATIC OVERLAYABLE
 END OF MODULE INFORMATION.
 
 
-C51 COMPILATION COMPLETE.  1 WARNING(S),  0 ERROR(S)
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

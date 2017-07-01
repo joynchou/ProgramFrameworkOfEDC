@@ -66,6 +66,54 @@ void setMotorSpeed(bit motor,float speed)
 			PWM_duty(PWM_4,speed);
 		}
 }
+ /*************************************************
+* 函数名称: void    PWM_config(u8 PWM_N)
+* 描述: 配置需要使用的pwm通道
+* 输入: u8 PWM_N，N的范围是2~7 ，如PWM_2，PWM_3
+* 返回值: 无
+* 其他说明: 将会自动初始化相应的io引脚
+*************************************************/
+void    DC_MOTOR_config(void)
+{
+  GPIO_InitTypeDef    GPIO_InitStructure;     //结构定义
+  PWM_InitTypeDef  PWM_InitStructure;
+	GPIO_InitStructure.Mode = GPIO_PullUp;
+
+ 
+          GPIO_InitStructure.Pin  = GPIO_Pin_7 ;    //PWM2
+          P37=1;
+     
+       
+          GPIO_InitStructure.Pin  = GPIO_Pin_2 ;    //PWM4
+          GPIO_Inilize(GPIO_P2,&GPIO_InitStructure);  //初始化
+          P22=1;
+       
+    
+  PWM_UNLOCK;
+  PWM_InitStructure.PWM_GOTO_ADC=DISABLE;
+  PWM_InitStructure.      PWM_V_INIT= PWM_LOW;
+  PWM_InitStructure.      PWM_0ISR_EN=  DISABLE;
+  PWM_InitStructure.      PWM_OUT_EN=ENABLE;
+  PWM_InitStructure.     PWM_UNUSUAL_EN= DISABLE;
+  PWM_InitStructure.     PWM_UNUSUAL_OUT=  DISABLE;
+  PWM_InitStructure.     PWM_UNUSUAL_ISR_EN=DISABLE;
+  PWM_InitStructure.     PWM_UNUSUAL_CMP0_EN=DISABLE;
+  PWM_InitStructure.     PWM_UNUSUAL_P24_EN=DISABLE;
+  PWM_InitStructure.       PWM_CLOCK=PWM_Clock_NT;
+  PWM_InitStructure.       PWM_CLOCK_DIV=0x00;
+  PWM_InitStructure.       PWM_SELECTx_IO=PWM_SELECT_N;
+  PWM_InitStructure.     PWM_ISRx_EN=  DISABLE;
+  PWM_InitStructure.       PWM_T1x_EN=   DISABLE;
+  PWM_InitStructure.       PWM_T2x_EN=    DISABLE;
+  PWM_InitStructure.       PWM_EN=  DISABLE;
+  PWM_Inilize(PWM_2,&PWM_InitStructure) ;
+  PWM_Inilize(PWM_4,&PWM_InitStructure) ;
+
+  PWM_LOCK;
+
+
+}
+
 #endif
 
 

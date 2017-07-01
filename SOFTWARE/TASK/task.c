@@ -1,4 +1,7 @@
 #include "task.h"
+#include "../COMMON_SOFTWARE/DATA_SCOPE/DataScope_DP.h"
+#include "setup.h"
+#include "../HARDWARE/BSP/USART1.h"
 
 
 void sendScopeData(void) 

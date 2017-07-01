@@ -1,4 +1,4 @@
-C51 COMPILER V8.05a   SETUP                                                                06/28/2017 22:13:11 PAGE 1   
+C51 COMPILER V8.05a   SETUP                                                                07/01/2017 18:07:23 PAGE 1   
 
 
 C51 COMPILER V8.05a, COMPILATION OF MODULE SETUP
@@ -9,42 +9,50 @@ COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE ..\SOFTWARE\TASK\setup.c LARGE B
 line level    source
 
    1          #include "setup.h"
-   2          /*************  串口1初始化函数 *****************/
-   3          /*************************************************
-   4          * 函数名称: void    UART1_init(unsigned long BandRate)
-   5          * 描述: 串口1初始化函数
-   6          * 输入: unsigned long BandRate ：串口的波特率，请在数值后加字母"L"，防止出问题
-   7          * 输出: 调用此函数会发送一段测试语句 “ STC15w4k58s4 UART1 is open ”
-   8          * 返回值: 无
-   9          * 其他说明: 无
-  10          *************************************************/
-  11          void    UART1_init(unsigned long BandRate)
-  12          {
-  13   1        COMx_InitDefine     COMx_InitStructure;
-  14   1        COMx_InitStructure.UART_Mode = UART_8bit_BRTx;
-  15   1        COMx_InitStructure.UART_BRT_Use = BRT_Timer2;
-  16   1        COMx_InitStructure.UART_BaudRate = BandRate;
-  17   1        COMx_InitStructure.UART_RxEnable = ENABLE;
-  18   1        COMx_InitStructure.BaudRateDouble = DISABLE;
-  19   1        COMx_InitStructure.UART_Interrupt = ENABLE;
-  20   1        COMx_InitStructure.UART_Polity = PolityHigh;
-  21   1        COMx_InitStructure.UART_P_SW = UART1_SW_P30_P31;
-  22   1        COMx_InitStructure.UART_RXD_TXD_Short = DISABLE;
-  23   1        USART_Configuration(USART1, &COMx_InitStructure);
-  24   1       // PrintString1("STC15w4k58s4's UART1 is open \r\n");   //串口测试
-  25   1      }
-  26          void setup(void)
-  27          {
-  28   1         UART1_init(115200L);
-  29   1        
-  30   1         timerInit();
-  31   1      
-  32   1      }
-  33          
+   2          #include "../../HARDWARE/DEVICES/BUTTON/BUTTON.h" 
+   3          #include "../../HARDWARE/DEVICES/MOTOR/DC_MOTOR/MOTOR.h"
+   4          #include "../../HARDWARE/DEVICES/LED/LED.h"
+   5          #include "../../HARDWARE/BSP/USART1.h"
+   6          #include "../../HARDWARE/BSP/timer.h"
+   7          
+   8          /*************  串口1初始化函数 *****************/
+   9          /*************************************************
+  10          * 函数名称: void    UART1_init(unsigned long BandRate)
+  11          * 描述: 串口1初始化函数
+  12          * 输入: unsigned long BandRate ：串口的波特率，请在数值后加字母"L"，防止出问题
+  13          * 输出: 调用此函数会发送一段测试语句 “ STC15w4k58s4 UART1 is open ”
+  14          * 返回值: 无
+  15          * 其他说明: 无
+  16          *************************************************/
+  17          void    UART1_init(unsigned long BandRate)
+  18          {
+  19   1        COMx_InitDefine     COMx_InitStructure;
+  20   1        COMx_InitStructure.UART_Mode = UART_8bit_BRTx;
+  21   1        COMx_InitStructure.UART_BRT_Use = BRT_Timer2;
+  22   1        COMx_InitStructure.UART_BaudRate = BandRate;
+  23   1        COMx_InitStructure.UART_RxEnable = ENABLE;
+  24   1        COMx_InitStructure.BaudRateDouble = DISABLE;
+  25   1        COMx_InitStructure.UART_Interrupt = ENABLE;
+  26   1        COMx_InitStructure.UART_Polity = PolityHigh;
+  27   1        COMx_InitStructure.UART_P_SW = UART1_SW_P30_P31;
+  28   1        COMx_InitStructure.UART_RXD_TXD_Short = DISABLE;
+  29   1        USART_Configuration(USART1, &COMx_InitStructure);
+  30   1       // PrintString1("STC15w4k58s4's UART1 is open \r\n");   //串口测试
+  31   1      }
+  32          void setup(void)
+  33          {
+  34   1         UART1_init(115200L);
+  35   1         timerInit();
+  36   1         Board_LED_Init();
+  37   1         Button_config();
+  38   1         EA=1;
+  39   1      
+  40   1      }
+  41          
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =     58    ----
+   CODE SIZE        =     67    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----      13
    PDATA SIZE       =   ----    ----

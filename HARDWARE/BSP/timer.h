@@ -25,8 +25,12 @@ typedef struct
 } TIM_InitTypeDef;
 u8  Timer_Inilize(u8 TIM, TIM_InitTypeDef *TIMx);
 void timerInit();
-unsigned long getMicros();
-unsigned long getMillis();
+u16 getMicros(void);
+u16 getMillis(void);
+u8 getSeconds(void);
+u8 getMinutes(void);
+u8 getHours(void);
+u8 getDays(void);
 void setTimeout(u8 whichTimer,u16 time);
 void stopTimer(u8 whichTimer);
 bit isActiveTimer(u8 whichTimer);

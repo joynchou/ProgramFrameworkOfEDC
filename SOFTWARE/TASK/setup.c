@@ -1,4 +1,10 @@
 #include "setup.h"
+#include "../../HARDWARE/DEVICES/BUTTON/BUTTON.h"	
+#include "../../HARDWARE/DEVICES/MOTOR/DC_MOTOR/MOTOR.h"
+#include "../../HARDWARE/DEVICES/LED/LED.h"
+#include "../../HARDWARE/BSP/USART1.h"
+#include "../../HARDWARE/BSP/timer.h"
+
 /*************  串口1初始化函数 *****************/
 /*************************************************
 * 函数名称: void    UART1_init(unsigned long BandRate)
@@ -26,8 +32,10 @@ void    UART1_init(unsigned long BandRate)
 void setup(void)
 {
 	 UART1_init(115200L);
-  
    timerInit();
+	 Board_LED_Init();
+   Button_config();
+	 EA=1;
 
 }
 

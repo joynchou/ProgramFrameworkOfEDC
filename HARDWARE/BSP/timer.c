@@ -33,14 +33,28 @@
 */ 
 ///////////////////////////////////////////////////////////////		 
 #include	"timer.h"
+#include "USART1.h"
+#include <limits.h>
+#include <assert.h>
+#include <stdlib.h>
  enum 
 {
 	 ACTIVE,EXPIRED,STOPPED
 } 
 	Timer1_state=STOPPED,
-	Timer2_state=STOPPED;
+	Timer2_state=STOPPED; 
+
  static u16 Timer1_temp=0;
  static u16 Timer2_temp=0;
+ static u16 micros=0;//绝对时间获取变量
+static u16 millis=0;//绝对时间获取变量
+static u8 seconds=0;
+static u8 minutes=0;
+static u8 hours=0;
+static u8 days =0;
+
+
+
 
 struct TimerInfo
 {
@@ -49,12 +63,39 @@ struct TimerInfo
 }
 timer1_struct={0,0},
 timer2_struct={0,0};
- 
+//获取从开机后的微秒数
+u16 getMicros(void)
+{
+
+   return  micros;
+}
+//获取从开机后的毫秒数
+u16 getMillis(void)
+{
+	 return millis;
+}
+u8 getSeconds(void)
+{
+ return seconds;
+}
+u8 getMinutes(void)
+{
+	 return minutes;
+}
+u8 getHours(void)
+{
+	 return hours;
+}
+u8 getDays(void)
+{
+	 return days;
+}
 
 void timerInit()
 {
 	TIM_InitTypeDef		TIM_InitStructure1;	//用户自定义定时器使用
 	TIM_InitTypeDef		TIM_InitStructure2;	//绝对时间获取使用
+	u8 Error_Code=0;
 
 	TIM_InitStructure1.TIM_Mode      = TIM_16BitAutoReload;	//指定工作模式,16位自动重装模式    TIM_16BitAutoReload,TIM_16Bit,TIM_8BitAutoReload,\\
 																																																									TIM_16BitAutoReloadNoMask
@@ -72,26 +113,53 @@ void timerInit()
 	TIM_InitStructure2.TIM_ClkSource = TIM_CLOCK_1T;	//指定时钟源,     TIM_CLOCK_1T,TIM_CLOCK_12T,TIM_CLOCK_Ext
 	TIM_InitStructure2.TIM_ClkOut    = DISABLE;				//是否输出高速脉冲, ENABLE或DISABLE
 	TIM_InitStructure2.TIM_Run       = ENABLE;				//是否初始化后启动定时器, ENABLE或DISABLE
-	TIM_InitStructure2.TIM_Value     = 65536UL - (MAIN_Fosc / 4);		//初值,4us
+	TIM_InitStructure2.TIM_Value     = 65536UL - (MAIN_Fosc / 100000UL);		//初值,1us
+   	//用户自定义定时器		
 
-	Timer_Inilize(Timer1,&TIM_InitStructure1);	//用户自定义定时器		
-	Timer_Inilize(Timer3,&TIM_InitStructure1);	//用户自定义定时器	
-	Timer_Inilize(Timer4,&TIM_InitStructure2);	//绝对时间获取使用
+	if(  !( Error_Code  =  Timer_Inilize(	Timer1	,	&TIM_InitStructure1	)  )  )//==0
+  {
+		 PrintString1("Timer1 initializing succeed \n");   
+	}
+	else if(Error_Code) //==1
+	{
+		 PrintString1("Timer1 initializing failed \n");   
+	}
+	else
+	{
+		 PrintString1("Timer1 initializing failed \n");   
+	}
+	
+	//用户自定义定时器	
+		if(  !( Error_Code  =  Timer_Inilize(	Timer3	,	&TIM_InitStructure1	)  )  )//==0
+  {
+		 PrintString1("Timer3 initializing succeed \n");   
+	}
+	else if(Error_Code) //==1
+	{
+		 PrintString1("Timer3 initializing failed \n");   
+	}
+	else
+	{
+		 PrintString1("Timer3 initializing failed \n");   
+	}
+		//绝对时间获取使用	
+	if(  !( Error_Code  =  Timer_Inilize(	Timer4	,	&TIM_InitStructure2	)  )  )//==0
+  {
+		 PrintString1("Timer4 initializing succeed \n");   
+	}
+	else if(Error_Code) //==1
+	{
+		 PrintString1("Timer4 initializing failed \n");   
+	}
+	else
+	{
+		 PrintString1("Timer4 initializing failed \n");   
+	}
+
+
 	
 }
-static unsigned long microsTemp=0;//绝对时间获取变量
-static unsigned long millisTemp=0;//绝对时间获取变量
-//获取从开机后的微秒数
-unsigned long getMicros()
-{
 
-   return  microsTemp;
-}
-//获取从开机后的毫秒数
-unsigned long getMillis()
-{
-	 return millisTemp;
-}
 //设置定时器的发生频率
 void setTimerHertz(u8 whichTimer,u16 Hz)
 {   				 
@@ -250,7 +318,7 @@ bit isStopped(u8 whichtimer)
 //初始化并打开定时器，需要先设置好定时时间或频率
 void restartTimer(u8 whichTimer)
 {
-	  if(!isStopped(whichTimer))
+	  if(!isActiveTimer(whichTimer))
 		{
 			 switch(whichTimer)
 			{
@@ -294,7 +362,7 @@ bit onRestartTimer(u8 whichTimer)
 void Timer1_ISR (void) interrupt TIMER1_VECTOR
 {
 
-   if(++Timer1_temp==timer1_struct.Timeout)
+   if((++Timer1_temp)>=timer1_struct.Timeout)
 		 {
 			  Timer1_Stop();
 			  Timer1_temp=0;
@@ -309,7 +377,7 @@ void Timer1_ISR (void) interrupt TIMER1_VECTOR
 /********************* Timer3中断函数************************/
 void timer3_int (void) interrupt TIMER3_VECTOR
 {
-    if(++Timer2_temp==timer2_struct.Timeout)
+    if((++Timer2_temp)>=timer2_struct.Timeout)
 		 {
 			  Timer3_Stop();
 			  Timer2_temp=0;
@@ -317,12 +385,39 @@ void timer3_int (void) interrupt TIMER3_VECTOR
 		 }
 		 
 }
-
 /********************* Timer4中断函数************************/
+//问题遗留：
 void timer4_int (void) interrupt TIMER4_VECTOR
 {   
-	  if(millisTemp=microsTemp/1000>=4294967290ul)millisTemp=0;;
-    if((microsTemp+=4)>=4294967290ul) microsTemp=0;
+  EA=0;
+	if(		(		micros+=10	)	>=	1000	)
+	{
+		micros=0;
+		if(		(		++millis	)	>=	1000	)
+		{
+			millis=0;
+			 if(	(		++seconds		)	>=	60	)
+			 {
+				 seconds=0;
+				 if(	(		++minutes	)	>=	60	)
+				 {
+					 minutes=0;
+					   if(		(	++hours	)	>=	24)
+						 {
+							 hours=0;
+							if(		(		++days		)	==	UCHAR_MAX)
+							{
+								 days=0;
+							}
+							 
+						 }
+				 }
+					 
+			 }
+		}
+	}
+	
+EA=1;	
 }
 /********************* Timer2中断函数************************/
 //此定时器用作串口的定时器了

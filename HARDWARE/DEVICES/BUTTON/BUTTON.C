@@ -12,6 +12,8 @@
 * ÖÜ³¿Ñô
 ***********************************************************/
 #include "BUTTON.h"
+#include "../../BSP/delay.h"
+
 #define BUTTON
 #ifdef BUTTON
 //extern  struct PID pid;
@@ -87,7 +89,8 @@ void  buttonScan(void )//°´¼üÉ¨Ãèº¯Êý
 {
     if(digitalRead(BUTTON1))
     {
-        if(!BUTTON1_bit)
+			delay_ms(10);
+        if(digitalRead(BUTTON1))
         {
 #ifdef BUTTON_DEBUG
             PrintString1("BUTTON1 is on\n");

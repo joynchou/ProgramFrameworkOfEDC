@@ -1,9 +1,5 @@
 #ifndef _SETUP_H_
 #define _SETUP_H_
-#include "../../HARDWARE/DEVICES/BUTTON/BUTTON.h"	
-#include "../../HARDWARE/DEVICES/MOTOR/DC_MOTOR/MOTOR.h"
-#include "../../HARDWARE/BSP/USART1.h"
-#include "../../HARDWARE/BSP/timer.h"
 
 /*************  串口1初始化函数 *****************/
 /*************************************************

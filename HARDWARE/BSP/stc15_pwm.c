@@ -13,25 +13,30 @@
 #include "stc15_pwm.h"
 #include "GPIO.h"
 //PWM信息存储
-static struct
+static struct PWM_N_INFO
 {
-  u32  PWM_period;
-  float PWM_2_duty;
-  float PWM_3_duty;
-  float PWM_4_duty;
-  float PWM_5_duty;
-  float PWM_6_duty;
-  float PWM_7_duty;
-} PWM_info;
-static bit PWM_state=0;	//PWM状态寄存
+	 u32 period;
+	 u8 state;
+	 float duty;
+};
+static  struct PWM_N_INFO PWM_N_INFO[6]; //6组pwm数据存储
+
 //========================================================================
 //u8    PWM_Inilize(PWM_InitTypeDef *PWM)
 // 描述:PWM初始化程序
 // 参数:u8 PWM_N:PWM路数标号(2~7) PWM: 结构参数,请参考pwm.h里的定义.
 // 返回: 成功返回0, 错误返回1
 //========================================================================
-static void PWM_Inilize(u8 PWM_N,PWM_InitTypeDef * PWMx)
-{
+void PWM_Inilize(u8 PWM_N,PWM_InitTypeDef *PWMx)
+	{
+		u8 i=0;
+	for(;i<6;i++)
+	{
+		PWM_N_INFO[i].period=0;
+    PWM_N_INFO[i].state=0;
+		PWM_N_INFO[i].duty=0;
+	}		
+	
   P_SW2|=0X80;
   if(ENABLE==PWMx->PWM_GOTO_ADC)            //ENABLE=计数器归零时 触发ADC
     {
@@ -354,100 +359,8 @@ static void PWM_Inilize(u8 PWM_N,PWM_InitTypeDef * PWMx)
 * 返回值: 无
 * 其他说明: 将会自动初始化相应的io引脚
 *************************************************/
-void    PWM_config(u8 PWM_N)
-{
-  GPIO_InitTypeDef    GPIO_InitStructure;     //结构定义
-  PWM_InitTypeDef  PWM_InitStructure;
-  switch(PWM_N)
-    {
-      case PWM_2:
-        {
-          GPIO_InitStructure.Pin  = GPIO_Pin_7 ;    //指定要初始化的IO, GPIO_Pin_0 ~ GPIO_Pin_7, 或操作
-          GPIO_InitStructure.Mode = GPIO_PullUp;
-          GPIO_Inilize(GPIO_P3,&GPIO_InitStructure);  //初始化
-          P37=1;
-        };
-        break;
-      case PWM_3:
-        {
-          GPIO_InitStructure.Pin  = GPIO_Pin_1 ;    //指定要初始化的IO, GPIO_Pin_0 ~ GPIO_Pin_7, 或操作
-          GPIO_InitStructure.Mode = GPIO_PullUp;       //指定IO的输入或输出方式,GPIO_PullUp,GPIO_HighZ,GPIO_OUT_OD,GPIO_OUT_PP
-          GPIO_Inilize(GPIO_P2,&GPIO_InitStructure);  //初始化
-          P21=1;
-        };
-        break;
-      case PWM_4:
-        {
-          GPIO_InitStructure.Pin  = GPIO_Pin_2 ;    //指定要初始化的IO, GPIO_Pin_0 ~ GPIO_Pin_7, 或操作
-          GPIO_InitStructure.Mode = GPIO_PullUp;       //指定IO的输入或输出方式,GPIO_PullUp,GPIO_HighZ,GPIO_OUT_OD,GPIO_OUT_PP
-          GPIO_Inilize(GPIO_P2,&GPIO_InitStructure);  //初始化
-          P22=1;
-        };
-        break;
-      case PWM_5:
-        {
-          GPIO_InitStructure.Pin  = GPIO_Pin_3 ;    //指定要初始化的IO, GPIO_Pin_0 ~ GPIO_Pin_7, 或操作
-          GPIO_InitStructure.Mode = GPIO_PullUp;       //指定IO的输入或输出方式,GPIO_PullUp,GPIO_HighZ,GPIO_OUT_OD,GPIO_OUT_PP
-          GPIO_Inilize(GPIO_P2,&GPIO_InitStructure);  //初始化
-          P23=1;
-        };
-        break;
-      case PWM_6:
-        {
-          GPIO_InitStructure.Pin  = GPIO_Pin_6;    //指定要初始化的IO, GPIO_Pin_0 ~ GPIO_Pin_7, 或操作
-          GPIO_InitStructure.Mode = GPIO_PullUp;       //指定IO的输入或输出方式,GPIO_PullUp,GPIO_HighZ,GPIO_OUT_OD,GPIO_OUT_PP
-          GPIO_Inilize(GPIO_P1,&GPIO_InitStructure);  //初始化
-          P16=1;
-        };
-        break;
-      case PWM_7:
-        {
-          GPIO_InitStructure.Pin  = GPIO_Pin_7 ;    //指定要初始化的IO, GPIO_Pin_0 ~ GPIO_Pin_7, 或操作
-          GPIO_InitStructure.Mode = GPIO_PullUp;       //指定IO的输入或输出方式,GPIO_PullUp,GPIO_HighZ,GPIO_OUT_OD,GPIO_OUT_PP
-          GPIO_Inilize(GPIO_P1,&GPIO_InitStructure);  //初始化
-          P17=1;
-        };
-        break;
-    }
-  PWM_UNLOCK;
-  PWM_InitStructure.PWM_GOTO_ADC=DISABLE;
-  PWM_InitStructure.      PWM_V_INIT= PWM_LOW;
-  PWM_InitStructure.      PWM_0ISR_EN=  DISABLE;
-  PWM_InitStructure.      PWM_OUT_EN=ENABLE;
-  PWM_InitStructure.     PWM_UNUSUAL_EN= DISABLE;
-  PWM_InitStructure.     PWM_UNUSUAL_OUT=  DISABLE;
-  PWM_InitStructure.     PWM_UNUSUAL_ISR_EN=DISABLE;
-  PWM_InitStructure.     PWM_UNUSUAL_CMP0_EN=DISABLE;
-  PWM_InitStructure.     PWM_UNUSUAL_P24_EN=DISABLE;
-  PWM_InitStructure.       PWM_CLOCK=PWM_Clock_NT;
-  PWM_InitStructure.       PWM_CLOCK_DIV=0x00;
-  PWM_InitStructure.       PWM_SELECTx_IO=PWM_SELECT_N;
-  PWM_InitStructure.     PWM_ISRx_EN=  DISABLE;
-  PWM_InitStructure.       PWM_T1x_EN=   DISABLE;
-  PWM_InitStructure.       PWM_T2x_EN=    DISABLE;
-  PWM_InitStructure.       PWM_EN=  DISABLE;
-  PWM_Inilize(PWM_N,&PWM_InitStructure) ;
-  PWM_LOCK;
-
-
-}
-//设置PWM周期
-u8 PWM_SET_PERIOD(u16 period)
-{
-  if(0x8000>period)
-    {
-      PWMCL=(u8)(period);
-      PWMCH=(u8)(period>>8);
-      return 0;
-    }
-  else
-    {
-      return 1;
-    }
-}
 /////////////////////////////////////////
 //设置PWM第一次和第二次翻转周期
-//这个库函数的错误：全都是设置的pwm2
 static u8 PWM_SET_T12_PERIOD(u8 PWM_N,u16 period1,u32 period2)
 {
   switch(PWM_N)
@@ -507,9 +420,9 @@ static u8 PWM_SET_T12_PERIOD(u8 PWM_N,u16 period1,u32 period2)
 * 返回值: pwm频率
 * 其他说明: 若没有设置pwm的频率就调用此函数则会返回0；
 *************************************************/
-u32 getPWM_period(void )
+u32 getPWM_period(u8 PWM_N )
 {
-  return PWM_info.PWM_period;
+  return PWM_N_INFO[PWM_N].period ;
 }
 /*************************************************
 * 函数名称: float getPWM_n_duty(u8 PWM_N)
@@ -521,29 +434,24 @@ u32 getPWM_period(void )
 *************************************************/
 float getPWM_N_duty(u8 PWM_N)
 {
-  switch(PWM_N)
-    {
-      case PWM_2:
-        return PWM_info.PWM_2_duty;
-        break;
-      case PWM_3:
-        return PWM_info.PWM_3_duty;
-        break;
-      case PWM_4:
-        return PWM_info.PWM_4_duty;
-        break;
-      case PWM_5:
-        return PWM_info.PWM_5_duty;
-        break;
-      case PWM_6:
-        return PWM_info.PWM_6_duty;
-        break;
-      case PWM_7:
-        return PWM_info.PWM_7_duty;
-        break;
-    }
+ return  PWM_N_INFO[PWM_N].duty;
 }
 
+//设置PWM周期
+u8 PWM_SET_PERIOD(u16 period)
+{
+    if(0x8000>period)
+    {
+			PWM_N_INFO[0].period = period;
+        PWMCL=(u8)(period);
+        PWMCH=(u8)(period>>8);
+        return 0;
+    }
+    else
+    {
+        return 1;
+    }
+}
 
 /*************************************************
 * 函数名称:void PWM_period(u16 Hz)
@@ -561,11 +469,12 @@ float getPWM_N_duty(u8 PWM_N)
 *************************************************/
 void PWM_period(u16 Hz)
 {
-  PWM_info.PWM_period= (u16)(MAIN_Fosc/Hz);
+	PWM_N_INFO[0].period=Hz;
   PWM_UNLOCK;
-  PWM_SET_PERIOD(PWM_info.PWM_period);
+  PWM_SET_PERIOD((u16)(MAIN_Fosc/Hz));
   PWM_LOCK;
 }
+
 /*************************************************
 * 函数名称: void PWM_duty(u8 PWM_N,float duty)
 * 描述: 修改某一路pwm的占空比 ，并保存占空比数据
@@ -580,7 +489,6 @@ void PWM_period(u16 Hz)
 *************************************************/
 void PWM_duty(u8 PWM_N,float duty)
 {
-  u32 period2;
   if(duty>0.95f)
     {
       duty=0.95f;
@@ -595,55 +503,43 @@ void PWM_duty(u8 PWM_N,float duty)
       PrintString1("duty is over the miximum\n");
 #endif
     }
-  switch(PWM_N)
-    {
-      case PWM_2:
-        PWM_info.PWM_2_duty=duty;
-        period2=(u32)(PWM_info.PWM_2_duty*PWM_info.PWM_period ) ;
-        break;
-      case PWM_3:
-        PWM_info.PWM_3_duty=duty;
-        period2=(u32)(PWM_info.PWM_3_duty*PWM_info.PWM_period ) ;
-        break;
-      case PWM_4:
-        PWM_info.PWM_4_duty=duty;
-        period2=(u32)(PWM_info.PWM_4_duty*PWM_info.PWM_period ) ;
-        break;
-      case PWM_5:
-        PWM_info.PWM_5_duty=duty;
-        period2=(u32)(PWM_info.PWM_5_duty*PWM_info.PWM_period ) ;
-        break;
-      case PWM_6:
-        PWM_info.PWM_6_duty=duty;
-        period2=(u32)(PWM_info.PWM_6_duty*PWM_info.PWM_period ) ;
-        break;
-      case PWM_7:
-        PWM_info.PWM_7_duty=duty;
-        period2=(u32)(PWM_info.PWM_6_duty*PWM_info.PWM_period ) ;
-        break;
-    }
+	PWM_N_INFO[PWM_N].duty=duty;//存储占空比值
   PWM_UNLOCK;
-  PWM_SET_T12_PERIOD(PWM_N,0,period2);
+  PWM_SET_T12_PERIOD(PWM_N,0,duty*PWM_N_INFO[PWM_N].period);
   PWM_LOCK;
 }
-void OPEN_PWM(void)
+void open_PWM_ALL(void)
 {
   PWM_UNLOCK;
   PWM_ALL_EN;
-  PWM_state=ON;
   PWM_LOCK;
 }
-void CLOSE_PWM(void)
+void close_PWM_ALL(void)
 {
   PWM_UNLOCK;
   PWM_ALL_NO;
-  PWM_state=OFF;
   PWM_LOCK;
 
 }
-bit getPWM_state(void)
+void open_PWM_N(u8 PWM_N)
+{
+	  PWM_UNLOCK;
+	  PWM_N_EN(PWM_N);
+	  PWM_N_INFO[PWM_N].state=ON;
+	  PWM_LOCK;
+
+
+}
+void close_PWM_N(u8 PWM_N)
+{
+		PWM_UNLOCK;
+	  PWM_N_INFO[PWM_N].state=OFF;
+	  PWM_LOCK;
+
+}
+bit get_PWM_N_state(u8 PWM_N)
 {
 
-  return PWM_state;
+  return  PWM_N_INFO[PWM_N].state;
 }
 

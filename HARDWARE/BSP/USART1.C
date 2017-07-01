@@ -297,7 +297,9 @@ void TX4_write2buff(u8 dat)	//写入发送缓冲，指针+1
 
 void PrintString1(u8 *puts)
 {
+	EA=0;
     for (; *puts != 0;	puts++)  TX1_write2buff(*puts); 	//遇到停止符0结束
+	EA=1;
 }
 
 void PrintString2(u8 *puts)

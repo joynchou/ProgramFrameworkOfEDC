@@ -5,8 +5,9 @@
 ".\Conf_tny.obj",
 ".\DataScope_DP.obj",
 ".\BUTTON.obj",
+".\LED.obj",
 ".\MOTOR.obj",
-".\STEP_MOTOR.obj",
+".\fixedPulser.obj",
 ".\ADC.obj",
 ".\delay.obj",
 ".\GPIO.obj",
@@ -14,7 +15,6 @@
 ".\stc15_pwm.obj",
 ".\stc15_spi.obj",
 ".\timer.obj",
-".\USART1.obj",
-".\fixedPulser.obj" 
+".\USART1.obj" 
 TO "电子大赛程序框架" Rtx51Tiny 
 RAMSIZE(256) 

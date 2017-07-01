@@ -530,14 +530,29 @@
               <FilePath>..\HARDWARE\DEVICES\BUTTON\BUTTON.C</FilePath>
             </File>
             <File>
+              <FileName>LED.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\HARDWARE\DEVICES\LED\LED.c</FilePath>
+            </File>
+            <File>
               <FileName>MOTOR.C</FileName>
               <FileType>1</FileType>
               <FilePath>..\HARDWARE\DEVICES\MOTOR\DC_MOTOR\MOTOR.C</FilePath>
             </File>
             <File>
-              <FileName>STEP_MOTOR.C</FileName>
+              <FileName>SERVO.C</FileName>
               <FileType>1</FileType>
-              <FilePath>..\HARDWARE\DEVICES\MOTOR\STEP_MOTOR\STEP_MOTOR.C</FilePath>
+              <FilePath>..\HARDWARE\DEVICES\MOTOR\SERVO\SERVO.C</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>COMMON_HARDWARE</GroupName>
+          <Files>
+            <File>
+              <FileName>fixedPulser.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\HARDWARE\COMMON_HARDWARE\fixedPulser.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -583,16 +598,6 @@
               <FileName>USART1.C</FileName>
               <FileType>1</FileType>
               <FilePath>..\HARDWARE\BSP\USART1.C</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>COMMON_HARDWARE</GroupName>
-          <Files>
-            <File>
-              <FileName>fixedPulser.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\HARDWARE\COMMON_HARDWARE\fixedPulser.c</FilePath>
             </File>
           </Files>
         </Group>

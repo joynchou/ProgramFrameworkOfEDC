@@ -10,3 +10,7 @@
 *.uvopt
 *.uvproj
 *.joyn
+*.lst
+*.obj
+*.lst
+*.__i

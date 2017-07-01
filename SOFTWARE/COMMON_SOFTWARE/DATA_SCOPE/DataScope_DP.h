@@ -80,6 +80,7 @@
 //头文件内容：
 #ifndef __DATA_PRTOCOL_H
 #define __DATA_PRTOCOL_H
+#include "../HARDWARE/BSP/config.h"
 #define DATA_TO_CHANNEL_1 1
 #define DATA_TO_CHANNEL_2 2
 #define DATA_TO_CHANNEL_3 3

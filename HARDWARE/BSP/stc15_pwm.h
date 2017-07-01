@@ -22,20 +22,13 @@ PWM5 :P2.3 -> P4.2
 PWM6 :P1.6 -> P0.7
 PWM7 :P1.7 -> P0.6
 ************************************/
- /*************************************************
-* 函数名称: void    PWM_config(u8 PWM_N)
-* 描述: 配置需要使用的pwm通道
-* 输入: u8 PWM_N，N的范围是2~7 ，如PWM_2，PWM_3
-* 返回值: 无
-* 其他说明: 将会自动初始化相应的io引脚
-*************************************************/
-void PWM_config(u8 PWM_N);
 
-void OPEN_PWM(void);
-void CLOSE_PWM(void) ;
-bit getPWM_state(void) ;
-
-/*************************************************
+void open_ALL_PWM(void);
+void close_ALL_PWM(void);
+void close_N_PWM(u8 PWM_N);
+void open_N_PWM(u8 PWM_N);
+bit getPWM_state(u8 PWM_N) ;
+	/*************************************************
 * 函数名称: u32 getPWM_period(void )
 * 描述: 读取所设置的pwm频率信息
 * 输入: 无
@@ -43,7 +36,7 @@ bit getPWM_state(void) ;
 * 返回值: pwm频率
 * 其他说明: 若没有设置pwm的频率就调用此函数则返回不确定数值；
 *************************************************/
-u32  getPWM_period(void);
+u32  getPWM_period(u8 PWN_N);
 
 
 
@@ -114,6 +107,11 @@ void PWM_duty(u8 PWM_N,float duty);
 #define PWM_Clock_Timer2_OF 1
 #define PWM_SELECT_N        0
 #define PWM_SELECT_N_2      1
+////////////常量宏///////////////////////////////////////////////////////////
+///////////////////////////////////////////////
+#define PWM_DEFAULT_PERIOD 5000
+#define PWM_DEFAULT_DUTY 0.5f
+
 
 //PWM寄存器操作使能 如果禁止的话 凡是关于PWM的寄存器都不能操作
 #define PWM_UNLOCK    P_SW2|=0X80      /*使能*/
@@ -123,10 +121,10 @@ void PWM_duty(u8 PWM_N,float duty);
 //PWM总开关
 #define PWM_ALL_EN        PWMCR|=(1<<7)
 #define PWM_ALL_NO        PWMCR&=(~(1<<7))
-///////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////
-#define PWM_DEFAULT_PERIOD 5000
-#define PWM_DEFAULT_DUTY 0.5f
+//PWM次级开关
+#define PWM_N_EN(PWM_N)   PWMCR|=(1<<(PWM_N))
+#define PWM_N_NO(PWM_N)   PWMCR&=(~(1<<(PWM_N)))
+
 ////PWM对应管脚初始值
 ////i=PWM_2~PWM_7
 //#define PWM_INIT_HIGHT(i)        PWMCFG|=(1<<(i));
@@ -150,6 +148,7 @@ typedef struct
     u8 PWM_T2x_EN;              //ENABLE=使能第二翻转中断
     u8 PWM_EN;                  //ENABLE=PWM使能 在其他PWM参数设置好后最后设置 如果被关闭后在打开，则PWM计数器重新从0计数
 } PWM_InitTypeDef;
-                              
+ void PWM_Inilize(u8 PWM_N,PWM_InitTypeDef *PWMx);
+                             
 
 #endif

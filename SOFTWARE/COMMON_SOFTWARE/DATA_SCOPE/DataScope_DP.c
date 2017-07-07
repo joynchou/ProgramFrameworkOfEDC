@@ -11,6 +11,7 @@
 ***********************************************************/
 /***************串口示波器驱动代码************************/
 #include "DataScope_DP.h"
+#include "../../../HARDWARE/BSP/USART1.h"
 #define DATA_SCOPE
 #ifdef DATA_SCOPE
 
@@ -31,6 +32,27 @@ unsigned char DataScope_OutPut_Buffer[42] = {0};       //串口发送缓冲区
   buf[beg+2] = point[1];
   buf[beg+3] = point[0];
 }
+ /*************************************************
+ * 函数名称:
+ * 描述:
+ * 输入:
+ * 输出:
+ * 返回值:
+ * 其他说明:
+ *************************************************/
+ void sendScopeData(float Data, u8 channel)
+ {
+	 u8 a; //
+
+	 DataScope_Get_Channel_Data(Data, channel);
+
+	 for (a = 0; a < DataScope_Data_Generate(channel); a++)
+	 {
+		 TX1_write2buff(DataScope_OutPut_Buffer[a]); //发送一通道数据到串口示波器
+	 }
+
+ }
+
 //函数说明：将待发送通道的单精度浮点数据写入发送缓冲区
 //Data：通道数据
 //Channel：选择通道（1-10）

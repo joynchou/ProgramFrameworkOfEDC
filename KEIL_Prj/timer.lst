@@ -1,4 +1,4 @@
-C51 COMPILER V8.05a   TIMER                                                                07/01/2017 18:34:34 PAGE 1   
+C51 COMPILER V8.05a   TIMER                                                                07/07/2017 10:19:23 PAGE 1   
 
 
 C51 COMPILER V8.05a, COMPILATION OF MODULE TIMER
@@ -13,7 +13,7 @@ line level    source
    3          * ×÷Õß: ÖÜ³¿Ñô
    4          * °æ±¾: 1.0
    5          * ÈÕÆÚ: 2017/4/29
-   6          * ÃèÊö: // 
+   6          * ÃèÊö: //
    7          * Ö÷Òªº¯Êý¼°Æä¹¦ÄÜ : ¶¨Ê±Æ÷µÄÊ¹ÓÃ£¬ÓÐTimer1£¬ºÍTimer2¿É¹©¶ÀÁ¢Ê¹ÓÃ
    8          * ÀúÊ·ÐÞ¸Ä¼ÇÂ¼: // ÀúÊ·ÐÞ¸Ä¼ÇÂ¼
    9          * <×÷Õß> <Ê±¼ä> <°æ±¾ > <ÃèÊö>
@@ -21,8 +21,8 @@ line level    source
   11          ***********************************************************/
   12          //////////////////////¶¨Ê±Æ÷µäÐÍÓ¦ÓÃ/////////////////////////////////////// 
   13          /*
-  14                  
-  15                  
+  14          
+  15          
   16                  setTimeout(Timer1,5000); //ÉèÖÃ¶¨Ê±Æ÷¶¨Ê±³¤¶È ,5Ãë
   17                  while(1)
   18                  {
@@ -32,540 +32,549 @@ line level    source
   22                      //¶¨Ê±Ê±¼äµ½£¬ÄãµÄ´úÂëÐ´ÔÚÕâ
   23                    }
   24                    else//Èç¹ûÎ´´ïµ½¶¨Ê±Ê±¼ä»ò¶¨Ê±Æ÷Î´Æô¶¯
-  25                    { 
-  26                      
-  27                    
+  25                    {
+  26          
+  27          
   28                        restartTimer(Timer1);
-  29                        
-  30                      
+  29          
+  30          
   31                    }
   32                  }
-  33          */ 
+  33          */
   34          ///////////////////////////////////////////////////////////////    
   35          #include  "timer.h"
   36          #include "USART1.h"
   37          #include <limits.h>
   38          #include <assert.h>
   39          #include <stdlib.h>
-  40           enum 
-  41          {
-  42             ACTIVE,EXPIRED,STOPPED
-  43          } 
-  44            Timer1_state=STOPPED,
-  45            Timer2_state=STOPPED;
-  46           static u16 Timer1_temp=0;
-  47           static u16 Timer2_temp=0;
-  48           static u16 micros=0;//¾ø¶ÔÊ±¼ä»ñÈ¡±äÁ¿
-  49          static u16 millis=0;//¾ø¶ÔÊ±¼ä»ñÈ¡±äÁ¿
-  50          static u8 seconds=0;
-  51          static u8 minutes=0;
-  52          static u8 hours=0;
-  53          static u8 days =0;
-  54          
-C51 COMPILER V8.05a   TIMER                                                                07/01/2017 18:34:34 PAGE 2   
+  40          #include <stdio.h>
+  41          enum
+  42          {
+  43            ACTIVE, EXPIRED, STOPPED
+  44          }
+  45          Timer1_state = STOPPED,
+  46          Timer2_state = STOPPED;
+  47          
+  48          static u16 Timer1_temp = 0;
+  49          static u16 Timer2_temp = 0;
+  50          static u16 micros = 0;//¾ø¶ÔÊ±¼ä»ñÈ¡±äÁ¿
+  51          static u16 millis = 0;//¾ø¶ÔÊ±¼ä»ñÈ¡±äÁ¿
+  52          static u8 seconds = 0;
+  53          static u8 minutes = 0;
+  54          static u8 hours = 0;
+C51 COMPILER V8.05a   TIMER                                                                07/07/2017 10:19:23 PAGE 2   
 
-  55          
+  55          static u8 days = 0;
   56          
   57          
-  58          struct TimerInfo
-  59          {
-  60             u16 Timeout;
-  61            u16 Hz;
-  62          }
-  63          timer1_struct={0,0},
-  64          timer2_struct={0,0};
-  65          //»ñÈ¡´Ó¿ª»úºóµÄÎ¢ÃëÊý
-  66          u16 getMicros(void)
-  67          {
-  68   1      
-  69   1         return  micros;
-  70   1      }
-  71          //»ñÈ¡´Ó¿ª»úºóµÄºÁÃëÊý
-  72          u16 getMillis(void)
-  73          {
-  74   1         return millis;
-  75   1      }
-  76          u8 getSeconds(void)
-  77          {
-  78   1       return seconds;
-  79   1      }
-  80          u8 getMinutes(void)
-  81          {
-  82   1         return minutes;
-  83   1      }
-  84          u8 getHours(void)
-  85          {
-  86   1         return hours;
-  87   1      }
-  88          u8 getDays(void)
-  89          {
-  90   1         return days;
-  91   1      }
-  92          
-  93          void timerInit()
-  94          {
-  95   1        TIM_InitTypeDef   TIM_InitStructure1; //ÓÃ»§×Ô¶¨Òå¶¨Ê±Æ÷Ê¹ÓÃ
-  96   1        TIM_InitTypeDef   TIM_InitStructure2; //¾ø¶ÔÊ±¼ä»ñÈ¡Ê¹ÓÃ
-  97   1        u8 Error_Code=0;
-  98   1      
-  99   1        TIM_InitStructure1.TIM_Mode      = TIM_16BitAutoReload; //Ö¸¶¨¹¤×÷Ä£Ê½,16Î»×Ô¶¯ÖØ×°Ä£Ê½    TIM_16BitAutoR
-             -eload,TIM_16Bit,TIM_8BitAutoReload,\\
-*** WARNING C329 IN LINE 99 OF ..\HARDWARE\BSP\timer.c: single-line comment contains line-continuation
- 100   1                                                                                                                        TIM_16BitAutoReloadNoMask
- 101   1        TIM_InitStructure1.TIM_Polity    = PolityLow;     //Ö¸¶¨ÖÐ¶ÏÓÅÏÈ¼¶, PolityHigh,PolityLow
- 102   1        TIM_InitStructure1.TIM_Interrupt = ENABLE;        //ÖÐ¶ÏÊÇ·ñÔÊÐí,   ENABLE»òDISABLE
- 103   1        TIM_InitStructure1.TIM_ClkSource = TIM_CLOCK_1T;  //Ö¸¶¨Ê±ÖÓÔ´,     TIM_CLOCK_1T,TIM_CLOCK_12T,TIM_CLOCK_E
+  58          
+  59          
+  60          struct TimerInfo
+  61          {
+  62            u16 Timeout;
+  63            u16 Hz;
+  64          }
+  65          timer1_struct = { 0,0 },
+  66          timer2_struct = { 0,0 };
+  67          //»ñÈ¡´Ó¿ª»úºóµÄÎ¢ÃëÊý
+  68          u16 getMicros(void)
+  69          {
+  70   1      
+  71   1        return  micros;
+  72   1      }
+  73          //»ñÈ¡´Ó¿ª»úºóµÄºÁÃëÊý
+  74          u16 getMillis(void)
+  75          {
+  76   1        return millis;
+  77   1      }
+  78          u8 getSeconds(void)
+  79          {
+  80   1        return seconds;
+  81   1      }
+  82          u8 getMinutes(void)
+  83          {
+  84   1        return minutes;
+  85   1      }
+  86          u8 getHours(void)
+  87          {
+  88   1        return hours;
+  89   1      }
+  90          u8 getDays(void)
+  91          {
+  92   1        return days;
+  93   1      }
+  94          
+  95          void timerInit()
+  96          {
+  97   1        TIM_InitTypeDef   TIM_InitStructure1; //ÓÃ»§×Ô¶¨Òå¶¨Ê±Æ÷Ê¹ÓÃ
+  98   1        TIM_InitTypeDef   TIM_InitStructure2; //¾ø¶ÔÊ±¼ä»ñÈ¡Ê¹ÓÃ
+  99   1        u8 Error_Code = 0;
+ 100   1      
+ 101   1        TIM_InitStructure1.TIM_Mode = TIM_16BitAutoReload;  //Ö¸¶¨¹¤×÷Ä£Ê½,16Î»×Ô¶¯ÖØ×°Ä£Ê½    TIM_16BitAutoReload
+             -,TIM_16Bit,TIM_8BitAutoReload,\\
+*** WARNING C329 IN LINE 101 OF ..\HARDWARE\BSP\timer.c: single-line comment contains line-continuation
+ 102   1                                                                                                                        TIM_16BitAutoReloadNoMask
+ 103   1        TIM_InitStructure1.TIM_Polity = PolityLow;      //Ö¸¶¨ÖÐ¶ÏÓÅÏÈ¼¶, PolityHigh,PolityLow
+ 104   1        TIM_InitStructure1.TIM_Interrupt = ENABLE;        //ÖÐ¶ÏÊÇ·ñÔÊÐí,   ENABLE»òDISABLE
+ 105   1        TIM_InitStructure1.TIM_ClkSource = TIM_CLOCK_1T;  //Ö¸¶¨Ê±ÖÓÔ´,     TIM_CLOCK_1T,TIM_CLOCK_12T,TIM_CLOCK_E
              -xt
- 104   1        TIM_InitStructure1.TIM_ClkOut    = DISABLE;       //ÊÇ·ñÊä³ö¸ßËÙÂö³å, ENABLE»òDISABLE
- 105   1        TIM_InitStructure1.TIM_Run       = DISABLE;       //ÊÇ·ñ³õÊ¼»¯ºóÆô¶¯¶¨Ê±Æ÷, ENABLE»òDISABLE
- 106   1        TIM_InitStructure1.TIM_Value     = 65536UL - (MAIN_Fosc / 1000);    //³õÖµ,1000us
- 107   1       
- 108   1        TIM_InitStructure2.TIM_Mode      = TIM_16BitAutoReload; //Ö¸¶¨¹¤×÷Ä£Ê½,16Î»×Ô¶¯ÖØ×°Ä£Ê½   TIM_16BitAutoR
-             -eload,TIM_16Bit,TIM_8BitAutoReload,\\
-*** WARNING C329 IN LINE 108 OF ..\HARDWARE\BSP\timer.c: single-line comment contains line-continuation
- 109   1                                                                                                                        TIM_16BitAutoReloadNoMask
- 110   1        TIM_InitStructure2.TIM_Polity    = PolityLow;     //Ö¸¶¨ÖÐ¶ÏÓÅÏÈ¼¶, PolityHigh,PolityLow
- 111   1        TIM_InitStructure2.TIM_Interrupt = ENABLE;        //ÖÐ¶ÏÊÇ·ñÔÊÐí,   ENABLE»òDISABLE
-C51 COMPILER V8.05a   TIMER                                                                07/01/2017 18:34:34 PAGE 3   
+ 106   1        TIM_InitStructure1.TIM_ClkOut = DISABLE;        //ÊÇ·ñÊä³ö¸ßËÙÂö³å, ENABLE»òDISABLE
+ 107   1        TIM_InitStructure1.TIM_Run = DISABLE;       //ÊÇ·ñ³õÊ¼»¯ºóÆô¶¯¶¨Ê±Æ÷, ENABLE»òDISABLE
+ 108   1        TIM_InitStructure1.TIM_Value = 65536UL - (MAIN_Fosc / 1000);    //³õÖµ,1000us
+ 109   1      
+ 110   1        TIM_InitStructure2.TIM_Mode = TIM_16BitAutoReload;  //Ö¸¶¨¹¤×÷Ä£Ê½,16Î»×Ô¶¯ÖØ×°Ä£Ê½   TIM_16BitAutoReload,
+             -TIM_16Bit,TIM_8BitAutoReload,\\
+*** WARNING C329 IN LINE 110 OF ..\HARDWARE\BSP\timer.c: single-line comment contains line-continuation
+ 111   1                                                                                                                          TIM_16BitAutoReloadNoMask
+C51 COMPILER V8.05a   TIMER                                                                07/07/2017 10:19:23 PAGE 3   
 
- 112   1        TIM_InitStructure2.TIM_ClkSource = TIM_CLOCK_1T;  //Ö¸¶¨Ê±ÖÓÔ´,     TIM_CLOCK_1T,TIM_CLOCK_12T,TIM_CLOCK_E
+ 112   1        TIM_InitStructure2.TIM_Polity = PolityLow;      //Ö¸¶¨ÖÐ¶ÏÓÅÏÈ¼¶, PolityHigh,PolityLow
+ 113   1        TIM_InitStructure2.TIM_Interrupt = ENABLE;        //ÖÐ¶ÏÊÇ·ñÔÊÐí,   ENABLE»òDISABLE
+ 114   1        TIM_InitStructure2.TIM_ClkSource = TIM_CLOCK_1T;  //Ö¸¶¨Ê±ÖÓÔ´,     TIM_CLOCK_1T,TIM_CLOCK_12T,TIM_CLOCK_E
              -xt
- 113   1        TIM_InitStructure2.TIM_ClkOut    = DISABLE;       //ÊÇ·ñÊä³ö¸ßËÙÂö³å, ENABLE»òDISABLE
- 114   1        TIM_InitStructure2.TIM_Run       = ENABLE;        //ÊÇ·ñ³õÊ¼»¯ºóÆô¶¯¶¨Ê±Æ÷, ENABLE»òDISABLE
- 115   1        TIM_InitStructure2.TIM_Value     = 65536UL - (MAIN_Fosc / 100000UL);    //³õÖµ,1us
- 116   1          //ÓÃ»§×Ô¶¨Òå¶¨Ê±Æ÷    
- 117   1      
- 118   1        if(  !( Error_Code  =  Timer_Inilize( Timer1  , &TIM_InitStructure1 )  )  )//==0
- 119   1        {
- 120   2           PrintString1("Timer1 initializing succeed \n");   
- 121   2        }
- 122   1        else if(Error_Code) //==1
- 123   1        {
- 124   2           PrintString1("Timer1 initializing failed \n");   
- 125   2        }
- 126   1        else
- 127   1        {
- 128   2           PrintString1("Timer1 initializing failed \n");   
- 129   2        }
- 130   1        
- 131   1        //ÓÃ»§×Ô¶¨Òå¶¨Ê±Æ÷  
- 132   1          if(  !( Error_Code  =  Timer_Inilize( Timer3  , &TIM_InitStructure1 )  )  )//==0
- 133   1        {
- 134   2           PrintString1("Timer3 initializing succeed \n");   
- 135   2        }
- 136   1        else if(Error_Code) //==1
- 137   1        {
- 138   2           PrintString1("Timer3 initializing failed \n");   
- 139   2        }
- 140   1        else
- 141   1        {
- 142   2           PrintString1("Timer3 initializing failed \n");   
- 143   2        }
- 144   1          //¾ø¶ÔÊ±¼ä»ñÈ¡Ê¹ÓÃ  
- 145   1        if(  !( Error_Code  =  Timer_Inilize( Timer4  , &TIM_InitStructure2 )  )  )//==0
- 146   1        {
- 147   2           PrintString1("Timer4 initializing succeed \n");   
- 148   2        }
- 149   1        else if(Error_Code) //==1
- 150   1        {
- 151   2           PrintString1("Timer4 initializing failed \n");   
- 152   2        }
- 153   1        else
- 154   1        {
- 155   2           PrintString1("Timer4 initializing failed \n");   
- 156   2        }
- 157   1      
- 158   1      
- 159   1        
- 160   1      }
- 161          
- 162          //ÉèÖÃ¶¨Ê±Æ÷µÄ·¢ÉúÆµÂÊ
- 163          void setTimerHertz(u8 whichTimer,u16 Hz)
- 164          {            
- 165   1           switch(whichTimer)
- 166   1           {
- 167   2            
- 168   2             case Timer1:
- 169   2             {
- 170   3              timer1_struct.Hz=Hz;  
- 171   3             };
- 172   2             break;
-C51 COMPILER V8.05a   TIMER                                                                07/01/2017 18:34:34 PAGE 4   
+ 115   1        TIM_InitStructure2.TIM_ClkOut = DISABLE;        //ÊÇ·ñÊä³ö¸ßËÙÂö³å, ENABLE»òDISABLE
+ 116   1        TIM_InitStructure2.TIM_Run = ENABLE;        //ÊÇ·ñ³õÊ¼»¯ºóÆô¶¯¶¨Ê±Æ÷, ENABLE»òDISABLE
+ 117   1        TIM_InitStructure2.TIM_Value = 65536UL - (MAIN_Fosc / 100000UL);    //³õÖµ,1us
+ 118   1        //ÓÃ»§×Ô¶¨Òå¶¨Ê±Æ÷    
+ 119   1      
+ 120   1        if (!(Error_Code = Timer_Inilize(Timer1, &TIM_InitStructure1)))//==0
+ 121   1        {
+ 122   2          PrintString1("Timer1 initializing succeed \n");
+ 123   2        }
+ 124   1        else if (Error_Code) //==1
+ 125   1        {
+ 126   2          PrintString1("Timer1 initializing failed \n");
+ 127   2        }
+ 128   1        else
+ 129   1        {
+ 130   2          PrintString1("Timer1 initializing failed \n");
+ 131   2        }
+ 132   1      
+ 133   1        //ÓÃ»§×Ô¶¨Òå¶¨Ê±Æ÷  
+ 134   1        if (!(Error_Code = Timer_Inilize(Timer3, &TIM_InitStructure1)))//==0
+ 135   1        {
+ 136   2          PrintString1("Timer3 initializing succeed \n");
+ 137   2        }
+ 138   1        else if (Error_Code) //==1
+ 139   1        {
+ 140   2          PrintString1("Timer3 initializing failed \n");
+ 141   2        }
+ 142   1        else
+ 143   1        {
+ 144   2          PrintString1("Timer3 initializing failed \n");
+ 145   2        }
+ 146   1        //¾ø¶ÔÊ±¼ä»ñÈ¡Ê¹ÓÃ  
+ 147   1        if (!(Error_Code = Timer_Inilize(Timer4, &TIM_InitStructure2)))//==0
+ 148   1        {
+ 149   2          PrintString1("Timer4 initializing succeed \n");
+ 150   2        }
+ 151   1        else if (Error_Code) //==1
+ 152   1        {
+ 153   2          PrintString1("Timer4 initializing failed \n");
+ 154   2        }
+ 155   1        else
+ 156   1        {
+ 157   2          PrintString1("Timer4 initializing failed \n");
+ 158   2        }
+ 159   1      
+ 160   1      
+ 161   1      
+ 162   1      }
+ 163          
+ 164          //ÉèÖÃ¶¨Ê±Æ÷µÄ·¢ÉúÆµÂÊ
+ 165          void setTimerHertz(u8 whichTimer, u16 Hz)
+ 166          {
+ 167   1        switch (whichTimer)
+ 168   1        {
+ 169   2      
+ 170   2        case Timer1:
+ 171   2        {
+ 172   3          timer1_struct.Hz = Hz;
+C51 COMPILER V8.05a   TIMER                                                                07/07/2017 10:19:23 PAGE 4   
 
- 173   2             case Timer2:
- 174   2             {
- 175   3              timer2_struct.Hz=Hz;  
- 176   3             };
- 177   2             break;
- 178   2             
- 179   2           }
- 180   1      
- 181   1        
- 182   1      }
- 183          u16 getTimerHertz(u8 whichTimer)
- 184          {
- 185   1         switch(whichTimer)
- 186   1         {
- 187   2          
- 188   2           break;
- 189   2           case Timer1:
- 190   2           {
- 191   3              return timer1_struct.Hz;
- 192   3           };
- 193   2           break;
- 194   2           case Timer2:
- 195   2           {
- 196   3              return timer2_struct.Hz;
- 197   3           };
- 198   2           break;
- 199   2          default: return 0;
- 200   2         }
- 201   1      }
- 202          //ÉèÖÃ¶¨Ê±Æ÷µÄ¶¨Ê±Ê±¼ä
- 203          void setTimeout(u8 whichTimer,u16 time)
- 204          {
- 205   1      if(!(Timer1_state==ACTIVE||Timer2_state==ACTIVE)) 
- 206   1      { 
- 207   2        switch(whichTimer)
- 208   2        {
- 209   3      
- 210   3          case Timer1:
- 211   3          {
- 212   4            timer1_struct.Timeout=time;         
- 213   4          };
- 214   3          case Timer2:
- 215   3          {
- 216   4            timer2_struct.Timeout=time;         
- 217   4          };    
- 218   3          default:
- 219   3            break;  
- 220   3        }
- 221   2      }
- 222   1      }
- 223          u16 getTimerout(u8 whichTimer)
- 224          {
- 225   1         switch(whichTimer)
- 226   1         {
- 227   2          
- 228   2           case Timer1:
- 229   2           {
- 230   3              return timer1_struct.Timeout;
- 231   3           };
- 232   2           break;
- 233   2           case Timer2:
- 234   2           {
-C51 COMPILER V8.05a   TIMER                                                                07/01/2017 18:34:34 PAGE 5   
+ 173   3        };
+ 174   2        break;
+ 175   2        case Timer2:
+ 176   2        {
+ 177   3          timer2_struct.Hz = Hz;
+ 178   3        };
+ 179   2        break;
+ 180   2      
+ 181   2        }
+ 182   1      
+ 183   1      
+ 184   1      }
+ 185          u16 getTimerHertz(u8 whichTimer)
+ 186          {
+ 187   1        switch (whichTimer)
+ 188   1        {
+ 189   2      
+ 190   2          break;
+ 191   2        case Timer1:
+ 192   2        {
+ 193   3          return timer1_struct.Hz;
+ 194   3        };
+ 195   2        break;
+ 196   2        case Timer2:
+ 197   2        {
+ 198   3          return timer2_struct.Hz;
+ 199   3        };
+ 200   2        break;
+ 201   2        default: return 0;
+ 202   2        }
+ 203   1      }
+ 204          //ÉèÖÃ¶¨Ê±Æ÷µÄ¶¨Ê±Ê±¼ä
+ 205          void setTimeout(u8 whichTimer, u16 time)
+ 206          {
+ 207   1        if (!(Timer1_state == ACTIVE || Timer2_state == ACTIVE))
+ 208   1        {
+ 209   2          switch (whichTimer)
+ 210   2          {
+ 211   3      
+ 212   3          case Timer1:
+ 213   3          {
+ 214   4            timer1_struct.Timeout = time;
+ 215   4          };
+ 216   3          case Timer2:
+ 217   3          {
+ 218   4            timer2_struct.Timeout = time;
+ 219   4          };
+ 220   3          default:
+ 221   3            break;
+ 222   3          }
+ 223   2        }
+ 224   1      }
+ 225          u16 getTimerout(u8 whichTimer)
+ 226          {
+ 227   1        switch (whichTimer)
+ 228   1        {
+ 229   2      
+ 230   2        case Timer1:
+ 231   2        {
+ 232   3          return timer1_struct.Timeout;
+ 233   3        };
+ 234   2        break;
+C51 COMPILER V8.05a   TIMER                                                                07/07/2017 10:19:23 PAGE 5   
 
- 235   3              return timer2_struct.Timeout;
- 236   3           };
- 237   2           break;
- 238   2          
- 239   2          default: return 0;
- 240   2         }
- 241   1        
- 242   1      }
- 243          //Í£ÓÃ¶¨Ê±Æ÷
- 244          void stopTimer(u8 whichTimer)
- 245          {   switch(whichTimer)
- 246   1        { 
- 247   2          case Timer1:
- 248   2          {
- 249   3            Timer1_Stop();
- 250   3           Timer1_state= STOPPED;
- 251   3      
- 252   3          };
- 253   2          break;
- 254   2          case Timer2:
- 255   2          {
- 256   3            Timer3_Stop();//´Ë´¦¾ÍÊÇtimer3£¬²»ÊÇtimer2£¬timer2Ìø¹ýÁË£¬ÒòÎªÁô¸ø´®¿ÚÊ¹ÓÃÁË    
- 257   3           Timer2_state= STOPPED;
- 258   3      
- 259   3          };
- 260   2          break;
- 261   2        }
- 262   1         
- 263   1      }
- 264          //Èô¶¨Ê±Æ÷ÒÑÆô¶¯µ«Î´´ïµ½¶¨Ê±Ê±¼ä·µ»Ø1
- 265          bit isActiveTimer(u8 whichTimer)
- 266          {
- 267   1         switch(whichTimer)
- 268   1         {
- 269   2           case Timer1 :
- 270   2           {
- 271   3           return  Timer1_state == ACTIVE;
- 272   3      
- 273   3           };
- 274   2           case Timer2 :
- 275   2           {
- 276   3           return  Timer2_state == ACTIVE;
- 277   3      
- 278   3           };
- 279   2           break;
- 280   2         }
- 281   1      }
- 282          //µ±¶¨Ê±´ïµ½Éè¶¨Ê±¼äÊ±·µ»Ø1
- 283          bit isExpiredTimer(u8 whichTimer)
- 284          {
- 285   1           switch(whichTimer)
- 286   1        {
- 287   2          case Timer1:
- 288   2          {
- 289   3              return  Timer1_state == EXPIRED;
- 290   3          };
- 291   2          case Timer2:
- 292   2          {
- 293   3              return  Timer2_state == EXPIRED;
- 294   3          };
- 295   2          break;
- 296   2        }
-C51 COMPILER V8.05a   TIMER                                                                07/01/2017 18:34:34 PAGE 6   
+ 235   2        case Timer2:
+ 236   2        {
+ 237   3          return timer2_struct.Timeout;
+ 238   3        };
+ 239   2        break;
+ 240   2      
+ 241   2        default: return 0;
+ 242   2        }
+ 243   1      
+ 244   1      }
+ 245          //Í£ÓÃ¶¨Ê±Æ÷
+ 246          void stopTimer(u8 whichTimer)
+ 247          {
+ 248   1        switch (whichTimer)
+ 249   1        {
+ 250   2        case Timer1:
+ 251   2        {
+ 252   3          Timer1_Stop();
+ 253   3          Timer1_state = STOPPED;
+ 254   3      
+ 255   3        };
+ 256   2        break;
+ 257   2        case Timer2:
+ 258   2        {
+ 259   3          Timer3_Stop();//´Ë´¦¾ÍÊÇtimer3£¬²»ÊÇtimer2£¬timer2Ìø¹ýÁË£¬ÒòÎªÁô¸ø´®¿ÚÊ¹ÓÃÁË    
+ 260   3          Timer2_state = STOPPED;
+ 261   3      
+ 262   3        };
+ 263   2        break;
+ 264   2        }
+ 265   1      
+ 266   1      }
+ 267          //Èô¶¨Ê±Æ÷ÒÑÆô¶¯µ«Î´´ïµ½¶¨Ê±Ê±¼ä·µ»Ø1
+ 268          bit isActiveTimer(u8 whichTimer)
+ 269          {
+ 270   1        switch (whichTimer)
+ 271   1        {
+ 272   2        case Timer1:
+ 273   2        {
+ 274   3          return  Timer1_state == ACTIVE;
+ 275   3      
+ 276   3        };
+ 277   2        case Timer2:
+ 278   2        {
+ 279   3          return  Timer2_state == ACTIVE;
+ 280   3      
+ 281   3        };
+ 282   2        break;
+ 283   2        }
+ 284   1      }
+ 285          //µ±¶¨Ê±´ïµ½Éè¶¨Ê±¼äÊ±·µ»Ø1
+ 286          bit isExpiredTimer(u8 whichTimer)
+ 287          {
+ 288   1        switch (whichTimer)
+ 289   1        {
+ 290   2        case Timer1:
+ 291   2        {
+ 292   3          return  Timer1_state == EXPIRED;
+ 293   3        };
+ 294   2        case Timer2:
+ 295   2        {
+ 296   3          return  Timer2_state == EXPIRED;
+C51 COMPILER V8.05a   TIMER                                                                07/07/2017 10:19:23 PAGE 6   
 
- 297   1            
- 298   1         
- 299   1      }
- 300          //µ±¶¨Ê±Æ÷±»Í£Ö¹Ê±·µ»Ø1
- 301          bit isStopped(u8 whichtimer)
- 302          {
- 303   1         switch(whichtimer)
- 304   1        {
- 305   2          case Timer1:
- 306   2          {
- 307   3              return  Timer1_state == STOPPED;
- 308   3          };
- 309   2          case Timer2:
- 310   2          {
- 311   3              return  Timer2_state == STOPPED;
- 312   3          };
- 313   2          break;
- 314   2        }
- 315   1      }
- 316          
- 317          //³õÊ¼»¯²¢´ò¿ª¶¨Ê±Æ÷£¬ÐèÒªÏÈÉèÖÃºÃ¶¨Ê±Ê±¼ä»òÆµÂÊ
- 318          void restartTimer(u8 whichTimer)
- 319          {
- 320   1          if(!isActiveTimer(whichTimer))
- 321   1          {
- 322   2             switch(whichTimer)
- 323   2            {
- 324   3              case Timer1:
- 325   3              {
- 326   4                Timer1_Run();
- 327   4                Timer1_state= ACTIVE;
- 328   4              };
- 329   3              break;
- 330   3              case Timer2:
- 331   3              {
- 332   4                Timer3_Run();
- 333   4                Timer2_state= ACTIVE;
- 334   4              };
- 335   3              break;
- 336   3              default:
- 337   3                break;
- 338   3            }
- 339   2             
- 340   2            
- 341   2         
- 342   2          }
- 343   1      }
- 344          //µ±¶¨Ê±Æ÷¶¨Ê±½áÊøºó·µ»Ø1£¬²¢×Ô¶¯µ÷ÓÃrestart£¨£©£¬ÖØÐÂ¶¨Ê±
- 345          bit onRestartTimer(u8 whichTimer)
- 346          {
- 347   1          if (isExpiredTimer(whichTimer))
- 348   1          {
- 349   2            restartTimer(whichTimer);
- 350   2            return TRUE;
- 351   2          }
- 352   1          else
- 353   1          {
- 354   2            return FALSE;
- 355   2          } 
- 356   1        
- 357   1      }
- 358          
-C51 COMPILER V8.05a   TIMER                                                                07/01/2017 18:34:34 PAGE 7   
+ 297   3        };
+ 298   2        break;
+ 299   2        }
+ 300   1      
+ 301   1      
+ 302   1      }
+ 303          //µ±¶¨Ê±Æ÷±»Í£Ö¹Ê±·µ»Ø1
+ 304          bit isStopped(u8 whichtimer)
+ 305          {
+ 306   1        switch (whichtimer)
+ 307   1        {
+ 308   2        case Timer1:
+ 309   2        {
+ 310   3          return  Timer1_state == STOPPED;
+ 311   3        };
+ 312   2        case Timer2:
+ 313   2        {
+ 314   3          return  Timer2_state == STOPPED;
+ 315   3        };
+ 316   2        break;
+ 317   2        }
+ 318   1      }
+ 319          
+ 320          //³õÊ¼»¯²¢´ò¿ª¶¨Ê±Æ÷£¬ÐèÒªÏÈÉèÖÃºÃ¶¨Ê±Ê±¼ä»òÆµÂÊ
+ 321          void restartTimer(u8 whichTimer)
+ 322          {
+ 323   1        if (!isActiveTimer(whichTimer))
+ 324   1        {
+ 325   2          switch (whichTimer)
+ 326   2          {
+ 327   3          case Timer1:
+ 328   3          {
+ 329   4            Timer1_Run();
+ 330   4            Timer1_state = ACTIVE;
+ 331   4          };
+ 332   3          break;
+ 333   3          case Timer2:
+ 334   3          {
+ 335   4            Timer3_Run();
+ 336   4            Timer2_state = ACTIVE;
+ 337   4          };
+ 338   3          break;
+ 339   3          default:
+ 340   3            break;
+ 341   3          }
+ 342   2      
+ 343   2      
+ 344   2      
+ 345   2        }
+ 346   1      }
+ 347          //µ±¶¨Ê±Æ÷¶¨Ê±½áÊøºó·µ»Ø1£¬²¢×Ô¶¯µ÷ÓÃrestart£¨£©£¬ÖØÐÂ¶¨Ê±
+ 348          bit onRestartTimer(u8 whichTimer)
+ 349          {
+ 350   1        if (isExpiredTimer(whichTimer))
+ 351   1        {
+ 352   2          restartTimer(whichTimer);
+ 353   2          return TRUE;
+ 354   2        }
+ 355   1        else
+ 356   1        {
+ 357   2          return FALSE;
+ 358   2        }
+C51 COMPILER V8.05a   TIMER                                                                07/07/2017 10:19:23 PAGE 7   
 
- 359          
- 360          /********************* Timer1ÖÐ¶Ïº¯Êý************************/
- 361          void Timer1_ISR (void) interrupt TIMER1_VECTOR
- 362          {
- 363   1      
- 364   1         if((++Timer1_temp)>=timer1_struct.Timeout)
- 365   1           {
- 366   2              Timer1_Stop();
- 367   2              Timer1_temp=0;
- 368   2              Timer1_state= EXPIRED;
- 369   2           }
- 370   1           
- 371   1           
- 372   1      
- 373   1      }
- 374          
- 375          
- 376          /********************* Timer3ÖÐ¶Ïº¯Êý************************/
- 377          void timer3_int (void) interrupt TIMER3_VECTOR
- 378          {
- 379   1          if((++Timer2_temp)>=timer2_struct.Timeout)
- 380   1           {
- 381   2              Timer3_Stop();
- 382   2              Timer2_temp=0;
- 383   2              Timer2_state= EXPIRED;
- 384   2           }
- 385   1           
- 386   1      }
- 387          /********************* Timer4ÖÐ¶Ïº¯Êý************************/
- 388          void timer4_int (void) interrupt TIMER4_VECTOR
- 389          {   
- 390   1        EA=0;
- 391   1        if(   (   micros+=10  ) >=  1000  )
- 392   1        {
- 393   2          micros=0;
- 394   2          if(   (   ++millis  ) >=  1000  )
- 395   2          {
- 396   3            millis=0;
- 397   3             if(  (   ++seconds   ) >=  60  )
- 398   3             {
- 399   4               seconds=0;
- 400   4               if(  (   ++minutes ) >=  60  )
- 401   4               {
- 402   5                 minutes=0;
- 403   5                   if(    ( ++hours ) >=  24)
- 404   5                   {
- 405   6                     hours=0;
- 406   6                    if(   (   ++days    ) ==  UCHAR_MAX)
- 407   6                    {
- 408   7                       days=0;
- 409   7                    }
- 410   6                     
- 411   6                   }
- 412   5               }
- 413   4                 
- 414   4             }
- 415   3          }
- 416   2        }
- 417   1        
- 418   1      EA=1; 
- 419   1      }
- 420          /********************* Timer2ÖÐ¶Ïº¯Êý************************/
-C51 COMPILER V8.05a   TIMER                                                                07/01/2017 18:34:34 PAGE 8   
+ 359   1      
+ 360   1      }
+ 361          
+ 362          
+ 363          /********************* Timer1ÖÐ¶Ïº¯Êý************************/
+ 364          void Timer1_ISR(void) interrupt TIMER1_VECTOR
+ 365          {
+ 366   1      
+ 367   1        if ((++Timer1_temp) >= timer1_struct.Timeout)
+ 368   1        {
+ 369   2          Timer1_Stop();
+ 370   2          Timer1_temp = 0;
+ 371   2          Timer1_state = EXPIRED;
+ 372   2        }
+ 373   1      
+ 374   1      
+ 375   1      
+ 376   1      }
+ 377          
+ 378          
+ 379          /********************* Timer3ÖÐ¶Ïº¯Êý************************/
+ 380          void timer3_int(void) interrupt TIMER3_VECTOR
+ 381          {
+ 382   1        if ((++Timer2_temp) >= timer2_struct.Timeout)
+ 383   1        {
+ 384   2          Timer3_Stop();
+ 385   2          Timer2_temp = 0;
+ 386   2          Timer2_state = EXPIRED;
+ 387   2        }
+ 388   1      
+ 389   1      }
+ 390          /********************* Timer4ÖÐ¶Ïº¯Êý************************/
+ 391          //ÎÊÌâÒÅÁô£º
+ 392          //ÎÊÌâ½â¾ö£¬ÊÇsprintfº¯ÊýµÄÊ¹ÓÃ²»µ±µ¼ÖÂµÄÊä³ö´íÎó£¬Êµ¼ÊÊýÖµ²¢Ã»ÓÐ´íÎó
+ 393          void timer4_int(void) interrupt TIMER4_VECTOR
+ 394          {
+ 395   1      
+ 396   1      
+ 397   1        EA = 0;
+ 398   1        if ((micros += 10) >= 1000)
+ 399   1        {
+ 400   2          micros = 0;
+ 401   2          if ((++millis) >= 1000)
+ 402   2          {
+ 403   3            millis = 0;
+ 404   3            if ((++seconds) >= 60)
+ 405   3            {
+ 406   4              seconds = 0;
+ 407   4              if ((++minutes) >= 60)
+ 408   4              {
+ 409   5                minutes = 0;
+ 410   5                if ((++hours) >= 24)
+ 411   5                {
+ 412   6                  hours = 0;
+ 413   6                  if ((++days) == UCHAR_MAX)
+ 414   6                  {
+ 415   7                    days = 0;
+ 416   7                  }
+ 417   6      
+ 418   6                }
+ 419   5              }
+ 420   4      
+C51 COMPILER V8.05a   TIMER                                                                07/07/2017 10:19:23 PAGE 8   
 
- 421          //´Ë¶¨Ê±Æ÷ÓÃ×÷´®¿ÚµÄ¶¨Ê±Æ÷ÁË
- 422          //void Timer2_ISR (void) interrupt TIMER2_VECTOR
- 423          //{
- 424          //  
- 425          //}
- 426          
- 427          
- 428          //========================£¡£¡£¡²»Òª¸Ä¶¯ÒÔÏÂÈÎºÎ³ÌÐò£¡£¡£¡=================
- 429          // º¯Êý: u8 Timer_Inilize(u8 TIM, TIM_InitTypeDef *TIMx)
- 430          // ÃèÊö: ¶¨Ê±Æ÷³õÊ¼»¯³ÌÐò.
- 431          // ²ÎÊý: TIMx: ½á¹¹²ÎÊý,Çë²Î¿¼timer.hÀïµÄ¶¨Òå.
- 432          // ·µ»Ø: ³É¹¦·µ»Ø0, ¿Õ²Ù×÷·µ»Ø1,´íÎó·µ»Ø2.
- 433          // °æ±¾: V1.0, 2012-10-22
- 434          //========================================================================
- 435          static u8 Timer_Inilize(u8 TIM, TIM_InitTypeDef *TIMx)
- 436          {
- 437   1        if(TIM > Timer4)  return 1; //¿Õ²Ù×÷
- 438   1      
- 439   1        if(TIM == Timer0)
- 440   1        {
- 441   2          if(TIMx->TIM_Mode >  TIM_16BitAutoReloadNoMask) return 2; //´íÎó
- 442   2          TR0 = 0;    //Í£Ö¹¼ÆÊý
- 443   2          ET0 = 0;  //½ûÖ¹ÖÐ¶Ï
- 444   2          PT0 = 0;  //µÍÓÅÏÈ¼¶ÖÐ¶Ï
- 445   2          TMOD &= 0xf0; //¶¨Ê±Ä£Ê½, 16Î»×Ô¶¯ÖØ×°
- 446   2          AUXR &= ~0x80;  //12TÄ£Ê½, 
- 447   2          INT_CLKO &= ~0x01;  //²»Êä³öÊ±ÖÓ
- 448   2          if(TIMx->TIM_Interrupt == ENABLE)   ET0 = 1;  //ÔÊÐíÖÐ¶Ï
- 449   2          if(TIMx->TIM_Polity == PolityHigh)    PT0 = 1;  //¸ßÓÅÏÈ¼¶ÖÐ¶Ï
- 450   2          TMOD |= TIMx->TIM_Mode; //¹¤×÷Ä£Ê½,0: 16Î»×Ô¶¯ÖØ×°, 1: 16Î»¶¨Ê±/¼ÆÊý, 2: 8Î»×Ô¶¯ÖØ×°, 3: 16Î»×Ô¶¯ÖØ×°, ²
+ 421   4            }
+ 422   3          }
+ 423   2        }
+ 424   1      
+ 425   1        EA = 1;
+ 426   1      }
+ 427          /********************* Timer2ÖÐ¶Ïº¯Êý************************/
+ 428          //´Ë¶¨Ê±Æ÷ÓÃ×÷´®¿ÚµÄ¶¨Ê±Æ÷ÁË
+ 429          //void Timer2_ISR (void) interrupt TIMER2_VECTOR
+ 430          //{
+ 431          //  
+ 432          //}
+ 433          
+ 434          
+ 435          //========================£¡£¡£¡²»Òª¸Ä¶¯ÒÔÏÂÈÎºÎ³ÌÐò£¡£¡£¡=================
+ 436          // º¯Êý: u8 Timer_Inilize(u8 TIM, TIM_InitTypeDef *TIMx)
+ 437          // ÃèÊö: ¶¨Ê±Æ÷³õÊ¼»¯³ÌÐò.
+ 438          // ²ÎÊý: TIMx: ½á¹¹²ÎÊý,Çë²Î¿¼timer.hÀïµÄ¶¨Òå.
+ 439          // ·µ»Ø: ³É¹¦·µ»Ø0, ¿Õ²Ù×÷·µ»Ø1,´íÎó·µ»Ø2.
+ 440          // °æ±¾: V1.0, 2012-10-22
+ 441          //========================================================================
+ 442          static u8 Timer_Inilize(u8 TIM, TIM_InitTypeDef *TIMx)
+ 443          {
+ 444   1        if (TIM > Timer4) return 1; //¿Õ²Ù×÷
+ 445   1      
+ 446   1        if (TIM == Timer0)
+ 447   1        {
+ 448   2          if (TIMx->TIM_Mode > TIM_16BitAutoReloadNoMask) return 2; //´íÎó
+ 449   2          TR0 = 0;    //Í£Ö¹¼ÆÊý
+ 450   2          ET0 = 0;  //½ûÖ¹ÖÐ¶Ï
+ 451   2          PT0 = 0;  //µÍÓÅÏÈ¼¶ÖÐ¶Ï
+ 452   2          TMOD &= 0xf0; //¶¨Ê±Ä£Ê½, 16Î»×Ô¶¯ÖØ×°
+ 453   2          AUXR &= ~0x80;  //12TÄ£Ê½, 
+ 454   2          INT_CLKO &= ~0x01;  //²»Êä³öÊ±ÖÓ
+ 455   2          if (TIMx->TIM_Interrupt == ENABLE)    ET0 = 1;  //ÔÊÐíÖÐ¶Ï
+ 456   2          if (TIMx->TIM_Polity == PolityHigh)   PT0 = 1;  //¸ßÓÅÏÈ¼¶ÖÐ¶Ï
+ 457   2          TMOD |= TIMx->TIM_Mode; //¹¤×÷Ä£Ê½,0: 16Î»×Ô¶¯ÖØ×°, 1: 16Î»¶¨Ê±/¼ÆÊý, 2: 8Î»×Ô¶¯ÖØ×°, 3: 16Î»×Ô¶¯ÖØ×°, ²
              -»¿ÉÆÁ±ÎÖÐ¶Ï
- 451   2          if(TIMx->TIM_ClkSource == TIM_CLOCK_1T)   AUXR |=  0x80;  //1T
- 452   2          if(TIMx->TIM_ClkSource == TIM_CLOCK_Ext)  TMOD |=  0x04;  //¶ÔÍâ¼ÆÊý»ò·ÖÆµ
- 453   2          if(TIMx->TIM_ClkOut == ENABLE)  INT_CLKO |=  0x01;  //Êä³öÊ±ÖÓ
- 454   2          
- 455   2          TH0 = (u8)(TIMx->TIM_Value >> 8);
- 456   2          TL0 = (u8)TIMx->TIM_Value;
- 457   2          if(TIMx->TIM_Run == ENABLE) TR0 = 1;  //¿ªÊ¼ÔËÐÐ
- 458   2          return  0;    //³É¹¦
- 459   2        }
- 460   1      
- 461   1        if(TIM == Timer1)
- 462   1        {
- 463   2          if(TIMx->TIM_Mode >= TIM_16BitAutoReloadNoMask) return 2; //´íÎó
- 464   2          TR1 = 0;  //Í£Ö¹¼ÆÊý
- 465   2          ET1 = 0;  //½ûÖ¹ÖÐ¶Ï
- 466   2          PT1 = 0;  //µÍÓÅÏÈ¼¶ÖÐ¶Ï
- 467   2          TMOD &=  0x0f;  //¶¨Ê±Ä£Ê½, 16Î»×Ô¶¯ÖØ×°
- 468   2          AUXR &= ~0x40;  //12TÄ£Ê½, 
- 469   2          INT_CLKO &= ~0x02;  //²»Êä³öÊ±ÖÓ
- 470   2          if(TIMx->TIM_Interrupt == ENABLE)   ET1 = 1;  //ÔÊÐíÖÐ¶Ï
- 471   2          if(TIMx->TIM_Polity == PolityHigh)    PT1 = 1;  //¸ßÓÅÏÈ¼¶ÖÐ¶Ï
- 472   2          TMOD |= (TIMx->TIM_Mode << 4);  //¹¤×÷Ä£Ê½,0: 16Î»×Ô¶¯ÖØ×°, 1: 16Î»¶¨Ê±/¼ÆÊý, 2: 8Î»×Ô¶¯ÖØ×°
- 473   2          if(TIMx->TIM_ClkSource == TIM_CLOCK_1T)   AUXR |=  0x40;  //1T
- 474   2          if(TIMx->TIM_ClkSource == TIM_CLOCK_Ext)  TMOD |=  0x40;  //¶ÔÍâ¼ÆÊý»ò·ÖÆµ
- 475   2          if(TIMx->TIM_ClkOut == ENABLE)  INT_CLKO |=  0x02;  //Êä³öÊ±ÖÓ
- 476   2          
- 477   2          TH1 = (u8)(TIMx->TIM_Value >> 8);
- 478   2          TL1 = (u8)TIMx->TIM_Value;
- 479   2          if(TIMx->TIM_Run == ENABLE) TR1 = 1;  //¿ªÊ¼ÔËÐÐ
- 480   2          return  0;    //³É¹¦
- 481   2        }
-C51 COMPILER V8.05a   TIMER                                                                07/01/2017 18:34:34 PAGE 9   
+ 458   2          if (TIMx->TIM_ClkSource == TIM_CLOCK_1T)    AUXR |= 0x80; //1T
+ 459   2          if (TIMx->TIM_ClkSource == TIM_CLOCK_Ext) TMOD |= 0x04; //¶ÔÍâ¼ÆÊý»ò·ÖÆµ
+ 460   2          if (TIMx->TIM_ClkOut == ENABLE) INT_CLKO |= 0x01; //Êä³öÊ±ÖÓ
+ 461   2      
+ 462   2          TH0 = (u8)(TIMx->TIM_Value >> 8);
+ 463   2          TL0 = (u8)TIMx->TIM_Value;
+ 464   2          if (TIMx->TIM_Run == ENABLE)  TR0 = 1;  //¿ªÊ¼ÔËÐÐ
+ 465   2          return  0;    //³É¹¦
+ 466   2        }
+ 467   1      
+ 468   1        if (TIM == Timer1)
+ 469   1        {
+ 470   2          if (TIMx->TIM_Mode >= TIM_16BitAutoReloadNoMask)  return 2; //´íÎó
+ 471   2          TR1 = 0;  //Í£Ö¹¼ÆÊý
+ 472   2          ET1 = 0;  //½ûÖ¹ÖÐ¶Ï
+ 473   2          PT1 = 0;  //µÍÓÅÏÈ¼¶ÖÐ¶Ï
+ 474   2          TMOD &= 0x0f; //¶¨Ê±Ä£Ê½, 16Î»×Ô¶¯ÖØ×°
+ 475   2          AUXR &= ~0x40;  //12TÄ£Ê½, 
+ 476   2          INT_CLKO &= ~0x02;  //²»Êä³öÊ±ÖÓ
+ 477   2          if (TIMx->TIM_Interrupt == ENABLE)    ET1 = 1;  //ÔÊÐíÖÐ¶Ï
+ 478   2          if (TIMx->TIM_Polity == PolityHigh)   PT1 = 1;  //¸ßÓÅÏÈ¼¶ÖÐ¶Ï
+ 479   2          TMOD |= (TIMx->TIM_Mode << 4);  //¹¤×÷Ä£Ê½,0: 16Î»×Ô¶¯ÖØ×°, 1: 16Î»¶¨Ê±/¼ÆÊý, 2: 8Î»×Ô¶¯ÖØ×°
+ 480   2          if (TIMx->TIM_ClkSource == TIM_CLOCK_1T)    AUXR |= 0x40; //1T
+ 481   2          if (TIMx->TIM_ClkSource == TIM_CLOCK_Ext) TMOD |= 0x40; //¶ÔÍâ¼ÆÊý»ò·ÖÆµ
+C51 COMPILER V8.05a   TIMER                                                                07/07/2017 10:19:23 PAGE 9   
 
- 482   1      
- 483   1        if(TIM == Timer2)   //Timer2,¹Ì¶¨Îª16Î»×Ô¶¯ÖØ×°, ÖÐ¶ÏÎÞÓÅÏÈ¼¶
- 484   1        {
- 485   2          if(TIMx->TIM_ClkSource >  TIM_CLOCK_Ext)  return 2;
- 486   2          AUXR &= ~0x1c;    //Í£Ö¹¼ÆÊý, ¶¨Ê±Ä£Ê½, 12TÄ£Ê½
- 487   2          IE2  &= ~(1<<2);  //½ûÖ¹ÖÐ¶Ï
- 488   2          INT_CLKO &= ~0x04;  //²»Êä³öÊ±ÖÓ
- 489   2          if(TIMx->TIM_Interrupt == ENABLE)     IE2  |=  (1<<2);  //ÔÊÐíÖÐ¶Ï
- 490   2          if(TIMx->TIM_ClkSource == TIM_CLOCK_1T)   AUXR |=  (1<<2);  //1T
- 491   2          if(TIMx->TIM_ClkSource == TIM_CLOCK_Ext)  AUXR |=  (1<<3);  //¶ÔÍâ¼ÆÊý»ò·ÖÆµ
- 492   2          if(TIMx->TIM_ClkOut == ENABLE)  INT_CLKO |=  0x04;  //Êä³öÊ±ÖÓ
- 493   2      
- 494   2          TH2 = (u8)(TIMx->TIM_Value >> 8);
- 495   2          TL2 = (u8)TIMx->TIM_Value;
- 496   2          if(TIMx->TIM_Run == ENABLE) AUXR |=  (1<<4);  //¿ªÊ¼ÔËÐÐ
- 497   2          return  0;    //³É¹¦
- 498   2        }
- 499   1      
- 500   1        if(TIM == Timer3)   //Timer3,¹Ì¶¨Îª16Î»×Ô¶¯ÖØ×°, ÖÐ¶ÏÎÞÓÅÏÈ¼¶
- 501   1        {
- 502   2          if(TIMx->TIM_ClkSource >  TIM_CLOCK_Ext)  return 2;
- 503   2          T4T3M &= 0xf0;    //Í£Ö¹¼ÆÊý, ¶¨Ê±Ä£Ê½, 12TÄ£Ê½, ²»Êä³öÊ±ÖÓ
- 504   2          IE2  &= ~(1<<5);  //½ûÖ¹ÖÐ¶Ï
- 505   2          if(TIMx->TIM_Interrupt == ENABLE)     IE2  |=  (1<<5);  //ÔÊÐíÖÐ¶Ï
- 506   2          if(TIMx->TIM_ClkSource == TIM_CLOCK_1T)   T4T3M |=  (1<<1); //1T
- 507   2          if(TIMx->TIM_ClkSource == TIM_CLOCK_Ext)  T4T3M |=  (3<<1); //¶ÔÍâ¼ÆÊý»ò·ÖÆµ
- 508   2          if(TIMx->TIM_ClkOut == ENABLE)  T4T3M |=  1;  //Êä³öÊ±ÖÓ
- 509   2      
- 510   2          TH3 = (u8)(TIMx->TIM_Value >> 8);
- 511   2          TL3 = (u8)TIMx->TIM_Value;
- 512   2          if(TIMx->TIM_Run == ENABLE) T4T3M |=  (1<<3); //¿ªÊ¼ÔËÐÐ
- 513   2          return  0;    //³É¹¦
- 514   2        }
- 515   1      
- 516   1        if(TIM == Timer4)   //Timer4,¹Ì¶¨Îª16Î»×Ô¶¯ÖØ×°, ÖÐ¶ÏÎÞÓÅÏÈ¼¶
- 517   1        {
- 518   2          if(TIMx->TIM_ClkSource >  TIM_CLOCK_Ext)  return 2;
- 519   2          T4T3M &= 0x0f;    //Í£Ö¹¼ÆÊý, ¶¨Ê±Ä£Ê½, 12TÄ£Ê½, ²»Êä³öÊ±ÖÓ
- 520   2          IE2  &= ~(1<<6);  //½ûÖ¹ÖÐ¶Ï
- 521   2          if(TIMx->TIM_Interrupt == ENABLE)     IE2  |=  (1<<6);  //ÔÊÐíÖÐ¶Ï
- 522   2          if(TIMx->TIM_ClkSource == TIM_CLOCK_1T)   T4T3M |=  (1<<5); //1T
- 523   2          if(TIMx->TIM_ClkSource == TIM_CLOCK_Ext)  T4T3M |=  (3<<5); //¶ÔÍâ¼ÆÊý»ò·ÖÆµ
- 524   2          if(TIMx->TIM_ClkOut == ENABLE)  T4T3M |=  (1<<4); //Êä³öÊ±ÖÓ
- 525   2      
- 526   2          TH4 = (u8)(TIMx->TIM_Value >> 8);
- 527   2          TL4 = (u8)TIMx->TIM_Value;
- 528   2          if(TIMx->TIM_Run == ENABLE) T4T3M |=  (1<<7); //¿ªÊ¼ÔËÐÐ
- 529   2          return  0;    //³É¹¦
- 530   2        }
- 531   1      
- 532   1        return 2; //´íÎó
- 533   1      }
- 534          
- 535          
+ 482   2          if (TIMx->TIM_ClkOut == ENABLE) INT_CLKO |= 0x02; //Êä³öÊ±ÖÓ
+ 483   2      
+ 484   2          TH1 = (u8)(TIMx->TIM_Value >> 8);
+ 485   2          TL1 = (u8)TIMx->TIM_Value;
+ 486   2          if (TIMx->TIM_Run == ENABLE)  TR1 = 1;  //¿ªÊ¼ÔËÐÐ
+ 487   2          return  0;    //³É¹¦
+ 488   2        }
+ 489   1      
+ 490   1        if (TIM == Timer2)    //Timer2,¹Ì¶¨Îª16Î»×Ô¶¯ÖØ×°, ÖÐ¶ÏÎÞÓÅÏÈ¼¶
+ 491   1        {
+ 492   2          if (TIMx->TIM_ClkSource > TIM_CLOCK_Ext)  return 2;
+ 493   2          AUXR &= ~0x1c;    //Í£Ö¹¼ÆÊý, ¶¨Ê±Ä£Ê½, 12TÄ£Ê½
+ 494   2          IE2 &= ~(1 << 2); //½ûÖ¹ÖÐ¶Ï
+ 495   2          INT_CLKO &= ~0x04;  //²»Êä³öÊ±ÖÓ
+ 496   2          if (TIMx->TIM_Interrupt == ENABLE)      IE2 |= (1 << 2);  //ÔÊÐíÖÐ¶Ï
+ 497   2          if (TIMx->TIM_ClkSource == TIM_CLOCK_1T)    AUXR |= (1 << 2); //1T
+ 498   2          if (TIMx->TIM_ClkSource == TIM_CLOCK_Ext) AUXR |= (1 << 3); //¶ÔÍâ¼ÆÊý»ò·ÖÆµ
+ 499   2          if (TIMx->TIM_ClkOut == ENABLE) INT_CLKO |= 0x04; //Êä³öÊ±ÖÓ
+ 500   2      
+ 501   2          TH2 = (u8)(TIMx->TIM_Value >> 8);
+ 502   2          TL2 = (u8)TIMx->TIM_Value;
+ 503   2          if (TIMx->TIM_Run == ENABLE)  AUXR |= (1 << 4); //¿ªÊ¼ÔËÐÐ
+ 504   2          return  0;    //³É¹¦
+ 505   2        }
+ 506   1      
+ 507   1        if (TIM == Timer3)    //Timer3,¹Ì¶¨Îª16Î»×Ô¶¯ÖØ×°, ÖÐ¶ÏÎÞÓÅÏÈ¼¶
+ 508   1        {
+ 509   2          if (TIMx->TIM_ClkSource > TIM_CLOCK_Ext)  return 2;
+ 510   2          T4T3M &= 0xf0;    //Í£Ö¹¼ÆÊý, ¶¨Ê±Ä£Ê½, 12TÄ£Ê½, ²»Êä³öÊ±ÖÓ
+ 511   2          IE2 &= ~(1 << 5); //½ûÖ¹ÖÐ¶Ï
+ 512   2          if (TIMx->TIM_Interrupt == ENABLE)      IE2 |= (1 << 5);  //ÔÊÐíÖÐ¶Ï
+ 513   2          if (TIMx->TIM_ClkSource == TIM_CLOCK_1T)    T4T3M |= (1 << 1);  //1T
+ 514   2          if (TIMx->TIM_ClkSource == TIM_CLOCK_Ext) T4T3M |= (3 << 1);  //¶ÔÍâ¼ÆÊý»ò·ÖÆµ
+ 515   2          if (TIMx->TIM_ClkOut == ENABLE) T4T3M |= 1; //Êä³öÊ±ÖÓ
+ 516   2      
+ 517   2          TH3 = (u8)(TIMx->TIM_Value >> 8);
+ 518   2          TL3 = (u8)TIMx->TIM_Value;
+ 519   2          if (TIMx->TIM_Run == ENABLE)  T4T3M |= (1 << 3);  //¿ªÊ¼ÔËÐÐ
+ 520   2          return  0;    //³É¹¦
+ 521   2        }
+ 522   1      
+ 523   1        if (TIM == Timer4)    //Timer4,¹Ì¶¨Îª16Î»×Ô¶¯ÖØ×°, ÖÐ¶ÏÎÞÓÅÏÈ¼¶
+ 524   1        {
+ 525   2          if (TIMx->TIM_ClkSource > TIM_CLOCK_Ext)  return 2;
+ 526   2          T4T3M &= 0x0f;    //Í£Ö¹¼ÆÊý, ¶¨Ê±Ä£Ê½, 12TÄ£Ê½, ²»Êä³öÊ±ÖÓ
+ 527   2          IE2 &= ~(1 << 6); //½ûÖ¹ÖÐ¶Ï
+ 528   2          if (TIMx->TIM_Interrupt == ENABLE)      IE2 |= (1 << 6);  //ÔÊÐíÖÐ¶Ï
+ 529   2          if (TIMx->TIM_ClkSource == TIM_CLOCK_1T)    T4T3M |= (1 << 5);  //1T
+ 530   2          if (TIMx->TIM_ClkSource == TIM_CLOCK_Ext) T4T3M |= (3 << 5);  //¶ÔÍâ¼ÆÊý»ò·ÖÆµ
+ 531   2          if (TIMx->TIM_ClkOut == ENABLE) T4T3M |= (1 << 4);  //Êä³öÊ±ÖÓ
+ 532   2      
+ 533   2          TH4 = (u8)(TIMx->TIM_Value >> 8);
+ 534   2          TL4 = (u8)TIMx->TIM_Value;
+ 535   2          if (TIMx->TIM_Run == ENABLE)  T4T3M |= (1 << 7);  //¿ªÊ¼ÔËÐÐ
+ 536   2          return  0;    //³É¹¦
+ 537   2        }
+ 538   1      
+ 539   1        return 2; //´íÎó
+ 540   1      }
+ 541          
+ 542          
+
+C51 COMPILER V8.05a   TIMER                                                                07/07/2017 10:19:23 PAGE 10  
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
@@ -574,8 +583,6 @@ MODULE INFORMATION:   STATIC OVERLAYABLE
    XDATA SIZE       =     22      17
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----
-C51 COMPILER V8.05a   TIMER                                                                07/01/2017 18:34:34 PAGE 10  
-
    IDATA SIZE       =   ----    ----
    BIT SIZE         =   ----    ----
 END OF MODULE INFORMATION.

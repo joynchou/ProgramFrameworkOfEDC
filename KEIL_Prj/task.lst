@@ -1,4 +1,4 @@
-C51 COMPILER V8.05a   TASK                                                                 07/01/2017 18:07:22 PAGE 1   
+C51 COMPILER V8.05a   TASK                                                                 07/07/2017 09:34:28 PAGE 1   
 
 
 C51 COMPILER V8.05a, COMPILATION OF MODULE TASK
@@ -8,39 +8,30 @@ COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE ..\SOFTWARE\TASK\task.c LARGE BR
 
 line level    source
 
-   1          #include "task.h"
-   2          #include "../COMMON_SOFTWARE/DATA_SCOPE/DataScope_DP.h"
-   3          #include "setup.h"
-   4          #include "../HARDWARE/BSP/USART1.h"
-   5          
-   6          
-   7          void sendScopeData(void) 
-   8          {
-   9   1        u8 a; //
-  10   1        u8 Send_Count;
-  11   1        
-  12   1        DataScope_Get_Channel_Data(123.6f, 1); 
-  13   1          
-  14   1        DataScope_Get_Channel_Data(567, 2);  
-  15   1        /*
-  16   1        DataScope_Get_Channel_Data(yourData, 3);  
-  17   1        DataScope_Get_Channel_Data(yourData, 4);  
-  18   1        DataScope_Get_Channel_Data(yourData, 5);  
-  19   1        ...
-  20   1        */
-  21   1        Send_Count = DataScope_Data_Generate(2); //
-  22   1        for (a = 0; a < Send_Count; a++)
-  23   1        {
-  24   2          TX1_write2buff(DataScope_OutPut_Buffer[a]); //发送一通道数据到串口示波器
-  25   2        }
-  26   1        
-  27   1      }
+   1          /************************************************************
+   2          * 组织名称：
+   3          * 文件名称: K:\单片机相关\电子大赛程序框架\SOFTWARE\TASK\TASK.C
+   4          * 作者:     
+   5          * 版本:    
+   6          * 日期:     2017/07/06
+   7          * 描述:
+   8          * 历史修改记录:
+   9          * <作者> <时间> <版本 > <描述>
+  10          * 
+  11          ***********************************************************/
+  12          
+  13          #include "task.h"
+  14          #include "../COMMON_SOFTWARE/DATA_SCOPE/DataScope_DP.h"
+  15          #include "setup.h"
+  16          #include "../HARDWARE/BSP/USART1.h"
+  17          #include "../HARDWARE/DEVICES/SENSOR/ANGLE/ANGLE.h"
+  18          
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =     87    ----
+   CODE SIZE        =   ----    ----
    CONSTANT SIZE    =   ----    ----
-   XDATA SIZE       =   ----       2
+   XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----
    IDATA SIZE       =   ----    ----

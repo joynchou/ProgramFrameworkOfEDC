@@ -89,7 +89,6 @@ void  buttonScan(void )//°´¼üÉ¨Ãèº¯Êý
 {
     if(digitalRead(BUTTON1))
     {
-			delay_ms(10);
         if(digitalRead(BUTTON1))
         {
 #ifdef BUTTON_DEBUG

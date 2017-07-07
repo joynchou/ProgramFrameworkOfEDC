@@ -12,61 +12,72 @@
 * 周晨阳 17/6/216 1.0 创建此描述
 ***********************************************************/
 #include "MOTOR.h"
+#include "../../../BSP/STC15_PWM.h"
+#include "../../../BSP/GPIO.h"
+
+#define DC_MOTOR_NUM	2
+#define DC_MOTOR_1	0
+#define DC_MOTOR_2	1
+#define DC_MOTOR
 #ifdef DC_MOTOR
-static bit MotorState=OFF;//电机状态标志位，OFF 为关闭，ON 为开启
-//pid算法的静态结构体
 
-bit getMotorState(u8 motor)
+struct DC_Motor
 {
-	 return MotorState;
-	
-}
-void stopMotor(u8 motor)
-{
-  setMotorSpeed(LEFT_MOTOR,0.01f);
-  setMotorSpeed(RIGHT_MOTOR,0.01f);
-  MotorState=OFF;
+	u8 state;
+	u8 speed;
 
+};
+static struct DC_Motor g_DC_Motor[DC_MOTOR_NUM];
 
-}
-void startMotor(u8 motor)
-{
-   OPEN_PWM();
-	 MotorState=ON;
-}
 /*************************************************
 * 函数名称: void setMotorSpeed(bit motor,float speed)
 * 描述: 设置电机速度函数
 * 输入: motor：电机，头文件中定义
-				speed：速度 0~1   
-* 其他说明: 
+				speed：速度 0~1
+* 其他说明:
 *若要关闭电机请使用电机关闭函数，此函数无法关闭电机
-*************************************************/                                                          
-void setMotorSpeed(bit motor,float speed)
+*************************************************/
+void setMotorSpeed(u8 motor, float speed)
 {
-	
-		if(speed>0.95f)
-			{
-		   speed=0.95f;
-	    }
-		if(speed<0.05f)
-		{
-			
-			speed=0.05f;
-		}
-		
-		if(motor)
-		{
-		//	PWM_duty(PWM_2,speed*0.65f);//根据不同电机乘于不同的增益
-			PWM_duty(PWM_2,speed);//根据不同电机乘于不同的增益
-		}
-		else
-		{
-		//	PWM_duty(PWM_4,speed*0.63f);
-			PWM_duty(PWM_4,speed);
-		}
+
+	if (speed > 0.95f)
+	{
+		speed = 0.95f;
+	}
+	if (speed < 0.05f)
+	{
+
+		speed = 0.05f;
+	}
+
+	//	PWM_duty(PWM_2,speed*0.65f);//根据不同电机乘于不同的增益
+	set_PWM_duty(motor + 4, speed);//根据不同电机乘于不同的增益
+	g_DC_Motor[motor].speed = speed;
 }
- /*************************************************
+void startMotor(u8 motor)
+{
+	PWM_UNLOCK;
+	PWM_N_EN(motor + 4);
+	PWM_LOCK;
+
+	g_DC_Motor[motor].state = ON;
+}
+void stopMotor(u8 motor)
+{
+	PWM_UNLOCK;
+	PWM_N_NO(motor + 4);
+	PWM_LOCK;
+	g_DC_Motor[motor].state = OFF;
+
+
+
+}
+bit getMotorState(u8 motor)
+{
+	return g_DC_Motor[motor].state;
+
+}
+/*************************************************
 * 函数名称: void    PWM_config(u8 PWM_N)
 * 描述: 配置需要使用的pwm通道
 * 输入: u8 PWM_N，N的范围是2~7 ，如PWM_2，PWM_3
@@ -75,41 +86,43 @@ void setMotorSpeed(bit motor,float speed)
 *************************************************/
 void    DC_MOTOR_config(void)
 {
-  GPIO_InitTypeDef    GPIO_InitStructure;     //结构定义
-  PWM_InitTypeDef  PWM_InitStructure;
+	GPIO_InitTypeDef    GPIO_InitStructure;     //结构定义
+	PWM_InitTypeDef  PWM_InitStructure;
 	GPIO_InitStructure.Mode = GPIO_PullUp;
 
- 
-          GPIO_InitStructure.Pin  = GPIO_Pin_7 ;    //PWM2
-          P37=1;
-     
-       
-          GPIO_InitStructure.Pin  = GPIO_Pin_2 ;    //PWM4
-          GPIO_Inilize(GPIO_P2,&GPIO_InitStructure);  //初始化
-          P22=1;
-       
-    
-  PWM_UNLOCK;
-  PWM_InitStructure.PWM_GOTO_ADC=DISABLE;
-  PWM_InitStructure.      PWM_V_INIT= PWM_LOW;
-  PWM_InitStructure.      PWM_0ISR_EN=  DISABLE;
-  PWM_InitStructure.      PWM_OUT_EN=ENABLE;
-  PWM_InitStructure.     PWM_UNUSUAL_EN= DISABLE;
-  PWM_InitStructure.     PWM_UNUSUAL_OUT=  DISABLE;
-  PWM_InitStructure.     PWM_UNUSUAL_ISR_EN=DISABLE;
-  PWM_InitStructure.     PWM_UNUSUAL_CMP0_EN=DISABLE;
-  PWM_InitStructure.     PWM_UNUSUAL_P24_EN=DISABLE;
-  PWM_InitStructure.       PWM_CLOCK=PWM_Clock_NT;
-  PWM_InitStructure.       PWM_CLOCK_DIV=0x00;
-  PWM_InitStructure.       PWM_SELECTx_IO=PWM_SELECT_N;
-  PWM_InitStructure.     PWM_ISRx_EN=  DISABLE;
-  PWM_InitStructure.       PWM_T1x_EN=   DISABLE;
-  PWM_InitStructure.       PWM_T2x_EN=    DISABLE;
-  PWM_InitStructure.       PWM_EN=  DISABLE;
-  PWM_Inilize(PWM_2,&PWM_InitStructure) ;
-  PWM_Inilize(PWM_4,&PWM_InitStructure) ;
 
-  PWM_LOCK;
+	GPIO_InitStructure.Pin = GPIO_Pin_3;    //PWM2
+	GPIO_Inilize(GPIO_P2, &GPIO_InitStructure);  //初始化
+
+
+
+	GPIO_InitStructure.Pin = GPIO_Pin_2;    //PWM4
+	GPIO_Inilize(GPIO_P2, &GPIO_InitStructure);  //初始化
+	P22 = 1;
+	P23 = 1;
+
+
+	PWM_UNLOCK;
+	PWM_InitStructure.PWM_GOTO_ADC = DISABLE;
+	PWM_InitStructure.PWM_V_INIT = PWM_LOW;
+	PWM_InitStructure.PWM_0ISR_EN = DISABLE;
+	PWM_InitStructure.PWM_OUT_EN = ENABLE;
+	PWM_InitStructure.PWM_UNUSUAL_EN = DISABLE;
+	PWM_InitStructure.PWM_UNUSUAL_OUT = DISABLE;
+	PWM_InitStructure.PWM_UNUSUAL_ISR_EN = DISABLE;
+	PWM_InitStructure.PWM_UNUSUAL_CMP0_EN = DISABLE;
+	PWM_InitStructure.PWM_UNUSUAL_P24_EN = DISABLE;
+	PWM_InitStructure.PWM_CLOCK = PWM_Clock_NT;
+	PWM_InitStructure.PWM_CLOCK_DIV = 0x00;
+	PWM_InitStructure.PWM_SELECTx_IO = PWM_SELECT_N;
+	PWM_InitStructure.PWM_ISRx_EN = DISABLE;
+	PWM_InitStructure.PWM_T1x_EN = DISABLE;
+	PWM_InitStructure.PWM_T2x_EN = DISABLE;
+	PWM_InitStructure.PWM_EN = DISABLE;
+	PWM_Inilize(PWM_4, &PWM_InitStructure);
+	PWM_Inilize(PWM_5, &PWM_InitStructure);
+
+	PWM_LOCK;
 
 
 }

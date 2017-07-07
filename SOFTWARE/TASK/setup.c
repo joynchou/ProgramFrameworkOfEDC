@@ -1,9 +1,11 @@
 #include "setup.h"
+#include "../HARDWARE/DEVICES/SENSOR/ANGLE/ANGLE.h"
 #include "../../HARDWARE/DEVICES/BUTTON/BUTTON.h"	
 #include "../../HARDWARE/DEVICES/MOTOR/DC_MOTOR/MOTOR.h"
 #include "../../HARDWARE/DEVICES/LED/LED.h"
 #include "../../HARDWARE/BSP/USART1.h"
 #include "../../HARDWARE/BSP/timer.h"
+
 
 /*************  串口1初始化函数 *****************/
 /*************************************************
@@ -35,6 +37,7 @@ void setup(void)
    timerInit();
 	 Board_LED_Init();
    Button_config();
+	 ADC_config(ADC_P10,ADC_540T);
 	 EA=1;
 
 }

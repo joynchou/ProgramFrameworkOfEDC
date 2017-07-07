@@ -1,8 +1,7 @@
 #ifndef _ANGLE_H_
 #define _ANGLE_H_
-#include "../../USER/USER.h"
-#include "../USER/adc.h"
-
+#include "../../../BSP/config.h"
+#include "../../../BSP/ADC.h"
 #define LAST_ANGLE   0   //当前角度，函数参数宏定义
 #define PRESENT_ANGLE 1   //上一次角度，函数参数宏定义
 /*********对外参数和接口函数***********/

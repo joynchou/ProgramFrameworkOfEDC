@@ -463,6 +463,11 @@
               <FileType>1</FileType>
               <FilePath>..\SOFTWARE\COMMON_SOFTWARE\DATA_SCOPE\DataScope_DP.c</FilePath>
             </File>
+            <File>
+              <FileName>storage.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\SOFTWARE\COMMON_SOFTWARE\STORAGE\storage.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -544,6 +549,26 @@
               <FileType>1</FileType>
               <FilePath>..\HARDWARE\DEVICES\MOTOR\SERVO\SERVO.C</FilePath>
             </File>
+            <File>
+              <FileName>STEP_MOTOR.C</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\HARDWARE\DEVICES\MOTOR\STEP_MOTOR\STEP_MOTOR.C</FilePath>
+            </File>
+            <File>
+              <FileName>RELAY.C</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\HARDWARE\DEVICES\COMMON_DEVICES\RELAY\RELAY.C</FilePath>
+            </File>
+            <File>
+              <FileName>ANGLE.C</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\HARDWARE\DEVICES\SENSOR\ANGLE\ANGLE.C</FilePath>
+            </File>
+            <File>
+              <FileName>MPU6050.C</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\HARDWARE\DEVICES\SENSOR\MPU6050\MPU6050.C</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -585,11 +610,6 @@
               <FilePath>..\HARDWARE\BSP\stc15_pwm.c</FilePath>
             </File>
             <File>
-              <FileName>stc15_spi.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\HARDWARE\BSP\stc15_spi.c</FilePath>
-            </File>
-            <File>
               <FileName>timer.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\HARDWARE\BSP\timer.c</FilePath>
@@ -598,6 +618,21 @@
               <FileName>USART1.C</FileName>
               <FileType>1</FileType>
               <FilePath>..\HARDWARE\BSP\USART1.C</FilePath>
+            </File>
+            <File>
+              <FileName>stc15_eeprom.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\HARDWARE\BSP\stc15_eeprom.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>ALGORITHM</GroupName>
+          <Files>
+            <File>
+              <FileName>PID.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\SOFTWARE\ALGORITHM\PID\PID.c</FilePath>
             </File>
           </Files>
         </Group>

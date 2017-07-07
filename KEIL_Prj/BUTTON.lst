@@ -1,4 +1,4 @@
-C51 COMPILER V8.05a   BUTTON                                                               07/01/2017 18:07:23 PAGE 1   
+C51 COMPILER V8.05a   BUTTON                                                               07/04/2017 10:33:36 PAGE 1   
 
 
 C51 COMPILER V8.05a, COMPILATION OF MODULE BUTTON
@@ -62,7 +62,7 @@ line level    source
   50          static bit BUTTON1_bit=0;
   51          static bit BUTTON2_bit=0;
   52          static bit BUTTON3_bit=0;
-C51 COMPILER V8.05a   BUTTON                                                               07/01/2017 18:07:23 PAGE 2   
+C51 COMPILER V8.05a   BUTTON                                                               07/04/2017 10:33:36 PAGE 2   
 
   53          static bit BUTTON4_bit=0;
   54          /*************************************************
@@ -103,71 +103,70 @@ line level    source
   89          {
   90   1          if(digitalRead(BUTTON1))
   91   1          {
-  92   2            delay_ms(10);
-  93   2              if(digitalRead(BUTTON1))
-  94   2              {
-  95   3      #ifdef BUTTON_DEBUG
+  92   2              if(digitalRead(BUTTON1))
+  93   2              {
+  94   3      #ifdef BUTTON_DEBUG
                           PrintString1("BUTTON1 is on\n");
               #endif
-  98   3                  BUTTON1_bit=1;
-  99   3              }
- 100   2          }
- 101   1          else
- 102   1          {
- 103   2              BUTTON1_bit=0;
- 104   2          }
- 105   1          if(digitalRead(BUTTON2))
- 106   1          {
- 107   2              if(!BUTTON2_bit)
- 108   2              {
- 109   3      #ifdef BUTTON_DEBUG
+  97   3                  BUTTON1_bit=1;
+  98   3              }
+  99   2          }
+ 100   1          else
+ 101   1          {
+ 102   2              BUTTON1_bit=0;
+ 103   2          }
+ 104   1          if(digitalRead(BUTTON2))
+ 105   1          {
+ 106   2              if(!BUTTON2_bit)
+ 107   2              {
+ 108   3      #ifdef BUTTON_DEBUG
                           PrintString1("BUTTON2 is on\n");
               #endif
- 112   3                  BUTTON2_bit=1;
- 113   3              }
- 114   2          }
-C51 COMPILER V8.05a   BUTTON                                                               07/01/2017 18:07:23 PAGE 3   
+ 111   3                  BUTTON2_bit=1;
+ 112   3              }
+ 113   2          }
+ 114   1          else
+C51 COMPILER V8.05a   BUTTON                                                               07/04/2017 10:33:36 PAGE 3   
 
- 115   1          else
- 116   1          {
- 117   2              BUTTON2_bit=0;
- 118   2          }
- 119   1          if(digitalRead(BUTTON3))
- 120   1          {
- 121   2              if(!BUTTON3_bit)
- 122   2              {
- 123   3      #ifdef BUTTON_DEBUG
+ 115   1          {
+ 116   2              BUTTON2_bit=0;
+ 117   2          }
+ 118   1          if(digitalRead(BUTTON3))
+ 119   1          {
+ 120   2              if(!BUTTON3_bit)
+ 121   2              {
+ 122   3      #ifdef BUTTON_DEBUG
                           PrintString1("BUTTON3 is on\n");
               #endif
- 126   3                  BUTTON3_bit=1;
- 127   3                 
- 128   3              }
- 129   2          }
- 130   1          else
- 131   1          {
- 132   2              BUTTON3_bit=0;
- 133   2          }
- 134   1          if(digitalRead(BUTTON4))
- 135   1          {
- 136   2              if(!BUTTON4_bit)
- 137   2              {
- 138   3      #ifdef BUTTON_DEBUG
+ 125   3                  BUTTON3_bit=1;
+ 126   3                 
+ 127   3              }
+ 128   2          }
+ 129   1          else
+ 130   1          {
+ 131   2              BUTTON3_bit=0;
+ 132   2          }
+ 133   1          if(digitalRead(BUTTON4))
+ 134   1          {
+ 135   2              if(!BUTTON4_bit)
+ 136   2              {
+ 137   3      #ifdef BUTTON_DEBUG
                           PrintString1("BUTTON4 is on\n");
               #endif
- 141   3                  BUTTON4_bit=1;
- 142   3                 
- 143   3              }
- 144   2          }
- 145   1          else
- 146   1          {
- 147   2              BUTTON4_bit=0;
- 148   2          }
- 149   1      }
- 150          #endif
+ 140   3                  BUTTON4_bit=1;
+ 141   3                 
+ 142   3              }
+ 143   2          }
+ 144   1          else
+ 145   1          {
+ 146   2              BUTTON4_bit=0;
+ 147   2          }
+ 148   1      }
+ 149          #endif
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    163    ----
+   CODE SIZE        =    157    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----       2
    PDATA SIZE       =   ----    ----

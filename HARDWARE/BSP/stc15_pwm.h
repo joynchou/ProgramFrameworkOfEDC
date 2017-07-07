@@ -36,7 +36,7 @@ bit getPWM_state(u8 PWM_N) ;
 * 返回值: pwm频率
 * 其他说明: 若没有设置pwm的频率就调用此函数则返回不确定数值；
 *************************************************/
-u32  getPWM_period(u8 PWN_N);
+u32  get_PWM_period(u8 PWN_N);
 
 
 
@@ -48,7 +48,7 @@ u32  getPWM_period(u8 PWN_N);
 * 返回值: PWM_N的占空比信息,float形式
 * 其他说明: 若没有设置pwm的占空比就调用此函数则返回不确定数值；
 *************************************************/
-float getPWM_N_duty(u8 PWM_N);
+float get_PWM_N_duty(u8 PWM_N);
 
 
 
@@ -69,7 +69,7 @@ float getPWM_N_duty(u8 PWM_N);
         但是由于单片机硬件所限，不可以单独对每路pwm的频率进行修改，
         只能一改全改。
 *************************************************/
-void PWM_period(u16 Hz);
+void set_PWM_period(u16 Hz);
 
 
 
@@ -86,10 +86,12 @@ void PWM_period(u16 Hz);
 * 返回值: 无
 * 其他说明:
 *************************************************/
-void PWM_duty(u8 PWM_N,float duty);
+void set_PWM_duty(u8 PWM_N,float duty);
 
 
 
+static u8 PWM_SET_PERIOD(u16 period);
+static u8 PWM_SET_T12_PERIOD(u8 PWM_N, u16 period1, u32 period2);
 //u8   PWM_SET_PERIOD(u16 period);
 //u8   PWM_SET_T12_PERIOD(u8 PWM_N,u16 period1,u32 period2);
 //void PWM_Inilize(u8 PWM_N,PWM_InitTypeDef *PWMx);

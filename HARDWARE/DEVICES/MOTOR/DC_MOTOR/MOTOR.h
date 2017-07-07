@@ -12,8 +12,6 @@
 #define _MOTOR_H_
 #include <math.h>
 #include "../../../BSP/config.h"
-#include "../../../BSP/STC15_PWM.h"
-#include "../../../BSP/GPIO.h"
 /************************************
 硬件PWMio引脚（没有pwm1）
 PWM_N| io  | 第二组

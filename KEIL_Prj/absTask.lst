@@ -1,4 +1,4 @@
-C51 COMPILER V8.05a   ABSTASK                                                              07/01/2017 18:36:01 PAGE 1   
+C51 COMPILER V8.05a   ABSTASK                                                              07/07/2017 10:07:04 PAGE 1   
 
 
 C51 COMPILER V8.05a, COMPILATION OF MODULE ABSTASK
@@ -11,157 +11,134 @@ line level    source
    1          #include "../TASK/TASK.h"
    2          #include <rtx51tny.h>                 /* RTX-51 tiny functions & defines      */
    3          #include <stdio.h>
-   4          #include "../../HARDWARE/DEVICES/BUTTON/BUTTON.H"
-   5          #include "../../HARDWARE/DEVICES/LED/LED.H"
-   6          #include "../../HARDWARE/BSP/USART1.H"
-   7          
-   8          //´®¿ÚÊ¾²¨Æ÷Êý¾Ý·¢ËÍº¯Êý
-   9           unsigned int count1=0;
-  10           unsigned int count2=0;
-  11           unsigned int count3=0;
-  12           unsigned int count4=0;
-  13           unsigned int count5=0;
-  14          
-  15          void taskStart() _task_ 0
-  16          {
-  17   1        setup();
-*** WARNING C206 IN LINE 17 OF ..\SOFTWARE\ABS_TASK\ABSTASK.C: 'setup': missing function-prototype
-  18   1      //  os_create_task (1);
-  19   1      //  os_create_task (2);
-  20   1        os_create_task (3);
-  21   1      //  os_create_task (5);
-  22   1      //  os_create_task (6);
-  23   1      //  os_create_task (7);
-  24   1        //  os_create_task (8);
-  25   1      //    os_create_task (9);
-  26   1        os_delete_task (0); 
-  27   1      }
-  28          void task1(void) _task_ 1
-  29          { 
-  30   1        
-  31   1          for(;;)
-  32   1        {
-  33   2          if(++count1>=65536)count1=0;
-  34   2        
-  35   2         
-  36   2        }
-  37   1      }
-  38          void task2(void) _task_ 2
-  39          {
-  40   1        static unsigned int count=0;
-  41   1        unsigned int test[20];
+   4          #include "../TASK/setup.h"
+   5          #include "../../HARDWARE/DEVICES/BUTTON/BUTTON.H"
+   6          #include "../../HARDWARE/DEVICES/LED/LED.H"
+   7          #include "../../HARDWARE/BSP/USART1.H"
+   8          #include "../HARDWARE/DEVICES/SENSOR/ANGLE/ANGLE.h"
+   9          #include "../COMMON_SOFTWARE/DATA_SCOPE/DataScope_DP.h"
+  10          
+  11          void taskStart() _task_ 0
+  12          {
+  13   1        setup();
+  14   1        blink(4);
+  15   1      
+  16   1        //  os_create_task (1);
+  17   1        //  os_create_task (2);
+  18   1        os_create_task(3);
+  19   1        os_create_task(5);
+  20   1        //  os_create_task (6);
+  21   1        os_create_task(7);
+  22   1        os_create_task(8);
+  23   1        os_create_task(9);
+  24   1        os_delete_task(0);
+  25   1      }
+  26          void task1(void) _task_ 1
+  27          {
+  28   1      
+  29   1        for (;;)
+  30   1        {
+  31   2      
+  32   2      
+  33   2        }
+  34   1      }
+  35          void task2(void) _task_ 2
+  36          {
+  37   1        static unsigned int count = 0;
+  38   1        unsigned int test[20];
+  39   1      
+  40   1      
+  41   1      
   42   1      
-  43   1         for(;;)
-  44   1        {
-  45   2         blink(4);
-  46   2         os_delete_task(2);
-  47   2        }
-  48   1        
-  49   1      }
-*** WARNING C280 IN LINE 40 OF ..\SOFTWARE\ABS_TASK\ABSTASK.C: 'count': unreferenced local variable
-*** WARNING C280 IN LINE 41 OF ..\SOFTWARE\ABS_TASK\ABSTASK.C: 'test': unreferenced local variable
-  50          void task3(void) _task_ 3
-  51          { 
-C51 COMPILER V8.05a   ABSTASK                                                              07/01/2017 18:36:01 PAGE 2   
+  43   1      }
+*** WARNING C280 IN LINE 37 OF ..\SOFTWARE\ABS_TASK\ABSTASK.C: 'count': unreferenced local variable
+*** WARNING C280 IN LINE 38 OF ..\SOFTWARE\ABS_TASK\ABSTASK.C: 'test': unreferenced local variable
+  44          void task3(void) _task_ 3
+  45          {
+  46   1        unsigned int string[50];
+  47   1        static unsigned int count = 0;
+  48   1        for (;;)
+  49   1        {
+  50   2      
+  51   2      
+  52   2      
+C51 COMPILER V8.05a   ABSTASK                                                              07/07/2017 10:07:04 PAGE 2   
 
-  52   1        unsigned int string[50];
-  53   1        static unsigned int count=0;
-  54   1        for(;;)
-  55   1        {
-  56   2            //if(++count3>=65536)count3=0;
-  57   2      
-  58   2          sprintf(string,"MILLIS is %d \n seconds is %d \n minutes is %d\n",getMillis(),getSeconds(),getMinutes())
-             -;
-*** WARNING C182 IN LINE 58 OF ..\SOFTWARE\ABS_TASK\ABSTASK.C: pointer to different objects
-*** WARNING C206 IN LINE 58 OF ..\SOFTWARE\ABS_TASK\ABSTASK.C: 'getMillis': missing function-prototype
-*** WARNING C206 IN LINE 58 OF ..\SOFTWARE\ABS_TASK\ABSTASK.C: 'getSeconds': missing function-prototype
-*** WARNING C206 IN LINE 58 OF ..\SOFTWARE\ABS_TASK\ABSTASK.C: 'getMinutes': missing function-prototype
-  59   2          PrintString1(string);   //´®¿Ú²âÊÔ
-*** WARNING C182 IN LINE 59 OF ..\SOFTWARE\ABS_TASK\ABSTASK.C: pointer to different objects
-  60   2      
-  61   2        //  sendScopeData();
-  62   2          //PrintString1("task3 is running\n");   //´®¿Ú²âÊÔ
-  63   2        //  TX1_write2buff(i++);
-  64   2          os_wait(K_IVL,10,0);
-  65   2      
-  66   2        }
-  67   1        
-  68   1      }
-*** WARNING C280 IN LINE 53 OF ..\SOFTWARE\ABS_TASK\ABSTASK.C: 'count': unreferenced local variable
-  69          void task5(void) _task_ 5
-  70          {
-  71   1          unsigned long count=0;
-  72   1        for(;;)
-  73   1        {
-  74   2            if(++count5>=65536)count5=0;
-  75   2      
-  76   2        buttonScan();
-  77   2          os_wait(K_IVL,5,0); 
-  78   2        }
-  79   1      }
-  80          
-  81          void task6(void) _task_ 6
-  82          {
-  83   1        unsigned int string[150];
-  84   1        unsigned int count=0;
-  85   1         for(;;)
-  86   1        {
-  87   2          sprintf(string,"count1=%d,\n count2=%d,\n count3=%d,\n count5=%d,\n ",count1,count2,count3,count5);
-*** WARNING C182 IN LINE 87 OF ..\SOFTWARE\ABS_TASK\ABSTASK.C: pointer to different objects
-  88   2          PrintString1(string);   //´®¿Ú²âÊÔ
-*** WARNING C182 IN LINE 88 OF ..\SOFTWARE\ABS_TASK\ABSTASK.C: pointer to different objects
-  89   2          os_wait(K_IVL,1000,0);  
-  90   2        }
-  91   1      }
-  92          void task7(void) _task_ 7
-  93          {
-  94   1         for(;;)
-  95   1        {
-  96   2          if( getButtonState(BUTTON1_GPIO_PIN) )
-  97   2          {
-  98   3             open_Board_LED();
-  99   3          } 
- 100   2          else
- 101   2          {
- 102   3             close_Board_LED();
- 103   3          }
- 104   2          os_wait(K_IVL,10,0);
-C51 COMPILER V8.05a   ABSTASK                                                              07/01/2017 18:36:01 PAGE 3   
+  53   2        }
+  54   1      
+  55   1      }
+*** WARNING C280 IN LINE 46 OF ..\SOFTWARE\ABS_TASK\ABSTASK.C: 'string': unreferenced local variable
+*** WARNING C280 IN LINE 47 OF ..\SOFTWARE\ABS_TASK\ABSTASK.C: 'count': unreferenced local variable
+  56          void task5(void) _task_ 5
+  57          {
+  58   1        unsigned long count = 0;
+  59   1        for (;;)
+  60   1        {
+  61   2      
+  62   2          buttonScan();
+  63   2          os_wait(K_IVL, 2, 0);
+  64   2        }
+  65   1      }
+  66          
+  67          void task6(void) _task_ 6
+  68          {
+  69   1        unsigned int string[150];
+  70   1        unsigned int count = 0;
+  71   1        for (;;)
+  72   1        {
+  73   2          os_wait(K_IVL, 1000, 0);
+  74   2        }
+  75   1      }
+*** WARNING C280 IN LINE 69 OF ..\SOFTWARE\ABS_TASK\ABSTASK.C: 'string': unreferenced local variable
+  76          void task7(void) _task_ 7
+  77          {
+  78   1        for (;;)
+  79   1        {
+  80   2          if (getButtonState(BUTTON1_GPIO_PIN))
+  81   2          {
+  82   3            open_Board_LED();
+  83   3          }
+  84   2          else
+  85   2          {
+  86   3            close_Board_LED();
+  87   3          }
+  88   2          os_wait(K_IVL, 5, 0);
+  89   2        }
+  90   1      }
+  91          void task8(void) _task_ 8
+  92          {
+  93   1        for (;;)
+  94   1        {
+  95   2          if (getAngle(1) > 50)
+  96   2          {
+  97   3            open_Board_LED();
+  98   3          }
+  99   2          else
+ 100   2          {
+ 101   3            close_Board_LED();
+ 102   3          }
+ 103   2          os_wait(K_IVL, 1, 0);
+ 104   2        }
+ 105   1      }
+ 106          void task9(void) _task_ 9
+ 107          {
+ 108   1        for (;;)
+ 109   1        {
+ 110   2          sendScopeData(getAngle(1), 1);
+ 111   2          os_wait(K_IVL, 3, 0);
+C51 COMPILER V8.05a   ABSTASK                                                              07/07/2017 10:07:04 PAGE 3   
 
- 105   2        }
- 106   1      }
- 107          void task8(void) _task_ 8
- 108          {
- 109   1        unsigned int id[20];
- 110   1        for(;;)
- 111   1        {
- 112   2          sprintf(id,"Task %d is running\n",os_running_task_id());
-*** WARNING C182 IN LINE 112 OF ..\SOFTWARE\ABS_TASK\ABSTASK.C: pointer to different objects
- 113   2          PrintString1(id);   //´®¿Ú²âÊÔ
-*** WARNING C182 IN LINE 113 OF ..\SOFTWARE\ABS_TASK\ABSTASK.C: pointer to different objects
- 114   2        
- 115   2        os_wait(K_IVL,10,0);  
- 116   2        }
- 117   1      }
- 118          void task9(void) _task_ 9
- 119          {
- 120   1        for(;;)
- 121   1        {
- 122   2          open_Board_LED();
- 123   2          os_wait(K_IVL,1000,0);
- 124   2          close_Board_LED();
- 125   2          os_wait(K_IVL,100,0);
- 126   2      
- 127   2        }
- 128   1        
- 129   1      }
- 130          
+ 112   2      
+ 113   2        }
+ 114   1      
+ 115   1      }
+ 116          
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    427    ----
-   CONSTANT SIZE    =    115    ----
-   XDATA SIZE       =     14     486
+   CODE SIZE        =    177    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =      4     446
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----
    IDATA SIZE       =   ----    ----
@@ -169,4 +146,4 @@ MODULE INFORMATION:   STATIC OVERLAYABLE
 END OF MODULE INFORMATION.
 
 
-C51 COMPILATION COMPLETE.  13 WARNING(S),  0 ERROR(S)
+C51 COMPILATION COMPLETE.  5 WARNING(S),  0 ERROR(S)

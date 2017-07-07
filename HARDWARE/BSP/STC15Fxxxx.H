@@ -132,10 +132,11 @@ sfr P7M0   = 0xE2;
 sfr CMPCR1 = 0xE6;
 sfr CMPCR2 = 0xE7;
 //增强型PWM波形发生器特殊功能寄存器
-sfr PWMCFG      =   0xf1;   //x000,0000 PWM配置寄存器
-sfr PWMCR       =   0xf5;   //0000,0000 PWM控制寄存器
-sfr PWMIF       =   0xf6;   //x000,0000 PWM中断标志寄存器
-sfr PWMFDCR     =   0xf7;   //xx00,0000 PWM外部异常检测控制寄存器
+sfr PWMCFG      =   0xF1;   //x000,0000 PWM配置寄存器
+sfr PWMCR       =   0xF5;   //0000,0000 PWM控制寄存器
+sfr PWMIF       =   0xF6;   //x000,0000 PWM中断标志寄存器
+sfr PWMFDCR     =   0xF7;   //xx00,0000 PWM外部异常检测控制寄存器
+
 sfr P6     = 0xE8;
 sfr CL     = 0xE9;  //
 sfr CCAP0L = 0xEA;  //PCA模块0的捕捉/比较寄存器低8位。
@@ -160,6 +161,8 @@ sbit RS0  = PSW^3;
 sbit OV   = PSW^2;
 sbit F1   = PSW^1;
 sbit P    = PSW^0;
+
+
 /*  TCON  */
 sbit TF1  = TCON^7; //定时器1溢出中断标志位
 sbit TR1  = TCON^6; //定时器1运行控制位

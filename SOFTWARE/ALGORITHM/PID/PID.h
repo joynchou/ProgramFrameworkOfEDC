@@ -1,16 +1,18 @@
  /************************************************************
- * 组织名称：电子大赛小组
- * 文件名称: PID..h
- * 作者:     电子大赛小组
- * 版本 :    1.0
- * 日期:     10/06/17
- * 描述: 	 
- * 历史修改记录: 
+ * 组织名称：
+ * 文件名称: K:\单片机相关\电子大赛程序框架\SOFTWARE\ALGORITHM\PID\PID.H
+ * 作者:     
+ * 版本 :    
+ * 日期:     2017/07/06
+ * 描述:
+ * 历史修改记录:
  * <作者> <时间> <版本 > <描述>
+ * 
  ***********************************************************/
+ 
  #ifndef _PID_H_
  #define _PID_H_
-#include "../USER/USER.h"
+#include "../HARDWARE/BSP/config.h"
 #define SET_ANGLE    0
 #define ERR          1
 #define ERR_LAST     2
@@ -19,6 +21,10 @@
 #define KD           5
 #define INTEGRAL     6
 #define OUTPUT       7
+#define PID_NUM	2   //需要使用多少个pid
+#define PID_1 0
+#define PID_2 1
+
 
  /*************************************************
  * 函数名称:double getPID_data(u8 DATA)
@@ -57,8 +63,26 @@ void setPID_data(u8 DATA, float value);
 * 返回值:   无
 * 其他说明: 无
 *************************************************/
-void PID_config(float kp, float ki, float kd);//pid算法初始化函数，参数是三个，PID
+void PID_config(u8 PID_N, float kp, float ki, float kd);//pid算法初始化函数，参数是三个，PID
 
 
  
- #endif
+void openPID(u8 PID_N);
+void closePID(u8 PID_N);
+bit PID(u8 PID_N);
+void setParameterInferiorLimit(u8 PID_N, float value);
+void setParameterUpperLimit(u8 PID_N, float value);
+void setActualParameter(u8 PID_N, float value);
+void setKi(u8 PID_N, float value);
+void setKp(u8 PID_N, float value);
+void setKd(u8 PID_N, float value);
+void setParameter(u8 PID_N, float value);
+float getParameter(u8 PID_N);
+float getErr(u8 PID_N);
+float getErrLast(u8 PID_N);
+float getKp(u8 PID_N);
+float getKi(u8 PID_N);
+float getKd(u8 PID_N);
+float getOutput();
+float getIntegral();
+#endif

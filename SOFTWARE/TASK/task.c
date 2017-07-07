@@ -1,27 +1,18 @@
+/************************************************************
+* 组织名称：
+* 文件名称: K:\单片机相关\电子大赛程序框架\SOFTWARE\TASK\TASK.C
+* 作者:     
+* 版本:    
+* 日期:     2017/07/06
+* 描述:
+* 历史修改记录:
+* <作者> <时间> <版本 > <描述>
+* 
+***********************************************************/
+
 #include "task.h"
 #include "../COMMON_SOFTWARE/DATA_SCOPE/DataScope_DP.h"
 #include "setup.h"
 #include "../HARDWARE/BSP/USART1.h"
+#include "../HARDWARE/DEVICES/SENSOR/ANGLE/ANGLE.h"
 
-
-void sendScopeData(void) 
-{
-	u8 a; //
-	u8 Send_Count;
-	
-	DataScope_Get_Channel_Data(123.6f, 1); 
-		
-	DataScope_Get_Channel_Data(567, 2);  
-	/*
-	DataScope_Get_Channel_Data(yourData, 3);  
-	DataScope_Get_Channel_Data(yourData, 4);  
-	DataScope_Get_Channel_Data(yourData, 5);  
-	...
-	*/
-	Send_Count = DataScope_Data_Generate(2); //
-	for (a = 0; a < Send_Count; a++)
-	{
-		TX1_write2buff(DataScope_OutPut_Buffer[a]); //发送一通道数据到串口示波器
-	}
-  
-}

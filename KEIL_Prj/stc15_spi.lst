@@ -1,4 +1,4 @@
-C51 COMPILER V8.05a   STC15_SPI                                                            07/01/2017 18:07:24 PAGE 1   
+C51 COMPILER V8.05a   STC15_SPI                                                            07/02/2017 23:31:53 PAGE 1   
 
 
 C51 COMPILER V8.05a, COMPILATION OF MODULE STC15_SPI
@@ -62,7 +62,7 @@ line level    source
   50          // 描述: SPI初始化程序.
   51          // 参数: SPIx: 结构参数,请参考spi.h里的定义.
   52          void    SPI_Init(SPI_InitTypeDef *SPIx)
-C51 COMPILER V8.05a   STC15_SPI                                                            07/01/2017 18:07:24 PAGE 2   
+C51 COMPILER V8.05a   STC15_SPI                                                            07/02/2017 23:31:53 PAGE 2   
 
   53          {
   54   1          if(SPIx->SPI_SSIG == ENABLE)
@@ -126,7 +126,7 @@ line level    source
  112   1      }
  113          ///////////////////////////////////////////////////////////////////////
  114          // 函数: void   SPI_SetMode(u8 mode)
-C51 COMPILER V8.05a   STC15_SPI                                                            07/01/2017 18:07:24 PAGE 3   
+C51 COMPILER V8.05a   STC15_SPI                                                            07/02/2017 23:31:53 PAGE 3   
 
  115          // 描述: SPI设置主从模式函数.
  116          // 参数: mode: 指定模式,取值 SPI_Mode_Master 或 SPI_Mode_Slave
@@ -190,7 +190,7 @@ line level    source
  174   1          else
  175   1          {
  176   2              SPI_SetMode(SPI_Mode_Master);
-C51 COMPILER V8.05a   STC15_SPI                                                            07/01/2017 18:07:24 PAGE 4   
+C51 COMPILER V8.05a   STC15_SPI                                                            07/02/2017 23:31:53 PAGE 4   
 
  177   2              i = SPI_TxBuffer[SPI_TxRead];
  178   2              if(++SPI_TxRead >= SPI_BUF_LENTH)
@@ -254,7 +254,7 @@ line level    source
  236          {
  237   1          if(SPI_TxRead != SPI_TxWrite)
  238   1          {
-C51 COMPILER V8.05a   STC15_SPI                                                            07/01/2017 18:07:24 PAGE 5   
+C51 COMPILER V8.05a   STC15_SPI                                                            07/02/2017 23:31:53 PAGE 5   
 
  239   2              //在写数据之前先读出SPDAT
  240   2              SPI_RxBuffer[SPI_RxWrite] = SPDAT ;

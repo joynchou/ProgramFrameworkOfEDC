@@ -14,3 +14,10 @@
 *.obj
 *.lst
 *.__i
+*.lst
+*.obj
+*.htm
+*.lnp
+*.M51
+*.joyn
+*.bak

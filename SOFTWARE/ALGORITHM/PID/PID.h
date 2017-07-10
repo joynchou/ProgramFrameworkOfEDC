@@ -83,6 +83,6 @@ float getErrLast(u8 PID_N);
 float getKp(u8 PID_N);
 float getKi(u8 PID_N);
 float getKd(u8 PID_N);
-float getOutput();
-float getIntegral();
+float getOutput(u8 PID_N);
+float getIntegral(u8 PID_N);
 #endif

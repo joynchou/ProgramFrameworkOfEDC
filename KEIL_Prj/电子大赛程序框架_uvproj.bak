@@ -463,6 +463,11 @@
               <FileType>1</FileType>
               <FilePath>..\SOFTWARE\COMMON_SOFTWARE\DATA_SCOPE\DataScope_DP.c</FilePath>
             </File>
+            <File>
+              <FileName>storage.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\SOFTWARE\COMMON_SOFTWARE\STORAGE\storage.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -613,6 +618,11 @@
               <FileName>USART1.C</FileName>
               <FileType>1</FileType>
               <FilePath>..\HARDWARE\BSP\USART1.C</FilePath>
+            </File>
+            <File>
+              <FileName>stc15_eeprom.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\HARDWARE\BSP\stc15_eeprom.c</FilePath>
             </File>
           </Files>
         </Group>

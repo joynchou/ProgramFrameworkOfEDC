@@ -12,6 +12,10 @@
 #define _MOTOR_H_
 #include <math.h>
 #include "../../../BSP/config.h"
+#define DC_MOTOR_NUM	2
+#define DC_MOTOR_1	0
+#define DC_MOTOR_2	1
+
 /************************************
 硬件PWMio引脚（没有pwm1）
 PWM_N| io  | 第二组
@@ -28,9 +32,9 @@ PWM7 :P1.7 -> P0.6
 #define STOP         0
 
 
-void stopMotor(u8 motor);
-void startMotor(u8 motor);
-bit getMotorState(u8 motor);
+void close_DC_Motor(u8 motor);
+void open_DC_Motor(u8 motor);
+bit getDC_MotorState(u8 motor);
 /*************************************************
 * 函数名称: void setMotorSpeed(bit motor,float speed)
 * 描述: 设置电机速度函数
@@ -38,7 +42,7 @@ bit getMotorState(u8 motor);
 				speed：速度 0~1   0时电机停转
 * 其他说明: 
 *************************************************/
-void setMotorSpeed(u8 motor,float speed);
+void setDC_MotorSpeed(u8 motor,float speed);
 
 
 

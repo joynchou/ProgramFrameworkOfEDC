@@ -39,9 +39,9 @@ typedef  struct
 static pid_info g_pid_n_info[PID_NUM];
 
 /*************************************************
-* 函数名称:
-* 描述:
-* 输入:
+* 函数名称:PID_config
+* 描述: pid初始化函数
+* 输入:u8 PID_N, float kp, float ki, float kd
 * 输出:
 * 返回值:
 * 其他说明:
@@ -61,20 +61,12 @@ void PID_config(u8 PID_N, float kp, float ki, float kd)//pid算法初始化函数，参数
 	g_pid_n_info[PID_N].Ki_temp = g_pid_n_info[PID_N].Ki;
 	g_pid_n_info[PID_N].Kd_temp = g_pid_n_info[PID_N].Kd;
 }
-/*************************************************
-* 函数名称:
-* 描述:
-* 输入:
-* 输出:
-* 返回值:
-* 其他说明:
-*************************************************/
 //************************************
 // Method:    openPID
 // FullName:  openPID
 // Access:    public 
 // Returns:   void
-// Qualifier:
+// Qualifier: 打开pid
 // Parameter: u8 PID_N
 //************************************
 void openPID(u8 PID_N)
@@ -82,20 +74,12 @@ void openPID(u8 PID_N)
 	g_pid_n_info[PID_N].state = ON;
 	//add the code here
 }
-/*************************************************
-* 函数名称:
-* 描述:
-* 输入:
-* 输出:
-* 返回值:
-* 其他说明:
-*************************************************/
 //************************************
 // Method:    closePID
 // FullName:  closePID
 // Access:    public 
 // Returns:   void
-// Qualifier:
+// Qualifier:关闭pid
 // Parameter: u8 PID_N
 //************************************
 void closePID(u8 PID_N)
@@ -104,20 +88,12 @@ void closePID(u8 PID_N)
 	//add the code here
 
 }
-/*************************************************
-* 函数名称:PID
-* 描述:PIDh核心算法
-* 输入:PID_N
-* 输出:无
-* 返回值:无
-* 其他说明:设置好参数后使用此函数进行pid运算，之后使用get**函数获取计算后的值
-*************************************************/
 //************************************
 // Method:    PID
 // FullName:  PID
 // Access:    public 
 // Returns:   bit
-// Qualifier:
+// Qualifier: 设置好参数后使用此函数进行pid运算，之后使用get**函数获取计算后的值，需要先打开pid再使用此函数
 // Parameter: u8 PID_N
 //************************************
 bit PID(u8 PID_N)
@@ -145,10 +121,9 @@ bit PID(u8 PID_N)
 		//#else
 		g_pid_n_info[PID_N].integral += g_pid_n_info[PID_N].err;
 		//#endif
-		g_pid_n_info[PID_N].output = g_pid_n_info[PID_N].Kp*g_pid_n_info[PID_N].err		\
-			+ g_pid_n_info[PID_N].Ki*g_pid_n_info[PID_N].integral \
-			+ g_pid_n_info[PID_N].Kd*(g_pid_n_info[PID_N].err		\
-				- g_pid_n_info[PID_N].err_last);
+		g_pid_n_info[PID_N].output  = g_pid_n_info[PID_N].Kp*g_pid_n_info[PID_N].err		  \
+									+ g_pid_n_info[PID_N].Ki*g_pid_n_info[PID_N].integral     \
+									+ g_pid_n_info[PID_N].Kd*(g_pid_n_info[PID_N].err - g_pid_n_info[PID_N].err_last);
 		g_pid_n_info[PID_N].err_last = g_pid_n_info[PID_N].err;
 
 
@@ -156,20 +131,12 @@ bit PID(u8 PID_N)
 	}
 
 }
-/*************************************************
-* 函数名称:
-* 描述:
-* 输入:
-* 输出:
-* 返回值:
-* 其他说明:
-*************************************************/
 //************************************
 // Method:    setParameterInferiorLimit
 // FullName:  setParameterInferiorLimit
 // Access:    public 
 // Returns:   void
-// Qualifier:
+// Qualifier: 设置输入数值下限
 // Parameter: u8 PID_N
 // Parameter: float value
 //************************************
@@ -191,7 +158,7 @@ void setParameterInferiorLimit(u8 PID_N, float value)
 // FullName:  setParameterUpperLimit
 // Access:    public 
 // Returns:   void
-// Qualifier:
+// Qualifier: 设置输入数值上限
 // Parameter: u8 PID_N
 // Parameter: float value
 //************************************
@@ -200,21 +167,13 @@ void setParameterUpperLimit(u8 PID_N, float value)
 	g_pid_n_info[PID_N].parameterUpperLimit = value;
 
 }
-/*************************************************
-* 函数名称:
-* 描述:
-* 输入:
-* 输出:
-* 返回值:
-* 其他说明:
-*************************************************/
 
 //************************************
 // Method:    setActualParameter
 // FullName:  setActualParameter
 // Access:    public 
 // Returns:   void
-// Qualifier:
+// Qualifier: 设置实际输入数值
 // Parameter: u8 PID_N
 // Parameter: float value
 //************************************
@@ -224,22 +183,12 @@ void setActualParameter(u8 PID_N, float value)
 
 }
 
-/*************************************************
-* 函数名称:void setPID_data(u8 DATA,float value)
-* 描述:  设置pid三个参数的函数，一次性只能设置一个参数
-*        可作为调整PID参数的接口。
-* 输入: u8 DATA ：需要更改的参数名称，为宏定义,
-		float value：参数值
-* 输出: 无
-* 返回值: 无
-* 其他说明: 无
-*************************************************/
 //************************************
 // Method:    setKi
 // FullName:  setKi
 // Access:    public 
 // Returns:   void
-// Qualifier:
+// Qualifier: 设置PID的Ki值
 // Parameter: u8 PID_N
 // Parameter: float value
 //************************************
@@ -247,21 +196,13 @@ void setKi(u8 PID_N, float value)
 {
 	g_pid_n_info[PID_N].Ki = value;
 }
-/*************************************************
-* 函数名称:
-* 描述:
-* 输入:
-* 输出:
-* 返回值:
-* 其他说明:
-*************************************************/
 
 //************************************
 // Method:    setKp
 // FullName:  setKp
 // Access:    public 
 // Returns:   void
-// Qualifier:
+// Qualifier: 设置PID的Kp值
 // Parameter: u8 PID_N
 // Parameter: float value
 //************************************
@@ -269,21 +210,13 @@ void setKp(u8 PID_N, float value)
 {
 	g_pid_n_info[PID_N].Kp = value;
 }
-/*************************************************
-* 函数名称:
-* 描述:
-* 输入:
-* 输出:
-* 返回值:
-* 其他说明:
-*************************************************/
 
 //************************************
 // Method:    setKd
 // FullName:  setKd
 // Access:    public 
 // Returns:   void
-// Qualifier:
+// Qualifier: 设置PID的Kd值
 // Parameter: u8 PID_N
 // Parameter: float value
 //************************************
@@ -291,21 +224,13 @@ void setKd(u8 PID_N, float value)
 {
 	g_pid_n_info[PID_N].Kd = value;
 }
-/*************************************************
-* 函数名称:
-* 描述:
-* 输入:
-* 输出:
-* 返回值:
-* 其他说明:
-*************************************************/
 
 //************************************
 // Method:    setParameter
 // FullName:  setParameter
 // Access:    public 
 // Returns:   void
-// Qualifier:
+// Qualifier: 设置PID的目标数值
 // Parameter: u8 PID_N
 // Parameter: float value
 //************************************
@@ -314,105 +239,105 @@ void setParameter(u8 PID_N, float value)
 	g_pid_n_info[PID_N].setParameter = value;
 }
 
-/*************************************************
-* 函数名称:float getPID_data(u8 DATA)
-* 描述: 读取pid参数
-* 输入: 见宏定义
-* 返回值: 相应pid参数
-* 其他说明: 若没有设置pid参数就直接读取，则结果未知。
-*************************************************/
 
+//************************************
+// Method:    getParameter
+// FullName:  getParameter
+// Access:    public 
+// Returns:   float
+// Qualifier: 读取PID的目标数值
+// Parameter: u8 PID_N
+//************************************
 float	getParameter(u8 PID_N)
 {
 	return  g_pid_n_info[PID_N].setParameter;
 }
-/*************************************************
-* 函数名称:
-* 描述:
-* 输入:
-* 输出:
-* 返回值:
-* 其他说明:
-*************************************************/
 
+//************************************
+// Method:    getErr
+// FullName:  getErr
+// Access:    public 
+// Returns:   float
+// Qualifier: 读取PID的这一次误差值
+// Parameter: u8 PID_N
+//************************************
 float getErr(u8 PID_N)
 {
 	return  g_pid_n_info[PID_N].err;
 }
-/*************************************************
-* 函数名称:
-* 描述:
-* 输入:
-* 输出:
-* 返回值:
-* 其他说明:
-*************************************************/
 
+//************************************
+// Method:    getErrLast
+// FullName:  getErrLast
+// Access:    public 
+// Returns:   float
+// Qualifier: 读取PID的上一次误差值
+// Parameter: u8 PID_N
+//************************************
 float getErrLast(u8 PID_N)
 {
 	return  g_pid_n_info[PID_N].err_last;
 }
-/*************************************************
-* 函数名称:
-* 描述:
-* 输入:
-* 输出:
-* 返回值:
-* 其他说明:
-*************************************************/
-
+//************************************
+// Method:    getKp
+// FullName:  getKp
+// Access:    public 
+// Returns:   float
+// Qualifier: 读取PID的Kp值
+// Parameter: u8 PID_N
+//************************************
 float getKp(u8 PID_N)
 {
 	return  g_pid_n_info[PID_N].Kp;
 }
-/*************************************************
-* 函数名称:
-* 描述:
-* 输入:
-* 输出:
-* 返回值:
-* 其他说明:
-*************************************************/
 
+//************************************
+// Method:    getKi
+// FullName:  getKi
+// Access:    public 
+// Returns:   float
+// Qualifier: 读取PID的Ki值
+// Parameter: u8 PID_N
+//************************************
 float getKi(u8 PID_N)
 {
 	return  g_pid_n_info[PID_N].Ki;
 }
-/*************************************************
-* 函数名称:
-* 描述:
-* 输入:
-* 输出:
-* 返回值:
-* 其他说明:
-*************************************************/
 
+//************************************
+// Method:    getKd
+// FullName:  getKd
+// Access:    public 
+// Returns:   float
+// Qualifier: 读取pid的Kd参数值
+// Parameter: u8 PID_N
+//************************************
 float getKd(u8 PID_N)
 {
 	return  g_pid_n_info[PID_N].Kd;
 }
-/*************************************************
-* 函数名称:
-* 描述:
-* 输入:
-* 输出:
-* 返回值:
-* 其他说明:
-*************************************************/
 
+//************************************
+// Method:    getOutput
+// FullName:  getOutput
+// Access:    public 
+// Returns:   float
+// Qualifier: 读取pid输出值
+// Parameter: u8 PID_N
+//************************************
 float getOutput(u8 PID_N)
 {
 	return  g_pid_n_info[PID_N].output;
 }
-/*************************************************
-* 函数名称:
-* 描述:
-* 输入:
-* 输出:
-* 返回值:
-* 其他说明:
-*************************************************/
 
+//************************************
+// Method:    getIntegral
+// FullName:  getIntegral
+// Access:    public 
+// Returns:   float
+// Qualifier: 读取pid积分值
+// Parameter: u8 PID_N
+//************************************
 float getIntegral(u8 PID_N)
 {
 	return  g_pid_n_info[PID_N].integral;

@@ -108,7 +108,7 @@ void task9(void) _task_ 9
 	for (;;)
 	{
 		sendScopeData(getAngle(1), 1);
-		os_wait(K_IVL, 3, 0);
+		os_wait(K_IVL, 20, 0);
 
 	}
 

@@ -13,6 +13,7 @@
 ".\RELAY.obj",
 ".\ANGLE.obj",
 ".\MPU6050.obj",
+".\LCD1602.obj",
 ".\fixedPulser.obj",
 ".\ADC.obj",
 ".\delay.obj",

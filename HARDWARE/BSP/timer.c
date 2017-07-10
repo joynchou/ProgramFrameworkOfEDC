@@ -64,34 +64,13 @@ struct TimerInfo
 }
 timer1_struct = { 0,0 },
 timer2_struct = { 0,0 };
-//获取从开机后的微秒数
-u16 getMicros(void)
-{
-
-	return  micros;
-}
-//获取从开机后的毫秒数
-u16 getMillis(void)
-{
-	return millis;
-}
-u8 getSeconds(void)
-{
-	return seconds;
-}
-u8 getMinutes(void)
-{
-	return minutes;
-}
-u8 getHours(void)
-{
-	return hours;
-}
-u8 getDays(void)
-{
-	return days;
-}
-
+//************************************
+// Method:    timerInit
+// FullName:  timerInit
+// Access:    public 
+// Returns:   void
+// Qualifier: 定时器初始化函数，使用用户定时器和绝对时间获取函数之前请再setup中调用此函数完成初始化
+//************************************
 void timerInit()
 {
 	TIM_InitTypeDef		TIM_InitStructure1;	//用户自定义定时器使用
@@ -114,7 +93,7 @@ void timerInit()
 	TIM_InitStructure2.TIM_ClkSource = TIM_CLOCK_1T;	//指定时钟源,     TIM_CLOCK_1T,TIM_CLOCK_12T,TIM_CLOCK_Ext
 	TIM_InitStructure2.TIM_ClkOut = DISABLE;				//是否输出高速脉冲, ENABLE或DISABLE
 	TIM_InitStructure2.TIM_Run = ENABLE;				//是否初始化后启动定时器, ENABLE或DISABLE
-	TIM_InitStructure2.TIM_Value = 65536UL - (MAIN_Fosc / 100000UL);		//初值,1us
+	TIM_InitStructure2.TIM_Value = 65536UL - (MAIN_Fosc / 100000UL);		//初值,10us
 	//用户自定义定时器		
 
 	if (!(Error_Code = Timer_Inilize(Timer1, &TIM_InitStructure1)))//==0
@@ -161,7 +140,74 @@ void timerInit()
 
 }
 
-//设置定时器的发生频率
+//
+//************************************
+// Method:    setTimeout
+// FullName:  setTimeout
+// Access:    public 
+// Returns:   void
+// Qualifier: 设置定时器的定时时间
+// Parameter: u8 whichTimer：哪一个定时器
+// Parameter: u16 time：需要定时的时间，单位ms
+//************************************
+void setTimeout(u8 whichTimer, u16 time)
+{
+	if (!(Timer1_state == ACTIVE || Timer2_state == ACTIVE))
+	{
+		switch (whichTimer)
+		{
+
+		case Timer1:
+		{
+			timer1_struct.Timeout = time;
+		};
+		case Timer2:
+		{
+			timer2_struct.Timeout = time;
+		};
+		default:
+			break;
+		}
+	}
+}
+//************************************
+// Method:    getTimerout
+// FullName:  getTimerout
+// Access:    public 
+// Returns:   u16
+// Qualifier:
+// Parameter: u8 whichTimer
+//************************************
+u16 getTimerout(u8 whichTimer)
+{
+	switch (whichTimer)
+	{
+
+	case Timer1:
+	{
+		return timer1_struct.Timeout;
+	};
+	break;
+	case Timer2:
+	{
+		return timer2_struct.Timeout;
+	};
+	break;
+
+	default: return 0;
+	}
+
+}
+//
+//************************************
+// Method:    setTimerHertz
+// FullName:  setTimerHertz
+// Access:    public 
+// Returns:   void
+// Qualifier: 设置定时器的发生频率
+// Parameter: u8 whichTimer：哪一个定时器
+// Parameter: u16 Hz：频率
+//************************************
 void setTimerHertz(u8 whichTimer, u16 Hz)
 {
 	switch (whichTimer)
@@ -201,48 +247,15 @@ u16 getTimerHertz(u8 whichTimer)
 	default: return 0;
 	}
 }
-//设置定时器的定时时间
-void setTimeout(u8 whichTimer, u16 time)
-{
-	if (!(Timer1_state == ACTIVE || Timer2_state == ACTIVE))
-	{
-		switch (whichTimer)
-		{
-
-		case Timer1:
-		{
-			timer1_struct.Timeout = time;
-		};
-		case Timer2:
-		{
-			timer2_struct.Timeout = time;
-		};
-		default:
-			break;
-		}
-	}
-}
-u16 getTimerout(u8 whichTimer)
-{
-	switch (whichTimer)
-	{
-
-	case Timer1:
-	{
-		return timer1_struct.Timeout;
-	};
-	break;
-	case Timer2:
-	{
-		return timer2_struct.Timeout;
-	};
-	break;
-
-	default: return 0;
-	}
-
-}
 //停用定时器
+//************************************
+// Method:    stopTimer
+// FullName:  stopTimer
+// Access:    public 
+// Returns:   void
+// Qualifier: 停止对应的定时器
+// Parameter: u8 whichTimer
+//************************************
 void stopTimer(u8 whichTimer)
 {
 	switch (whichTimer)
@@ -265,6 +278,14 @@ void stopTimer(u8 whichTimer)
 
 }
 //若定时器已启动但未达到定时时间返回1
+//************************************
+// Method:    isActiveTimer
+// FullName:  isActiveTimer
+// Access:    public 
+// Returns:   bit
+// Qualifier: 若当前定时器正在定时着返回1，否则为0
+// Parameter: u8 whichTimer
+//************************************
 bit isActiveTimer(u8 whichTimer)
 {
 	switch (whichTimer)
@@ -283,6 +304,14 @@ bit isActiveTimer(u8 whichTimer)
 	}
 }
 //当定时达到设定时间时返回1
+//************************************
+// Method:    isExpiredTimer
+// FullName:  isExpiredTimer
+// Access:    public 
+// Returns:   bit
+// Qualifier: 若定时器的定时时间已到则返回1
+// Parameter: u8 whichTimer
+//************************************
 bit isExpiredTimer(u8 whichTimer)
 {
 	switch (whichTimer)
@@ -301,6 +330,14 @@ bit isExpiredTimer(u8 whichTimer)
 
 }
 //当定时器被停止时返回1
+//************************************
+// Method:    isStopped
+// FullName:  isStopped
+// Access:    public 
+// Returns:   bit
+// Qualifier: 若定时器已经被停止则返回1
+// Parameter: u8 whichtimer
+//************************************
 bit isStopped(u8 whichtimer)
 {
 	switch (whichtimer)
@@ -317,7 +354,15 @@ bit isStopped(u8 whichtimer)
 	}
 }
 
-//初始化并打开定时器，需要先设置好定时时间或频率
+//
+//************************************
+// Method:    restartTimer
+// FullName:  restartTimer
+// Access:    public 
+// Returns:   void
+// Qualifier: 初始化并打开定时器，需要先设置好定时时间或频率
+// Parameter: u8 whichTimer
+//************************************
 void restartTimer(u8 whichTimer)
 {
 	if (!isActiveTimer(whichTimer))
@@ -344,7 +389,15 @@ void restartTimer(u8 whichTimer)
 
 	}
 }
-//当定时器定时结束后返回1，并自动调用restart（），重新定时
+//
+//************************************
+// Method:    onRestartTimer
+// FullName:  onRestartTimer
+// Access:    public 
+// Returns:   bit
+// Qualifier: 当定时器定时结束后返回1，并自动调用restart（），重新定时，并以此循环
+// Parameter: u8 whichTimer
+//************************************
 bit onRestartTimer(u8 whichTimer)
 {
 	if (isExpiredTimer(whichTimer))
@@ -360,8 +413,37 @@ bit onRestartTimer(u8 whichTimer)
 }
 
 
+//获取从开机后的微秒数
+u16 getMicros(void)
+{
+
+	return  micros;
+}
+//获取从开机后的毫秒数
+u16 getMillis(void)
+{
+	return millis;
+}
+u8 getSeconds(void)
+{
+	return seconds;
+}
+u8 getMinutes(void)
+{
+	return minutes;
+}
+u8 getHours(void)
+{
+	return hours;
+}
+u8 getDays(void)
+{
+	return days;
+}
+
+//========================！！！私有函数，不要改动以下任何程序！！！=================//
 /********************* Timer1中断函数************************/
-void Timer1_ISR(void) interrupt TIMER1_VECTOR
+static void Timer1_ISR(void) interrupt TIMER1_VECTOR
 {
 
 	if ((++Timer1_temp) >= timer1_struct.Timeout)
@@ -377,7 +459,7 @@ void Timer1_ISR(void) interrupt TIMER1_VECTOR
 
 
 /********************* Timer3中断函数************************/
-void timer3_int(void) interrupt TIMER3_VECTOR
+static void timer3_int(void) interrupt TIMER3_VECTOR
 {
 	if ((++Timer2_temp) >= timer2_struct.Timeout)
 	{
@@ -390,7 +472,7 @@ void timer3_int(void) interrupt TIMER3_VECTOR
 /********************* Timer4中断函数************************/
 //问题遗留：
 //问题解决，是sprintf函数的使用不当导致的输出错误，实际数值并没有错误
-void timer4_int(void) interrupt TIMER4_VECTOR
+static void timer4_int(void) interrupt TIMER4_VECTOR
 {
 
 
@@ -432,7 +514,6 @@ void timer4_int(void) interrupt TIMER4_VECTOR
 //}
 
 
-//========================！！！不要改动以下任何程序！！！=================
 // 函数: u8	Timer_Inilize(u8 TIM, TIM_InitTypeDef *TIMx)
 // 描述: 定时器初始化程序.
 // 参数: TIMx: 结构参数,请参考timer.h里的定义.

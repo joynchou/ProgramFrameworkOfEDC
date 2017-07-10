@@ -21,3 +21,13 @@
 *.M51
 *.joyn
 *.bak
+*.uvproj
+*.uvopt
+*.bak
+*.joyn
+*.M51
+*.lnp
+*.hex
+*.obj
+*.lst
+*._ia

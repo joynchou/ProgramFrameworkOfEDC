@@ -1,23 +1,36 @@
 /************************************************************
 * 组织名称： (C), 1988-1999, Tech. Co., Ltd.
 * 文件名称: STC15_PWM.C
-* 作者:  第三方
-* 版本:  1.1
+* 作者:  周晨阳
+* 版本:  1.3
 * 日期:  2017/4/27
-* 描述:  硬件pwm的库函数
+* 描述:  硬件pwm的库函数，io口参见下方介绍
 * 历史修改记录: // 历史修改记录
 * <作者> <时间> <版本 > <描述>
 * 周晨阳 2017/4/27 1.1 修改了一处代码错误，case参数错误
 * 周晨阳 2017/5/6  1.2 增加了一些常用设置函数
+* 周晨阳 2017/7/9  1.3 修改了pwm信息的记录和返回方式，使用结构体数组来存放信息
 ***********************************************************/
+
 #include "stc15_pwm.h"
 #include "GPIO.h"
 //PWM信息存储
+/************************************
+硬件PWMio引脚
+PWM_N| io  | 第二组
+PWM2 :P3.7 -> P2.7
+PWM3 :P2.1 -> P4.5
+PWM4 :P2.2 -> P4.4
+PWM5 :P2.3 -> P4.2
+PWM6 :P1.6 -> P0.7
+PWM7 :P1.7 -> P0.6
+************************************/
+
 static struct PWM_N_INFO
 {
-	u32 period;
-	u8 state;
-	float duty;
+	u32 period;//pwm的频率
+	u8 state;//pwm发生器的状态
+	float duty;//pwm的占空比
 };
 static  struct PWM_N_INFO PWM_N_INFO[6]; //6组pwm数据存储
 
@@ -355,7 +368,7 @@ void PWM_Inilize(u8 PWM_N, PWM_InitTypeDef *PWMx)
 /*************************************************
 * 函数名称: u32 getPWM_period(void )
 * 描述: 返回所设置的pwm频率信息
-* 输入: 无
+* 输入: u8 PWM_N, 2<=N<=7
 * 输出: 无
 * 返回值: pwm频率
 * 其他说明: 若没有设置pwm的频率就调用此函数则会返回0；
@@ -367,7 +380,7 @@ u32 get_PWM_period(u8 PWM_N)
 /*************************************************
 * 函数名称: float getPWM_n_duty(u8 PWM_N)
 * 描述: 返回PWM_N的占空比信息
-* 输入: u8 PWM_N
+* 输入: u8 PWM_N, 2<=N<=7
 * 输出: 无
 * 返回值: PWM_N的占空比信息,float形式
 * 其他说明: 若没有设置pwm的占空比就调用此函数则会返回0；
@@ -382,9 +395,7 @@ float get_PWM_N_duty(u8 PWM_N)
 * 描述: 设置硬件pwm的同一频率 ，并保存频率数据
 * 被本函数调用的函数:
 * 1.PWM_SET_PERIOD
-* 调用本函数的函数:
-* 输入:
-* 1.u16 Hz:要输出的pwm的频率，作为计数器的参数值，由于硬件所限，将会改变所有6个pwm的频率
+* 输入:u16 Hz:要输出的pwm的频率,由于硬件所限，将会同时改变6路pwm的频率
 * 输出: 无
 * 返回值: 无
 * 其他: 此函数只能设置pwm的计数器初始值，从而完成pwm不同频率的输出，
@@ -409,7 +420,7 @@ void set_PWM_period(u16 Hz)
 * 2.float duty：占空比，使用小数，如0.8代表80%的占空比
 * 输出: 无
 * 返回值: 无
-* 其他说明:
+* 其他说明:为防止电平发生反转，限制最小占空比为0.05，最大为0.95
 *************************************************/
 void set_PWM_duty(u8 PWM_N, float duty)
 {
@@ -424,7 +435,7 @@ void set_PWM_duty(u8 PWM_N, float duty)
 	{
 		duty = 0.05f;
 #ifdef PID_DEBUG
-		PrintString1("duty is over the miximum\n");
+		PrintString1("duty is over the minimum\n");
 #endif
 	}
 	PWM_N_INFO[PWM_N].duty = duty;//存储占空比值
@@ -468,8 +479,16 @@ bit get_PWM_N_state(u8 PWM_N)
 	return  PWM_N_INFO[PWM_N].state;
 }
 
-
-//设置PWM周期
+//////////////以下为私有函数，不建议改动//////////////////////
+//
+//************************************
+// Method:    PWM_SET_PERIOD
+// FullName:  PWM_SET_PERIOD
+// Access:    public static 
+// Returns:   u8
+// Qualifier: 设置PWM周期
+// Parameter: u16 period
+//************************************
 static u8 PWM_SET_PERIOD(u16 period)
 {
 	if (0x8000 > period)
@@ -485,7 +504,17 @@ static u8 PWM_SET_PERIOD(u16 period)
 	}
 }
 
-//设置PWM第一次和第二次翻转周期
+//
+//************************************
+// Method:    PWM_SET_T12_PERIOD
+// FullName:  PWM_SET_T12_PERIOD
+// Access:    public static 
+// Returns:   u8
+// Qualifier: 设置PWM第一次和第二次翻转周期
+// Parameter: u8 PWM_N
+// Parameter: u16 period1
+// Parameter: u32 period2
+//************************************
 static u8 PWM_SET_T12_PERIOD(u8 PWM_N, u16 period1, u32 period2)
 {
 	switch (PWM_N)

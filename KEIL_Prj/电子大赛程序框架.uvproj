@@ -569,6 +569,11 @@
               <FileType>1</FileType>
               <FilePath>..\HARDWARE\DEVICES\SENSOR\MPU6050\MPU6050.C</FilePath>
             </File>
+            <File>
+              <FileName>LCD1602.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\HARDWARE\DEVICES\DISPLAY\1602\LCD1602.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

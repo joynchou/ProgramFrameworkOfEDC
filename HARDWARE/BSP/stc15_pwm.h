@@ -23,10 +23,10 @@ PWM6 :P1.6 -> P0.7
 PWM7 :P1.7 -> P0.6
 ************************************/
 
-void open_ALL_PWM(void);
-void close_ALL_PWM(void);
-void close_N_PWM(u8 PWM_N);
-void open_N_PWM(u8 PWM_N);
+void open_PWM_ALL(void);
+void close_PWM_ALL(void);
+void close_PWM_N(u8 PWM_N);
+void open_PWM_N(u8 PWM_N);
 bit getPWM_state(u8 PWM_N) ;
 	/*************************************************
 * º¯ÊýÃû³Æ: u32 getPWM_period(void )

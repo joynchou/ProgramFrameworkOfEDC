@@ -10,14 +10,12 @@
 * 历史修改记录: // 历史修改记录
 * <作者> <时间> <版本 > <描述>
 * 周晨阳 17/6/216 1.0 创建此描述
+* 周晨阳 17/7/9   1.1 更新了数据结构，可以定义任意数量的电机
 ***********************************************************/
 #include "MOTOR.h"
 #include "../../../BSP/STC15_PWM.h"
 #include "../../../BSP/GPIO.h"
 
-#define DC_MOTOR_NUM	2
-#define DC_MOTOR_1	0
-#define DC_MOTOR_2	1
 #define DC_MOTOR
 #ifdef DC_MOTOR
 
@@ -37,7 +35,7 @@ static struct DC_Motor g_DC_Motor[DC_MOTOR_NUM];
 * 其他说明:
 *若要关闭电机请使用电机关闭函数，此函数无法关闭电机
 *************************************************/
-void setMotorSpeed(u8 motor, float speed)
+void setDC_MotorSpeed(u8 motor, float speed)
 {
 
 	if (speed > 0.95f)
@@ -54,7 +52,7 @@ void setMotorSpeed(u8 motor, float speed)
 	set_PWM_duty(motor + 4, speed);//根据不同电机乘于不同的增益
 	g_DC_Motor[motor].speed = speed;
 }
-void startMotor(u8 motor)
+void open_DC_Motor(u8 motor)
 {
 	PWM_UNLOCK;
 	PWM_N_EN(motor + 4);
@@ -62,7 +60,7 @@ void startMotor(u8 motor)
 
 	g_DC_Motor[motor].state = ON;
 }
-void stopMotor(u8 motor)
+void close_DC_Motor(u8 motor)
 {
 	PWM_UNLOCK;
 	PWM_N_NO(motor + 4);
@@ -72,7 +70,7 @@ void stopMotor(u8 motor)
 
 
 }
-bit getMotorState(u8 motor)
+bit getDC_MotorState(u8 motor)
 {
 	return g_DC_Motor[motor].state;
 
@@ -80,7 +78,7 @@ bit getMotorState(u8 motor)
 /*************************************************
 * 函数名称: void    PWM_config(u8 PWM_N)
 * 描述: 配置需要使用的pwm通道
-* 输入: u8 PWM_N，N的范围是2~7 ，如PWM_2，PWM_3
+* 输入: 无
 * 返回值: 无
 * 其他说明: 将会自动初始化相应的io引脚
 *************************************************/

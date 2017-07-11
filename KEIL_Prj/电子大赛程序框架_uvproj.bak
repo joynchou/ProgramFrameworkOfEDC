@@ -569,6 +569,21 @@
               <FileType>1</FileType>
               <FilePath>..\HARDWARE\DEVICES\SENSOR\MPU6050\MPU6050.C</FilePath>
             </File>
+            <File>
+              <FileName>LCD1602.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\HARDWARE\DEVICES\DISPLAY\1602\LCD1602.c</FilePath>
+            </File>
+            <File>
+              <FileName>MPU9250.C</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\HARDWARE\DEVICES\SENSOR\MPU9250\MPU9250.C</FilePath>
+            </File>
+            <File>
+              <FileName>74HC595.C</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\HARDWARE\DEVICES\COMMON_DEVICES\74H\74HC595.C</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

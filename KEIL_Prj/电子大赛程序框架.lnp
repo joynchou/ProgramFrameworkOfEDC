@@ -14,6 +14,8 @@
 ".\ANGLE.obj",
 ".\MPU6050.obj",
 ".\LCD1602.obj",
+".\MPU9250.obj",
+".\74HC595.obj",
 ".\fixedPulser.obj",
 ".\ADC.obj",
 ".\delay.obj",
@@ -23,6 +25,7 @@
 ".\timer.obj",
 ".\USART1.obj",
 ".\stc15_eeprom.obj",
-".\PID.obj" 
+".\PID.obj",
+".\FILTER.obj" 
 TO "电子大赛程序框架" Rtx51Tiny 
 RAMSIZE(256) 

@@ -14,9 +14,9 @@ sbit LCD1602_Backlight = P5^4;
 
 //函数或者变量声明
 extern void LCD1602_write_com(unsigned char com);
-extern void LCD1602_write_data(unsigned char dat);
+extern void LCD1602_write_char(unsigned char dat);
 extern void LCD1602_write_word(unsigned char *s);
-extern void Init_LCD1602();
+extern void LCD1602_Init();
 extern void LCD1602_GPIO_config();
 
 

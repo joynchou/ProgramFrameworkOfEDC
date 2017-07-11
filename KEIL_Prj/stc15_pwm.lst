@@ -1,4 +1,4 @@
-C51 COMPILER V8.05a   STC15_PWM                                                            07/10/2017 00:04:47 PAGE 1   
+C51 COMPILER V8.05a   STC15_PWM                                                            07/11/2017 13:05:10 PAGE 1   
 
 
 C51 COMPILER V8.05a, COMPILATION OF MODULE STC15_PWM
@@ -62,7 +62,7 @@ line level    source
   52   1      
   53   1        P_SW2 |= 0X80;
   54   1        if (ENABLE == PWMx->PWM_GOTO_ADC)            //ENABLE=计数器归零时 触发ADC
-C51 COMPILER V8.05a   STC15_PWM                                                            07/10/2017 00:04:47 PAGE 2   
+C51 COMPILER V8.05a   STC15_PWM                                                            07/11/2017 13:05:10 PAGE 2   
 
   55   1        {
   56   2          PWMCFG |= (1 << 7); //并的意思就是不会改变其他位的值
@@ -126,7 +126,7 @@ line level    source
  111   1        {
  112   2          PWMFDCR = (1 << 2);
  113   2        }
-C51 COMPILER V8.05a   STC15_PWM                                                            07/10/2017 00:04:47 PAGE 3   
+C51 COMPILER V8.05a   STC15_PWM                                                            07/11/2017 13:05:10 PAGE 3   
 
  114   1        else
  115   1        {
@@ -190,7 +190,7 @@ line level    source
  171   4            PWM2CR &= (~(1 << 0));
  172   4          }
  173   3        }
-C51 COMPILER V8.05a   STC15_PWM                                                            07/10/2017 00:04:47 PAGE 4   
+C51 COMPILER V8.05a   STC15_PWM                                                            07/11/2017 13:05:10 PAGE 4   
 
  174   2        break;
  175   2        case PWM_3:
@@ -254,7 +254,7 @@ line level    source
  231   4            PWM4CR |= (1 << 1);
  232   4          }
  233   3          else
-C51 COMPILER V8.05a   STC15_PWM                                                            07/10/2017 00:04:47 PAGE 5   
+C51 COMPILER V8.05a   STC15_PWM                                                            07/11/2017 13:05:10 PAGE 5   
 
  234   3          {
  235   4            PWM4CR &= (~(1 << 1));
@@ -318,7 +318,7 @@ line level    source
  291   4            PWM6CR |= (1 << 3);
  292   4          }
  293   3          if (ENABLE == PWMx->PWM_ISRx_EN)             //ENABLE=使能PWMx中断 使能第一翻转或第二翻转中断
-C51 COMPILER V8.05a   STC15_PWM                                                            07/10/2017 00:04:47 PAGE 6   
+C51 COMPILER V8.05a   STC15_PWM                                                            07/11/2017 13:05:10 PAGE 6   
 
  294   3          {
  295   4            PWM6CR |= (1 << 2);
@@ -382,7 +382,7 @@ line level    source
  352   4          }
  353   3        }
  354   2        break;
-C51 COMPILER V8.05a   STC15_PWM                                                            07/10/2017 00:04:47 PAGE 7   
+C51 COMPILER V8.05a   STC15_PWM                                                            07/11/2017 13:05:10 PAGE 7   
 
  355   2        default:
  356   2          //      return 1;
@@ -446,7 +446,7 @@ line level    source
  413          /*************************************************
  414          * 函数名称: void PWM_duty(u8 PWM_N,float duty)
  415          * 描述: 修改某一路pwm的占空比 ，并保存占空比数据
-C51 COMPILER V8.05a   STC15_PWM                                                            07/10/2017 00:04:47 PAGE 8   
+C51 COMPILER V8.05a   STC15_PWM                                                            07/11/2017 13:05:10 PAGE 8   
 
  416          * 被本函数调用的函数:
  417          * 调用本函数的函数:
@@ -510,7 +510,7 @@ line level    source
  475   1      }
  476          bit get_PWM_N_state(u8 PWM_N)
  477          {
-C51 COMPILER V8.05a   STC15_PWM                                                            07/10/2017 00:04:47 PAGE 9   
+C51 COMPILER V8.05a   STC15_PWM                                                            07/11/2017 13:05:10 PAGE 9   
 
  478   1      
  479   1        return  PWM_N_INFO[PWM_N].state;
@@ -574,7 +574,7 @@ line level    source
  537   2          PWM4T1L = (u8)(period1);
  538   2          PWM4T1H = (u8)(period1 >> 8);
  539   2          PWM4T2L = (u8)(period2);
-C51 COMPILER V8.05a   STC15_PWM                                                            07/10/2017 00:04:47 PAGE 10  
+C51 COMPILER V8.05a   STC15_PWM                                                            07/11/2017 13:05:10 PAGE 10  
 
  540   2          PWM4T2H = (u8)(period2 >> 8);
  541   2          return 0;

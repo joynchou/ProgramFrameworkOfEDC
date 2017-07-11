@@ -31,3 +31,9 @@
 *.obj
 *.lst
 *._ia
+*.lst
+*.lst
+*.obj
+*.uvproj
+*.uvopt
+*.bak

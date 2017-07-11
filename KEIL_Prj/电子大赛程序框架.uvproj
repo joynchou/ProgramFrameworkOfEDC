@@ -574,6 +574,16 @@
               <FileType>1</FileType>
               <FilePath>..\HARDWARE\DEVICES\DISPLAY\1602\LCD1602.c</FilePath>
             </File>
+            <File>
+              <FileName>MPU9250.C</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\HARDWARE\DEVICES\SENSOR\MPU9250\MPU9250.C</FilePath>
+            </File>
+            <File>
+              <FileName>74HC595.C</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\HARDWARE\DEVICES\COMMON_DEVICES\74H\74HC595.C</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -638,6 +648,11 @@
               <FileName>PID.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\SOFTWARE\ALGORITHM\PID\PID.c</FilePath>
+            </File>
+            <File>
+              <FileName>FILTER.C</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\SOFTWARE\ALGORITHM\FILTER\FILTER.C</FilePath>
             </File>
           </Files>
         </Group>

@@ -1,10 +1,10 @@
-C51 COMPILER V8.05a   RTX51_TINY                                                           06/24/2017 12:40:27 PAGE 1   
+C51 COMPILER V8.05a   RTX51_TINY                                                           07/17/2017 09:02:50 PAGE 1   
 
 
 C51 COMPILER V8.05a, COMPILATION OF MODULE RTX51_TINY
 OBJECT MODULE PLACED IN .\RTX51_TINY.obj
-COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE ..\SOFTWARE\RTOS\RTX51_TINY.c LARGE BROWSE DEBUG OBJECTEXTEND PRINT(.\RT
-                    -X51_TINY.lst) TABS(2) OBJECT(.\RTX51_TINY.obj)
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE ..\SOFTWARE\RTOS\RTX51_TINY.c BROWSE DEBUG OBJECTEXTEND PRINT(.\RTX51_TINY.
+                    -lst) OBJECT(.\RTX51_TINY.obj)
 
 line level    source
 
@@ -62,7 +62,7 @@ line level    source
   52          /******************************************************************************/
   53          job3 () _task_ 3  {
   54   1        while (1)  {                        /* endless loop                         */
-C51 COMPILER V8.05a   RTX51_TINY                                                           06/24/2017 12:40:27 PAGE 2   
+C51 COMPILER V8.05a   RTX51_TINY                                                           07/17/2017 09:02:50 PAGE 2   
 
   55   2          os_wait (K_SIG, 0, 0);            /* wait for signal                      */
   56   2          counter3++;                       /* process overflow from counter 2      */
@@ -71,11 +71,11 @@ line level    source
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    220    ----
+   CODE SIZE        =    168    ----
    CONSTANT SIZE    =   ----    ----
-   XDATA SIZE       =     16    ----
+   XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
-   DATA SIZE        =   ----    ----
+   DATA SIZE        =     16    ----
    IDATA SIZE       =   ----    ----
    BIT SIZE         =   ----    ----
 END OF MODULE INFORMATION.

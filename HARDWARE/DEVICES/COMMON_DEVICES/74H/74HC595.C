@@ -11,10 +11,16 @@
 ***********************************************************/
 
 #include "74HC595.H"
-void HC595_Init()
+#include "../../../BSP/GPIO.h"
+//暂未完成
+void HC595_Init(pin1,pin2)
 {
-
+	GPIO_InitTypeDef HC595_Pin;
+	HC595_Pin.Mode = GPIO_PullUp;
+	HC595_Pin.Pin = pin1;
+	GPIO_Inilize(GPIO_P0,&HC595_Pin);
 }
+//暂未完成
 void HC595SendData(unsigned char SendVal)
 {
 	unsigned char i;

@@ -402,12 +402,16 @@ float get_PWM_N_duty(u8 PWM_N)
 		但是由于单片机硬件所限，不可以单独对每路pwm的频率进行修改，
 		只能一改全改。
 *************************************************/
-void set_PWM_period(u16 Hz)
+void set_PWM_period(u8 PWM_N,u16 Hz)
 {
-	PWM_N_INFO[0].period = Hz;
+	PWM_N_INFO[PWM_N].period = Hz;
 	PWM_UNLOCK;
-	PWM_SET_PERIOD((u16)(MAIN_Fosc / Hz));
+	PWM_ALL_NO;
+	PWM_SET_PERIOD((u16)(MAIN_Fosc/(Hz*16)));
+//	PWM_ALL_EN;
 	PWM_LOCK;
+	
+	  
 }
 
 /*************************************************
@@ -427,20 +431,14 @@ void set_PWM_duty(u8 PWM_N, float duty)
 	if (duty > 0.95f)
 	{
 		duty = 0.95f;
-#ifdef PID_DEBUG
-		PrintString1("duty is over the maximum\n");
-#endif
 	}
 	if (duty < 0.05f)
 	{
 		duty = 0.05f;
-#ifdef PID_DEBUG
-		PrintString1("duty is over the minimum\n");
-#endif
 	}
 	PWM_N_INFO[PWM_N].duty = duty;//存储占空比值
 	PWM_UNLOCK;
-	PWM_SET_T12_PERIOD(PWM_N, 0, duty*PWM_N_INFO[PWM_N].period);
+	PWM_SET_T12_PERIOD(PWM_N, 0, (PWM_N_INFO[PWM_N].duty *(MAIN_Fosc/(PWM_N_INFO[PWM_N].period*16))));
 	PWM_LOCK;
 }
 void open_PWM_ALL(void)
@@ -452,7 +450,7 @@ void open_PWM_ALL(void)
 void close_PWM_ALL(void)
 {
 	PWM_UNLOCK;
-	PWM_ALL_NO;
+	PWM_ALL_NO; //总开关
 	PWM_LOCK;
 
 }
@@ -461,6 +459,7 @@ void open_PWM_N(u8 PWM_N)
 	PWM_UNLOCK;
 	PWM_N_EN(PWM_N);
 	PWM_N_INFO[PWM_N].state = ON;
+	PWM_ALL_EN; //总开关
 	PWM_LOCK;
 
 
@@ -493,7 +492,6 @@ static u8 PWM_SET_PERIOD(u16 period)
 {
 	if (0x8000 > period)
 	{
-		PWM_N_INFO[0].period = period;
 		PWMCL = (u8)(period);
 		PWMCH = (u8)(period >> 8);
 		return 0;

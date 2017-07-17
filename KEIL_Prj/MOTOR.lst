@@ -1,4 +1,4 @@
-C51 COMPILER V8.05a   MOTOR                                                                07/11/2017 14:25:07 PAGE 1   
+C51 COMPILER V8.05a   MOTOR                                                                07/17/2017 11:46:43 PAGE 1   
 
 
 C51 COMPILER V8.05a, COMPILATION OF MODULE MOTOR
@@ -62,92 +62,88 @@ line level    source
   52   1        set_PWM_duty(motor + 4, speed);//根据不同电机乘于不同的增益
   53   1        g_DC_Motor[motor].speed = speed;
   54   1      }
-C51 COMPILER V8.05a   MOTOR                                                                07/11/2017 14:25:07 PAGE 2   
+C51 COMPILER V8.05a   MOTOR                                                                07/17/2017 11:46:43 PAGE 2   
 
   55          void open_DC_Motor(u8 motor)
   56          {
-  57   1        PWM_UNLOCK;
-  58   1        PWM_N_EN(motor + 4);
-  59   1        PWM_LOCK;
-  60   1      
-  61   1        g_DC_Motor[motor].state = ON;
-  62   1      }
-  63          void close_DC_Motor(u8 motor)
-  64          {
-  65   1        PWM_UNLOCK;
-  66   1        PWM_N_NO(motor + 4);
-  67   1        PWM_LOCK;
-  68   1        g_DC_Motor[motor].state = OFF;
-  69   1      
-  70   1      
+  57   1        open_PWM_N(motor + 4);
+  58   1        g_DC_Motor[motor].state = ON;
+  59   1      }
+  60          void close_DC_Motor(u8 motor)
+  61          {
+  62   1        close_PWM_N(motor + 4);
+  63   1        g_DC_Motor[motor].state = OFF;
+  64   1      
+  65   1      
+  66   1      
+  67   1      }
+  68          bit getDC_MotorState(u8 motor)
+  69          {
+  70   1        return g_DC_Motor[motor].state;
   71   1      
   72   1      }
-  73          bit getDC_MotorState(u8 motor)
-  74          {
-  75   1        return g_DC_Motor[motor].state;
-  76   1      
-  77   1      }
-  78          /*************************************************
-  79          * 函数名称: void    PWM_config(u8 PWM_N)
-  80          * 描述: 配置需要使用的pwm通道
-  81          * 输入: 无
-  82          * 返回值: 无
-  83          * 其他说明: 将会自动初始化相应的io引脚
-  84          *************************************************/
-  85          void    DC_MOTOR_config(void)
-  86          {
-  87   1        GPIO_InitTypeDef    GPIO_InitStructure;     //结构定义
-  88   1        PWM_InitTypeDef  PWM_InitStructure;
-  89   1        GPIO_InitStructure.Mode = GPIO_PullUp;
+  73          /*************************************************
+  74          * 函数名称: void    DC_MOTOR_config(void)
+  75          * 描述: 配置需要使用的pwm通道
+  76          * 输入: 无
+  77          * 返回值: 无
+  78          * 其他说明: 将会自动初始化相应的io引脚
+  79          *************************************************/
+  80          void    DC_MOTOR_config(void)
+  81          {
+  82   1        
+  83   1        GPIO_InitTypeDef    GPIO_InitStructure;     //结构定义
+  84   1        PWM_InitTypeDef  PWM_InitStructure;
+  85   1        GPIO_InitStructure.Mode = GPIO_PullUp;
+  86   1      
+  87   1      
+  88   1        GPIO_InitStructure.Pin = GPIO_Pin_3;    //PWM2
+  89   1        GPIO_Inilize(GPIO_P2, &GPIO_InitStructure);  //初始化
   90   1      
   91   1      
-  92   1        GPIO_InitStructure.Pin = GPIO_Pin_3;    //PWM2
-  93   1        GPIO_Inilize(GPIO_P2, &GPIO_InitStructure);  //初始化
-  94   1      
-  95   1      
-  96   1      
-  97   1        GPIO_InitStructure.Pin = GPIO_Pin_2;    //PWM4
-  98   1        GPIO_Inilize(GPIO_P2, &GPIO_InitStructure);  //初始化
-  99   1        P22 = 1;
- 100   1        P23 = 1;
- 101   1      
- 102   1      
- 103   1        PWM_UNLOCK;
- 104   1        PWM_InitStructure.PWM_GOTO_ADC = DISABLE;
- 105   1        PWM_InitStructure.PWM_V_INIT = PWM_LOW;
- 106   1        PWM_InitStructure.PWM_0ISR_EN = DISABLE;
- 107   1        PWM_InitStructure.PWM_OUT_EN = ENABLE;
- 108   1        PWM_InitStructure.PWM_UNUSUAL_EN = DISABLE;
- 109   1        PWM_InitStructure.PWM_UNUSUAL_OUT = DISABLE;
- 110   1        PWM_InitStructure.PWM_UNUSUAL_ISR_EN = DISABLE;
- 111   1        PWM_InitStructure.PWM_UNUSUAL_CMP0_EN = DISABLE;
- 112   1        PWM_InitStructure.PWM_UNUSUAL_P24_EN = DISABLE;
- 113   1        PWM_InitStructure.PWM_CLOCK = PWM_Clock_NT;
- 114   1        PWM_InitStructure.PWM_CLOCK_DIV = 0x00;
- 115   1        PWM_InitStructure.PWM_SELECTx_IO = PWM_SELECT_N;
- 116   1        PWM_InitStructure.PWM_ISRx_EN = DISABLE;
-C51 COMPILER V8.05a   MOTOR                                                                07/11/2017 14:25:07 PAGE 3   
+  92   1      
+  93   1        GPIO_InitStructure.Pin = GPIO_Pin_2;    //PWM4
+  94   1        GPIO_Inilize(GPIO_P2, &GPIO_InitStructure);  //初始化
+  95   1        P22 = 1;
+  96   1        P23 = 1;
+  97   1      
+  98   1      
+  99   1        PWM_UNLOCK;
+ 100   1        PWM_InitStructure.PWM_GOTO_ADC = DISABLE;
+ 101   1        PWM_InitStructure.PWM_V_INIT = PWM_LOW;
+ 102   1        PWM_InitStructure.PWM_0ISR_EN = DISABLE;
+ 103   1        PWM_InitStructure.PWM_OUT_EN = ENABLE;
+ 104   1        PWM_InitStructure.PWM_UNUSUAL_EN = DISABLE;
+ 105   1        PWM_InitStructure.PWM_UNUSUAL_OUT = DISABLE;
+ 106   1        PWM_InitStructure.PWM_UNUSUAL_ISR_EN = DISABLE;
+ 107   1        PWM_InitStructure.PWM_UNUSUAL_CMP0_EN = DISABLE;
+ 108   1        PWM_InitStructure.PWM_UNUSUAL_P24_EN = DISABLE;
+ 109   1        PWM_InitStructure.PWM_CLOCK = PWM_Clock_NT;
+ 110   1        PWM_InitStructure.PWM_CLOCK_DIV = 0x00;
+ 111   1        PWM_InitStructure.PWM_SELECTx_IO = PWM_SELECT_N;
+ 112   1        PWM_InitStructure.PWM_ISRx_EN = DISABLE;
+ 113   1        PWM_InitStructure.PWM_T1x_EN = DISABLE;
+ 114   1        PWM_InitStructure.PWM_T2x_EN = DISABLE;
+ 115   1        PWM_InitStructure.PWM_EN = DISABLE;
+ 116   1        PWM_Inilize(PWM_4, &PWM_InitStructure);
+C51 COMPILER V8.05a   MOTOR                                                                07/17/2017 11:46:43 PAGE 3   
 
- 117   1        PWM_InitStructure.PWM_T1x_EN = DISABLE;
- 118   1        PWM_InitStructure.PWM_T2x_EN = DISABLE;
- 119   1        PWM_InitStructure.PWM_EN = DISABLE;
- 120   1        PWM_Inilize(PWM_4, &PWM_InitStructure);
- 121   1        PWM_Inilize(PWM_5, &PWM_InitStructure);
- 122   1      
- 123   1        PWM_LOCK;
- 124   1      
- 125   1      
- 126   1      }
- 127          
- 128          #endif
- 129          
- 130          
+ 117   1        PWM_Inilize(PWM_5, &PWM_InitStructure);
+ 118   1      
+ 119   1        PWM_LOCK;
+ 120   1      
+ 121   1      
+ 122   1      }
+ 123          
+ 124          #endif
+ 125          
+ 126          
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    347    ----
+   CODE SIZE        =    328    ----
    CONSTANT SIZE    =   ----    ----
-   XDATA SIZE       =      4      23
+   XDATA SIZE       =      4      25
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----
    IDATA SIZE       =   ----    ----

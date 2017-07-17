@@ -95,3 +95,7 @@ void open_StepMotor(u8 motor)
 	openPulser(motor);
 	g_stepMotor[motor].state = ON;
 }
+void stepMotor_Init()
+{
+	PulserInit();
+}

@@ -48,8 +48,6 @@ static pid_info g_pid_n_info[PID_NUM];
 *************************************************/
 void PID_config(u8 PID_N, float kp, float ki, float kd)//pid算法初始化函数，参数是三个，PID
 {
-	g_pid_n_info[PID_N].setParameter = 70;//若最终没有设置角度则默认70度
-	g_pid_n_info[PID_N].actualParameter = 30;
 	g_pid_n_info[PID_N].err = 0;
 	g_pid_n_info[PID_N].err_last = 0;
 	g_pid_n_info[PID_N].output = 0;
@@ -121,6 +119,7 @@ bit PID(u8 PID_N)
 		//#else
 		g_pid_n_info[PID_N].integral += g_pid_n_info[PID_N].err;
 		//#endif
+		//PID算法核心
 		g_pid_n_info[PID_N].output  = g_pid_n_info[PID_N].Kp*g_pid_n_info[PID_N].err		  \
 									+ g_pid_n_info[PID_N].Ki*g_pid_n_info[PID_N].integral     \
 									+ g_pid_n_info[PID_N].Kd*(g_pid_n_info[PID_N].err - g_pid_n_info[PID_N].err_last);
@@ -144,14 +143,6 @@ void setParameterInferiorLimit(u8 PID_N, float value)
 {
 	g_pid_n_info[PID_N].parameterInferiorLimit = value;
 }
-/*************************************************
-* 函数名称:
-* 描述:
-* 输入:
-* 输出:
-* 返回值:
-* 其他说明:
-*************************************************/
 
 //************************************
 // Method:    setParameterUpperLimit

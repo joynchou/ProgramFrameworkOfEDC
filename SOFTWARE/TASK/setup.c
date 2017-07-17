@@ -5,6 +5,11 @@
 #include "../../HARDWARE/DEVICES/LED/LED.h"
 #include "../../HARDWARE/BSP/USART1.h"
 #include "../../HARDWARE/BSP/timer.h"
+#include "../../HARDWARE/BSP/GPIO.h"
+#include "../../HARDWARE/BSP/STC15_PWM.h"
+#include "../../HARDWARE/DEVICES/MOTOR/SERVO/SERVO.h"
+#include "../../HARDWARE/DEVICES/DISPLAY/1602/LCD1602.H"
+
 
 
 /*************  串口1初始化函数 *****************/
@@ -33,12 +38,44 @@ void    UART1_init(unsigned long BandRate)
 }
 void setup(void)
 {
+		 GPIO_InitTypeDef    GPIO_InitStructure;     //结构定义
+    PWM_InitTypeDef  PWM_InitStructure;
+
 	 UART1_init(115200L);
-   timerInit();
+  // timerInit();
 	 Board_LED_Init();
    Button_config();
 	 ADC_config(ADC_P10,ADC_540T);
-	 EA=1;
+	 LCD1602_Init();
+	//Init_Str_Motor(SERVO_1,0.5f,2.5f,180,250);
+//	  GPIO_InitStructure.Mode = GPIO_PullUp;       //指定IO的输入或输出方式,GPIO_PullUp,GPIO_HighZ,GPIO_OUT_OD,GPIO_OUT_PP
+
+//        GPIO_InitStructure.Pin  = GPIO_Pin_7 ;    //指定要初始化的IO, GPIO_Pin_0 ~ GPIO_Pin_7, 或操作
+//        GPIO_Inilize(GPIO_P3,&GPIO_InitStructure);  //初始化
+//        P37=1;
+//    PWM_UNLOCK;
+//    PWM_InitStructure.PWM_GOTO_ADC=DISABLE;
+//    PWM_InitStructure.      PWM_V_INIT= PWM_LOW;
+//    PWM_InitStructure.      PWM_0ISR_EN=  DISABLE;
+//    PWM_InitStructure.      PWM_OUT_EN=ENABLE;
+//    PWM_InitStructure.     PWM_UNUSUAL_EN= DISABLE;
+//    PWM_InitStructure.     PWM_UNUSUAL_OUT=  DISABLE;
+//    PWM_InitStructure.     PWM_UNUSUAL_ISR_EN=DISABLE;
+//    PWM_InitStructure.     PWM_UNUSUAL_CMP0_EN=DISABLE;
+//    PWM_InitStructure.     PWM_UNUSUAL_P24_EN=DISABLE;
+//    PWM_InitStructure.       PWM_CLOCK=PWM_Clock_NT;
+//    PWM_InitStructure.       PWM_CLOCK_DIV=15;
+//    PWM_InitStructure.       PWM_SELECTx_IO=PWM_SELECT_N;
+//    PWM_InitStructure.     PWM_ISRx_EN=  DISABLE;
+//    PWM_InitStructure.       PWM_T1x_EN=   DISABLE;
+//    PWM_InitStructure.       PWM_T2x_EN=    DISABLE;
+//    PWM_InitStructure.       PWM_EN=  DISABLE;
+//    PWM_Inilize(PWM_2,&PWM_InitStructure) ;
+//    PWM_LOCK;
+//		set_PWM_period(PWM_2,50);
+//	  set_PWM_duty(PWM_2,0.7f);
+//		open_PWM_N(PWM_2);
+		EA=1;
 
 }
 

@@ -21,9 +21,7 @@ bool setPulse(u8 pulser_num, u16 Hz, u16 count)
 }
 bool openPulser(u8 pulser_num)
 {
-	PWM_UNLOCK;
-	PWM_N_EN(pulser_num + 5);
-	PWM_LOCK;
+	open_PWM_N(pulser_num + 5);
 	g_pulser[pulser_num].state = ON;
 
 	return 1;
@@ -31,9 +29,7 @@ bool openPulser(u8 pulser_num)
 bool closePulser(u8 pulser_num)
 {
 
-	PWM_UNLOCK;
-	PWM_N_NO(pulser_num + 5);
-	PWM_LOCK;
+	close_PWM_N(pulser_num + 5);
 
 	g_pulser[pulser_num].state = OFF;
 	return 1;
@@ -45,31 +41,13 @@ bool getPulserState(u8 pulser_num)
 	return g_pulser[pulser_num].state;
 
 }
-static u16 g_PWMtmp = 0;//计数变量
-/***************！以下为私有函数，不建议更改！********************************/
-static void PWM_Routine(void) interrupt 22   //中断执行程序
-{
-
-	if (PWMIF == 0100000)
-	{
-		if (g_PWMtmp++ >= g_pulser[PULSER_1].count)
-		{
-			g_pulser[PULSER_1].count = 0;
-			PWM_UNLOCK;
-			PWM_N_NO(7);
-			PWM_LOCK;
-		}
-	}
-}
-//static void PWMFD_Routine(void) interrupt 23
-//{
-//
-//}
 void PulserInit(void)//初始化程序
 {
+   //使用PWM6，7作为两个步进电机的输出
+		//GPIO_InitTypeDef    GPIO_InitStructure;     //结构定义
 
 	PWM_InitTypeDef  PWM_InitStructure;
-	set_PWM_duty(PWM_7, PWM_DEFAULT_DUTY);
+	set_PWM_duty(PWM_7, PWM_DEFAULT_DUTY); //使用默认0.5的占空比
 	set_PWM_duty(PWM_6, PWM_DEFAULT_DUTY);
 
 	PWM_UNLOCK;
@@ -94,3 +72,24 @@ void PulserInit(void)//初始化程序
 
 	PWM_LOCK;
 }
+
+static u16 g_PWMtmp = 0;//计数变量
+/***************！以下为私有函数，不建议更改！********************************/
+static void PWM_Routine(void) interrupt 22   //中断执行程序
+{
+
+	if (PWMIF == 0100000)
+	{
+		if (g_PWMtmp++ >= g_pulser[PULSER_1].count)
+		{
+			g_pulser[PULSER_1].count = 0;
+			PWM_UNLOCK;
+			PWM_N_NO(7);
+			PWM_LOCK;
+		}
+	}
+}
+//static void PWMFD_Routine(void) interrupt 23
+//{
+//
+//}

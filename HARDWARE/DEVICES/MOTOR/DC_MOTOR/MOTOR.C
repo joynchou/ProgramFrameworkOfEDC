@@ -54,17 +54,12 @@ void setDC_MotorSpeed(u8 motor, float speed)
 }
 void open_DC_Motor(u8 motor)
 {
-	PWM_UNLOCK;
-	PWM_N_EN(motor + 4);
-	PWM_LOCK;
-
+	open_PWM_N(motor + 4);
 	g_DC_Motor[motor].state = ON;
 }
 void close_DC_Motor(u8 motor)
 {
-	PWM_UNLOCK;
-	PWM_N_NO(motor + 4);
-	PWM_LOCK;
+	close_PWM_N(motor + 4);
 	g_DC_Motor[motor].state = OFF;
 
 
@@ -76,7 +71,7 @@ bit getDC_MotorState(u8 motor)
 
 }
 /*************************************************
-* 函数名称: void    PWM_config(u8 PWM_N)
+* 函数名称: void    DC_MOTOR_config(void)
 * 描述: 配置需要使用的pwm通道
 * 输入: 无
 * 返回值: 无
@@ -84,6 +79,7 @@ bit getDC_MotorState(u8 motor)
 *************************************************/
 void    DC_MOTOR_config(void)
 {
+	
 	GPIO_InitTypeDef    GPIO_InitStructure;     //结构定义
 	PWM_InitTypeDef  PWM_InitStructure;
 	GPIO_InitStructure.Mode = GPIO_PullUp;

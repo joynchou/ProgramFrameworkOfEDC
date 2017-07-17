@@ -69,7 +69,7 @@ float get_PWM_N_duty(u8 PWM_N);
         但是由于单片机硬件所限，不可以单独对每路pwm的频率进行修改，
         只能一改全改。
 *************************************************/
-void set_PWM_period(u16 Hz);
+void set_PWM_period(u8 PWM_N,u16 Hz)  ;
 
 
 

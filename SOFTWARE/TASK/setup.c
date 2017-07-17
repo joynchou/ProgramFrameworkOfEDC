@@ -7,6 +7,8 @@
 #include "../../HARDWARE/BSP/timer.h"
 #include "../../HARDWARE/BSP/GPIO.h"
 #include "../../HARDWARE/BSP/STC15_PWM.h"
+#include "../../HARDWARE/DEVICES/MOTOR/STEP_MOTOR/STEP_MOTOR.h"
+
 #include "../../HARDWARE/DEVICES/MOTOR/SERVO/SERVO.h"
 #include "../../HARDWARE/DEVICES/DISPLAY/1602/LCD1602.H"
 #include "../../HARDWARE/COMMON_HARDWARE/fixedPulser.h"
@@ -48,10 +50,10 @@ void setup(void)
    Button_config();
 	 ADC_config(ADC_P10,ADC_540T);
 	 LCD1602_Init();
-	 PulserInit();
-	 setPulse(PULSER_1,100,200);
-	 openPulser(PULSER_1);
-//	Init_Str_Motor(SERVO_1,0.5f,2.5f,180,250);
+	 stepMotor_Init ();
+	 setStepMotorWithRound(STEP_MOTOR_1,15,100);
+	 open_StepMotor(STEP_MOTOR_1);
+	//	Init_Str_Motor(SERVO_1,0.5f,2.5f,180,250);
 	//set_STR_angle(SERVO_1,30);
 //	open_STR(SERVO_1);
 	 // GPIO_InitStructure.Mode = GPIO_PullUp;       //指定IO的输入或输出方式,GPIO_PullUp,GPIO_HighZ,GPIO_OUT_OD,GPIO_OUT_PP

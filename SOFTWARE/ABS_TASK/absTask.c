@@ -75,11 +75,8 @@ void task7(void) _task_ 7
 		{
 			open_Board_LED();
 		}
-		else
-		{
-			close_Board_LED();
-		}
-		os_wait(K_IVL, 5, 0);
+	
+		os_wait(K_IVL, 10, 0);
 	}
 }
 void task8(void) _task_ 8

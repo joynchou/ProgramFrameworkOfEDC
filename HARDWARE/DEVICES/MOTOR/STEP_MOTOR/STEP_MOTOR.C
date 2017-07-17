@@ -2,12 +2,12 @@
 * 组织名称：
 * 文件名称: K:\单片机相关\电子大赛程序框架\HARDWARE\DEVICES\MOTOR\STEP_MOTOR\STEP_MOTOR.C
 * 作者:  周晨阳
-* 版本:  1.0  
+* 版本:  1.0
 * 日期:  2017/07/11
 * 描述: 步进电机的驱动程序
 * 历史修改记录:
 * <作者> <时间> <版本 > <描述>
-* 
+*
 ***********************************************************/
 
 #include "STEP_MOTOR.H"
@@ -16,10 +16,13 @@
 typedef struct
 {
 	u16 angle;//旋转角度
-	u8 state;//电机状态
+	u8 state;//电机状态：停转（堵住），停转（自由态），旋转
 	u16 round;//旋转圈数
 	u8 speed;//旋转速度
-	float DIV;//步进电机细分角度值
+	float DIV;//步进电机单步角度值 ，如1.8°
+	u8 driverDiv;//步进电机驱动板上所选的角度细分值 2，4，8，16
+	u16 maxPeriod; 	//步进电机所能承受的最大频率
+	u8 diversion;//电机转向
 
 
 }StepMotor;
@@ -35,9 +38,10 @@ static  StepMotor g_stepMotor[STEP_MOTOR_NUM];
 // Parameter: u16 angle
 // Parameter: u8 speed
 //************************************
-bit setStepMotorWithAngle(u8 motor, u16 angle, u8 speed)
+bit setStepMotorWithAngle(u8 motor, float angle, u8 speed)
 {
-	setPulse(motor, speed, angle); //暂时不能使用
+	setPulse(motor, (u16)((1 + g_stepMotor[motor].maxPeriod / 99)*speed - (g_stepMotor[motor].maxPeriod / 99)), \
+		(u16)((angle*g_stepMotor[STEP_MOTOR_1].driverDiv) / g_stepMotor[STEP_MOTOR_1].DIV));
 	return 1;
 }
 //************************************
@@ -52,10 +56,7 @@ bit setStepMotorWithAngle(u8 motor, u16 angle, u8 speed)
 //************************************
 bit setStepMotorWithRound(u8 motor, u16 round, u8 speed)
 {
-	while (round--)
-	{
-		setStepMotorWithAngle(motor, 360, speed);
-	}
+	setStepMotorWithAngle(motor, 360 * round, speed);
 	return 1;
 }
 //************************************
@@ -66,9 +67,14 @@ bit setStepMotorWithRound(u8 motor, u16 round, u8 speed)
 // Qualifier: 读取步进电机当前的状态
 // Parameter: u8 motor
 //************************************
-bit getStepMotorState(u8 motor)
+u8 getStepMotorState(u8 motor)
 {
 	return g_stepMotor[motor].state;
+}
+bit setStepMotorDiversion(u8 motor)
+{
+
+	return 1;
 }
 //************************************
 // Method:    close_StepMotor
@@ -97,8 +103,20 @@ void open_StepMotor(u8 motor)
 	openPulser(motor);
 	g_stepMotor[motor].state = ON;
 }
+bit freeStepMotor(u8 motor)
+{
+
+	return 1;
+}
+bit lockStepMotor(u8 motor)
+{
+
+	return 1;
+}
 void stepMotor_Init()
 {
-	g_stepMotor[0].DIV=1.8f;
+	g_stepMotor[STEP_MOTOR_1].DIV = 1.8f;//1.8°的步进角
+	g_stepMotor[STEP_MOTOR_1].driverDiv = 8; //驱动板上使用8的细分
+	g_stepMotor[STEP_MOTOR_1].maxPeriod = 6790;
 	PulserInit();
 }

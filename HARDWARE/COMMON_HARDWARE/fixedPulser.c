@@ -72,6 +72,7 @@ void PulserInit(void)//初始化程序
 	PWM_InitStructure.PWM_T1x_EN = DISABLE;           //ENABLE=使能第一翻转中断
 	PWM_InitStructure.PWM_T2x_EN = ENABLE;          //ENABLE=使能第二翻转中断
 	PWM_InitStructure.PWM_EN = DISABLE;                //ENABLE=PWM使能 在其他PWM参数设置好后最后设置 如果被关闭后在打开，则PWM计数器重新从0计数
+	
 //	PWM_Inilize(PWM_6, &PWM_InitStructure);
 	PWM_Inilize(PWM_7, &PWM_InitStructure);
 
@@ -83,13 +84,12 @@ static u16 g_PWMtmp = 0;//计数变量
 /***************！以下为私有函数，不建议更改！********************************/
 static void PWM_Routine(void) interrupt 22   //中断执行程序
 {
-     PWMIF &= (~(1 << 6));
+     PWMIF &= (~(1 << 6));  //软件清零
 	if (PWMIF^5 ==1)
 	{ 
-		 PWMIF &= (~(1 << 5));
+		 PWMIF &= (~(1 << 5));  //软件清零
 
-		g_PWMtmp++;
-		if (g_PWMtmp >= g_pulser[PULSER_1].count)
+		if (g_PWMtmp++ >= g_pulser[PULSER_1].count)
 		{
 			g_pulser[PULSER_1].count = 0;
 			close_PWM_N(PWM_7);

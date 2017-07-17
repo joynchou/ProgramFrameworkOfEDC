@@ -48,7 +48,11 @@ void Init_Str_Motor(u8 MOTOR,float pl,float ph,float ma,unsigned int n)
         GPIO_InitStructure.Pin  = GPIO_Pin_7 ;    //指定要初始化的IO, GPIO_Pin_0 ~ GPIO_Pin_7, 或操作
         GPIO_Inilize(GPIO_P3,&GPIO_InitStructure);  //初始化
         P37=1;
+<<<<<<< HEAD
+    PWM_UNLOCK;
+=======
 		PWM_UNLOCK;
+>>>>>>> 3ebc801f8d808c1e3087fb68830b1138756a6dd9
     PWM_InitStructure.PWM_GOTO_ADC=DISABLE;
     PWM_InitStructure.      PWM_V_INIT= PWM_LOW;
     PWM_InitStructure.      PWM_0ISR_EN=  DISABLE;
@@ -59,7 +63,11 @@ void Init_Str_Motor(u8 MOTOR,float pl,float ph,float ma,unsigned int n)
     PWM_InitStructure.     PWM_UNUSUAL_CMP0_EN=DISABLE;
     PWM_InitStructure.     PWM_UNUSUAL_P24_EN=DISABLE;
     PWM_InitStructure.       PWM_CLOCK=PWM_Clock_NT;
+<<<<<<< HEAD
+    PWM_InitStructure.       PWM_CLOCK_DIV=0x00;
+=======
     PWM_InitStructure.       PWM_CLOCK_DIV=15;
+>>>>>>> 3ebc801f8d808c1e3087fb68830b1138756a6dd9
     PWM_InitStructure.       PWM_SELECTx_IO=PWM_SELECT_N;
     PWM_InitStructure.     PWM_ISRx_EN=  DISABLE;
     PWM_InitStructure.       PWM_T1x_EN=   DISABLE;
@@ -67,10 +75,13 @@ void Init_Str_Motor(u8 MOTOR,float pl,float ph,float ma,unsigned int n)
     PWM_InitStructure.       PWM_EN=  DISABLE;
     PWM_Inilize(PWM_2,&PWM_InitStructure) ;
     PWM_LOCK;
+<<<<<<< HEAD
+=======
 		
 		setPWM_DIV(PWM_2,16);
 		set_PWM_period(PWM_2,50);
 
+>>>>>>> 3ebc801f8d808c1e3087fb68830b1138756a6dd9
 	str_motor[MOTOR].Pulse_Width_L = pl;
 	str_motor[MOTOR].Pulse_Width_H = ph;
 	str_motor[MOTOR].Str_MAX_angle = ma;
@@ -78,6 +89,13 @@ void Init_Str_Motor(u8 MOTOR,float pl,float ph,float ma,unsigned int n)
 	str_motor[MOTOR].Str_DIV = ((int)(str_motor[MOTOR].Pulse_Width_H - str_motor[MOTOR].Pulse_Width_L) * 1000) / str_motor[MOTOR].Str_N;
 	str_motor[MOTOR].Str_ACC_angle = str_motor[MOTOR].Str_MAX_angle / (float)str_motor[MOTOR].Str_N;
 	str_motor[MOTOR].Current_angle = 0;
+<<<<<<< HEAD
+	close_PWM_N(PWM_2);
+	set_PWM_period(50);
+	//set_PWM_duty(PWM_2,0);
+	//
+=======
+>>>>>>> 3ebc801f8d808c1e3087fb68830b1138756a6dd9
 }
 
 /**********************************************
@@ -94,7 +112,13 @@ void set_STR_angle(u8 MOTOR,float angle)
 		float str_duty;
 		str_motor[MOTOR].Set_angle = angle;
 		str_duty = ((float)((int)(angle / (str_motor[MOTOR].Str_ACC_angle)) * str_motor[MOTOR].Str_DIV) + 0.5) / 20;
+<<<<<<< HEAD
+		close_PWM_N(PWM_2);
 		set_PWM_duty(PWM_2,str_duty);
+		open_PWM_N(PWM_2);
+=======
+		set_PWM_duty(PWM_2,str_duty);
+>>>>>>> 3ebc801f8d808c1e3087fb68830b1138756a6dd9
 		str_motor[MOTOR].Current_angle = str_motor[MOTOR].Set_angle;
 }
 
@@ -112,13 +136,21 @@ float read_STR_angle(u8 MOTOR)
 }
 bit open_STR(u8 MOTOR)
 { 
+<<<<<<< HEAD
+	open_PWM_N(PWM_2);
+=======
 	open_PWM_N(MOTOR);
+>>>>>>> 3ebc801f8d808c1e3087fb68830b1138756a6dd9
 	str_motor[MOTOR].Str_state = ON;
 	return 1;
 }
 bit close_STR(u8 MOTOR)
 {
+<<<<<<< HEAD
+	close_PWM_N(PWM_2);
+=======
 	close_PWM_N(MOTOR);
+>>>>>>> 3ebc801f8d808c1e3087fb68830b1138756a6dd9
 	str_motor[MOTOR].Str_state = OFF;
 	return 1;
 }

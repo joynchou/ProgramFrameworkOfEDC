@@ -8,6 +8,7 @@ Project File Date:  07/14/2017
 
 <h2>Output:</h2>
 Build target '电子大赛程序框架'
+compiling fixedPulser.c...
 linking...
 *** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
     SEGMENT: ?PR?MODE1?MODE
@@ -74,7 +75,13 @@ linking...
 *** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
     SEGMENT: ?PR?DC_MOTOR_CONFIG?MOTOR
 *** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_INIT_STR_MOTOR?SERVO
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SET_STR_ANGLE?SERVO
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
     SEGMENT: ?PR?_READ_STR_ANGLE?SERVO
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_OPEN_STR?SERVO
 *** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
     SEGMENT: ?PR?_CLOSE_STR?SERVO
 *** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
@@ -171,22 +178,34 @@ linking...
     SEGMENT: ?PR?_FILTER?FILTER
     CALLER1: ?PR?TASK8?ABSTASK
     CALLER2: ?PR?TASK9?ABSTASK
-Program Size: data=46.4 xdata=1476 code=15490
-creating hex file from "电子大赛程序框架"...
-"电子大赛程序框架" - 0 Error(s), 79 Warning(s).
-ER1: ?PR?TASK8?ABSTASK
-    CALLER2: ?PR?TASK9?ABSTASK
-*** WARNING L15: MULTIPLE CALL TO SEGMENT
-    SEGMENT: ?PR?_FILTER?FILTER
-    CALLER1: ?PR?TASK8?ABSTASK
-    CALLER2: ?PR?TASK9?ABSTASK
-Program Size: data=46.4 xdata=1476 code=15486
+Program Size: data=46.4 xdata=1495 code=15493
 creating hex file from "电子大赛程序框架"...
 "电子大赛程序框架" - 0 Error(s), 82 Warning(s).
-compiling SERVO.C...
-..\HARDWARE\DEVICES\MOTOR\SERVO\SERVO.C(72): warning C209: '_set_PWM_period': too few actual parameters
-..\HARDWARE\DEVICES\MOTOR\SERVO\SERVO.C - 0 Error(s), 1 Warning(s).
-compiling SERVO.C...
-..\HARDWARE\DEVICES\MOTOR\SERVO\SERVO.C - 0 Error(s), 0 Warning(s).
-compiling SERVO.C...
-..\HARDWARE\DEVICES\MOTOR\SERVO\SERVO.C - 0 Error(s), 0 Warning(s).
+</pre>
+</body>
+</html>
+e from "电子大赛程序框架"...
+"电子大赛程序框架" - 0 Error(s), 83 Warning(s).
+compiling fixedPulser.c...
+..\HARDWARE\COMMON_HARDWARE\FIXEDPULSER.C(92): error C202: 'C7IF': undefined identifier
+..\HARDWARE\COMMON_HARDWARE\fixedPulser.c - 1 Error(s), 0 Warning(s).
+compiling fixedPulser.c...
+..\HARDWARE\COMMON_HARDWARE\FIXEDPULSER.C(92): error C202: 'C7IF': undefined identifier
+..\HARDWARE\COMMON_HARDWARE\fixedPulser.c - 1 Error(s), 0 Warning(s).
+compiling fixedPulser.c...
+..\HARDWARE\COMMON_HARDWARE\fixedPulser.c - 0 Error(s), 0 Warning(s).
+compiling fixedPulser.c...
+..\HARDWARE\COMMON_HARDWARE\FIXEDPULSER.C(89): error C141: syntax error near '='
+..\HARDWARE\COMMON_HARDWARE\fixedPulser.c - 1 Error(s), 0 Warning(s).
+compiling fixedPulser.c...
+..\HARDWARE\COMMON_HARDWARE\fixedPulser.c - 0 Error(s), 0 Warning(s).
+compiling fixedPulser.c...
+..\HARDWARE\COMMON_HARDWARE\fixedPulser.c - 0 Error(s), 0 Warning(s).
+_HARDWARE\fixedPulser.c - 0 Error(s), 1 Warning(s).
+compiling fixedPulser.c...
+..\HARDWARE\COMMON_HARDWARE\fixedPulser.c - 0 Error(s), 0 Warning(s).
+compiling fixedPulser.c...
+..\HARDWARE\COMMON_HARDWARE\FIXEDPULSER.C(26): error C202: 'pwm_7': undefined identifier
+..\HARDWARE\COMMON_HARDWARE\fixedPulser.c - 1 Error(s), 0 Warning(s).
+compiling fixedPulser.c...
+..\HARDWARE\COMMON_HARDWARE\fixedPulser.c - 0 Error(s), 0 Warning(s).

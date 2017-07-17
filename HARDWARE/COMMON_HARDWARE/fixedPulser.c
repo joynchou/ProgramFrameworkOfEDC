@@ -1,5 +1,7 @@
 #include "fixedPulser.h"
 #include "../BSP/STC15_PWM.h"
+#include "../BSP/GPIO.H"
+
 #include <limits.h>
 
 struct Pulser //脉冲发生器有关参数数据结构
@@ -13,7 +15,7 @@ struct Pulser //脉冲发生器有关参数数据结构
 static struct Pulser g_pulser[PULSER_NUM];  //脉冲发生器信息存储数组
 bool setPulse(u8 pulser_num, u16 Hz, u16 count)
 {
-	set_PWM_period(Hz);
+	set_PWM_period(PWM_7,Hz);
 	g_pulser[pulser_num].Hz = Hz;
 	g_pulser[pulser_num].count = count;
 
@@ -21,7 +23,7 @@ bool setPulse(u8 pulser_num, u16 Hz, u16 count)
 }
 bool openPulser(u8 pulser_num)
 {
-	open_PWM_N(pulser_num + 5);
+	open_PWM_N(PWM_7);
 	g_pulser[pulser_num].state = ON;
 
 	return 1;
@@ -44,11 +46,14 @@ bool getPulserState(u8 pulser_num)
 void PulserInit(void)//初始化程序
 {
    //使用PWM6，7作为两个步进电机的输出
-		//GPIO_InitTypeDef    GPIO_InitStructure;     //结构定义
-
+		GPIO_InitTypeDef    GPIO_InitStructure;     //结构定义
 	PWM_InitTypeDef  PWM_InitStructure;
+	 GPIO_InitStructure.Mode = GPIO_PullUp;       //指定IO的输入或输出方式,GPIO_PullUp,GPIO_HighZ,GPIO_OUT_OD,GPIO_OUT_PP
+
+        GPIO_InitStructure.Pin  = GPIO_Pin_7 ;    //指定要初始化的IO, GPIO_Pin_0 ~ GPIO_Pin_7, 或操作
+        GPIO_Inilize(GPIO_P1,&GPIO_InitStructure);  //初始化
+        P17=1;
 	set_PWM_duty(PWM_7, PWM_DEFAULT_DUTY); //使用默认0.5的占空比
-	set_PWM_duty(PWM_6, PWM_DEFAULT_DUTY);
 
 	PWM_UNLOCK;
 	PWM_InitStructure.PWM_GOTO_ADC = DISABLE;            //ENABLE=计数器归零时 触发ADC
@@ -61,31 +66,33 @@ void PulserInit(void)//初始化程序
 	PWM_InitStructure.PWM_UNUSUAL_CMP0_EN = DISABLE;     //ENABLE=异常检测源为比较器的输出 当比较结果为高时 触发PWM异常
 	PWM_InitStructure.PWM_UNUSUAL_P24_EN = DISABLE;      //ENABLE=异常检测源为P24/PWMFLT 当P24=1 触发PWM异常
 	PWM_InitStructure.PWM_CLOCK = PWM_Clock_NT;          //PWM_Clock_NT=PWM的时钟源是系统时钟经分频后的时钟  PWM_Clock_Timer2_OF=PWM的时钟源是TMER2的溢出脉冲
-	PWM_InitStructure.PWM_CLOCK_DIV = 0x00;              //当PWM_CLOCK=PWM_Clock_NT时 PWM的时钟源是系统时钟/(PS[3:0]+1)
+	PWM_InitStructure.PWM_CLOCK_DIV = 15;              //当PWM_CLOCK=PWM_Clock_NT时 PWM的时钟源是系统时钟/(PS[3:0]+1)
 	PWM_InitStructure.PWM_SELECTx_IO = PWM_SELECT_N;     //PWM_SELECT_N=PWM第一选择IO口 PWM_SELECT_N_2=PWM第二选择IO口
 	PWM_InitStructure.PWM_ISRx_EN = ENABLE;           //ENABLE=使能PWMx中断 使能第一翻转或第二翻转中断
 	PWM_InitStructure.PWM_T1x_EN = DISABLE;           //ENABLE=使能第一翻转中断
 	PWM_InitStructure.PWM_T2x_EN = ENABLE;          //ENABLE=使能第二翻转中断
 	PWM_InitStructure.PWM_EN = DISABLE;                //ENABLE=PWM使能 在其他PWM参数设置好后最后设置 如果被关闭后在打开，则PWM计数器重新从0计数
-	PWM_Inilize(PWM_6, &PWM_InitStructure);
+//	PWM_Inilize(PWM_6, &PWM_InitStructure);
 	PWM_Inilize(PWM_7, &PWM_InitStructure);
 
 	PWM_LOCK;
+	setPWM_DIV(PWM_7,16);
 }
 
 static u16 g_PWMtmp = 0;//计数变量
 /***************！以下为私有函数，不建议更改！********************************/
 static void PWM_Routine(void) interrupt 22   //中断执行程序
 {
+     PWMIF &= (~(1 << 6));
+	if (PWMIF^5 ==1)
+	{ 
+		 PWMIF &= (~(1 << 5));
 
-	if (PWMIF == 0100000)
-	{
-		if (g_PWMtmp++ >= g_pulser[PULSER_1].count)
+		g_PWMtmp++;
+		if (g_PWMtmp >= g_pulser[PULSER_1].count)
 		{
 			g_pulser[PULSER_1].count = 0;
-			PWM_UNLOCK;
-			PWM_N_NO(7);
-			PWM_LOCK;
+			close_PWM_N(PWM_7);
 		}
 	}
 }

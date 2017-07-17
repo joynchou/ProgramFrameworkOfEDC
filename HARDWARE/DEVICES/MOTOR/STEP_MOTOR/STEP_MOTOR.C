@@ -19,6 +19,8 @@ typedef struct
 	u8 state;//电机状态
 	u16 round;//旋转圈数
 	u8 speed;//旋转速度
+	float DIV;//步进电机细分角度值
+
 
 }StepMotor;
 static  StepMotor g_stepMotor[STEP_MOTOR_NUM];
@@ -97,5 +99,6 @@ void open_StepMotor(u8 motor)
 }
 void stepMotor_Init()
 {
+	g_stepMotor[0].DIV=1.8f;
 	PulserInit();
 }

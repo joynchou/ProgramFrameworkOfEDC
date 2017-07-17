@@ -1,7 +1,7 @@
 #ifndef _FIXEDPULSER_H_
 #define _FIXEDPULSER_H_
 #include "../BSP/config.h"
-#define PULSER_NUM	2
+#define PULSER_NUM	1
 #define PULSER_1	0
 #define PULSER_2	1
 extern void PulserInit(void)                          ;

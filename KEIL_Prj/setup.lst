@@ -1,4 +1,4 @@
-C51 COMPILER V8.05a   SETUP                                                                07/17/2017 11:56:12 PAGE 1   
+C51 COMPILER V8.05a   SETUP                                                                07/17/2017 13:15:50 PAGE 1   
 
 
 C51 COMPILER V8.05a, COMPILATION OF MODULE SETUP
@@ -57,45 +57,50 @@ line level    source
   47   1         Button_config();
   48   1         ADC_config(ADC_P10,ADC_540T);
   49   1         LCD1602_Init();
-  50   1        //Init_Str_Motor(SERVO_1,0.5f,2.5f,180,250);
-  51   1          GPIO_InitStructure.Mode = GPIO_PullUp;       //指定IO的输入或输出方式,GPIO_PullUp,GPIO_HighZ,GPIO_OUT_O
-             -D,GPIO_OUT_PP
-  52   1      
-  53   1              GPIO_InitStructure.Pin  = GPIO_Pin_7 ;    //指定要初始化的IO, GPIO_Pin_0 ~ GPIO_Pin_7, 或操作
-C51 COMPILER V8.05a   SETUP                                                                07/17/2017 11:56:12 PAGE 2   
+  50   1        Init_Str_Motor(SERVO_1,0.5f,2.5f,180,250);
+  51   1        set_STR_angle(SERVO_1,30);
+  52   1        open_STR(SERVO_1);
+  53   1      //    GPIO_InitStructure.Mode = GPIO_PullUp;       //指定IO的输入或输出方式,GPIO_PullUp,GPIO_HighZ,GPIO_OUT
+             -_OD,GPIO_OUT_PP
+C51 COMPILER V8.05a   SETUP                                                                07/17/2017 13:15:50 PAGE 2   
 
-  54   1              GPIO_Inilize(GPIO_P3,&GPIO_InitStructure);  //初始化
-  55   1              P37=1;
-  56   1          PWM_UNLOCK;
-  57   1          PWM_InitStructure.PWM_GOTO_ADC=DISABLE;
-  58   1          PWM_InitStructure.      PWM_V_INIT= PWM_LOW;
-  59   1          PWM_InitStructure.      PWM_0ISR_EN=  DISABLE;
-  60   1          PWM_InitStructure.      PWM_OUT_EN=ENABLE;
-  61   1          PWM_InitStructure.     PWM_UNUSUAL_EN= DISABLE;
-  62   1          PWM_InitStructure.     PWM_UNUSUAL_OUT=  DISABLE;
-  63   1          PWM_InitStructure.     PWM_UNUSUAL_ISR_EN=DISABLE;
-  64   1          PWM_InitStructure.     PWM_UNUSUAL_CMP0_EN=DISABLE;
-  65   1          PWM_InitStructure.     PWM_UNUSUAL_P24_EN=DISABLE;
-  66   1          PWM_InitStructure.       PWM_CLOCK=PWM_Clock_NT;
-  67   1          PWM_InitStructure.       PWM_CLOCK_DIV=15;
-  68   1          PWM_InitStructure.       PWM_SELECTx_IO=PWM_SELECT_N;
-  69   1          PWM_InitStructure.     PWM_ISRx_EN=  DISABLE;
-  70   1          PWM_InitStructure.       PWM_T1x_EN=   DISABLE;
-  71   1          PWM_InitStructure.       PWM_T2x_EN=    DISABLE;
-  72   1          PWM_InitStructure.       PWM_EN=  DISABLE;
-  73   1          PWM_Inilize(PWM_2,&PWM_InitStructure) ;
-  74   1          PWM_LOCK;
-  75   1          set_PWM_period(PWM_2,50);
-  76   1          set_PWM_duty(PWM_2,0.7f);
-  77   1          open_PWM_N(PWM_2);
-  78   1          EA=1;
-  79   1      
-  80   1      }
-  81          
+  54   1      
+  55   1      //        GPIO_InitStructure.Pin  = GPIO_Pin_7 ;    //指定要初始化的IO, GPIO_Pin_0 ~ GPIO_Pin_7, 或操作
+  56   1      //        GPIO_Inilize(GPIO_P3,&GPIO_InitStructure);  //初始化
+  57   1      //        P37=1;
+  58   1      //    PWM_UNLOCK;
+  59   1      //    PWM_InitStructure.PWM_GOTO_ADC=DISABLE;
+  60   1      //    PWM_InitStructure.      PWM_V_INIT= PWM_LOW;
+  61   1      //    PWM_InitStructure.      PWM_0ISR_EN=  DISABLE;
+  62   1      //    PWM_InitStructure.      PWM_OUT_EN=ENABLE;
+  63   1      //    PWM_InitStructure.     PWM_UNUSUAL_EN= DISABLE;
+  64   1      //    PWM_InitStructure.     PWM_UNUSUAL_OUT=  DISABLE;
+  65   1      //    PWM_InitStructure.     PWM_UNUSUAL_ISR_EN=DISABLE;
+  66   1      //    PWM_InitStructure.     PWM_UNUSUAL_CMP0_EN=DISABLE;
+  67   1      //    PWM_InitStructure.     PWM_UNUSUAL_P24_EN=DISABLE;
+  68   1      //    PWM_InitStructure.       PWM_CLOCK=PWM_Clock_NT;
+  69   1      //    PWM_InitStructure.       PWM_CLOCK_DIV=15;
+  70   1      //    PWM_InitStructure.       PWM_SELECTx_IO=PWM_SELECT_N;
+  71   1      //    PWM_InitStructure.     PWM_ISRx_EN=  DISABLE;
+  72   1      //    PWM_InitStructure.       PWM_T1x_EN=   DISABLE;
+  73   1      //    PWM_InitStructure.       PWM_T2x_EN=    DISABLE;
+  74   1      //    PWM_InitStructure.       PWM_EN=  DISABLE;
+  75   1      //    PWM_Inilize(PWM_2,&PWM_InitStructure) ;
+  76   1      //    PWM_LOCK;
+  77   1      //      setPWM_DIV(PWM_2,16);
+  78   1      //    set_PWM_period(PWM_2,50);
+  79   1      //    set_PWM_duty(PWM_2,0.7f);
+  80   1      //    open_PWM_N(PWM_2);
+  81   1          EA=1;
+  82   1      
+  83   1      }
+*** WARNING C280 IN LINE 41 OF ..\SOFTWARE\TASK\SETUP.C: 'GPIO_InitStructure': unreferenced local variable
+*** WARNING C280 IN LINE 42 OF ..\SOFTWARE\TASK\SETUP.C: 'PWM_InitStructure': unreferenced local variable
+  84          
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    181    ----
+   CODE SIZE        =    138    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----      31
    PDATA SIZE       =   ----    ----
@@ -105,4 +110,4 @@ MODULE INFORMATION:   STATIC OVERLAYABLE
 END OF MODULE INFORMATION.
 
 
-C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
+C51 COMPILATION COMPLETE.  2 WARNING(S),  0 ERROR(S)

@@ -31,6 +31,7 @@ static struct PWM_N_INFO
 	u32 period;//pwm的频率
 	u8 state;//pwm发生器的状态
 	float duty;//pwm的占空比
+	u8 DIV;
 };
 static  struct PWM_N_INFO PWM_N_INFO[6]; //6组pwm数据存储
 
@@ -48,6 +49,7 @@ void PWM_Inilize(u8 PWM_N, PWM_InitTypeDef *PWMx)
 		PWM_N_INFO[i].period = 0;
 		PWM_N_INFO[i].state = 0;
 		PWM_N_INFO[i].duty = 0;
+		PWM_N_INFO[i].DIV=1; 
 	}
 
 	P_SW2 |= 0X80;
@@ -407,8 +409,7 @@ void set_PWM_period(u8 PWM_N,u16 Hz)
 	PWM_N_INFO[PWM_N].period = Hz;
 	PWM_UNLOCK;
 	PWM_ALL_NO;
-	PWM_SET_PERIOD((u16)(MAIN_Fosc/(Hz*16)));
-//	PWM_ALL_EN;
+	PWM_SET_PERIOD((u16)(MAIN_Fosc/(Hz*PWM_N_INFO[PWM_N].DIV )));
 	PWM_LOCK;
 	
 	  
@@ -438,8 +439,16 @@ void set_PWM_duty(u8 PWM_N, float duty)
 	}
 	PWM_N_INFO[PWM_N].duty = duty;//存储占空比值
 	PWM_UNLOCK;
-	PWM_SET_T12_PERIOD(PWM_N, 0, (PWM_N_INFO[PWM_N].duty *(MAIN_Fosc/(PWM_N_INFO[PWM_N].period*16))));
+	PWM_SET_T12_PERIOD(PWM_N, 0, (PWM_N_INFO[PWM_N].duty *(MAIN_Fosc/(PWM_N_INFO[PWM_N].period*PWM_N_INFO[PWM_N].DIV ))));
 	PWM_LOCK;
+}
+void setPWM_DIV(u8 PWM_N,u8 DIV)
+{
+		PWM_N_INFO[PWM_N].DIV = DIV;
+}
+u8 getPWM_DIV(u8 PWM_N)
+{
+	 return PWM_N_INFO[PWM_N].DIV ;
 }
 void open_PWM_ALL(void)
 {

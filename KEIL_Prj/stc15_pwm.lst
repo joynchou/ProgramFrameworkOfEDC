@@ -1,4 +1,4 @@
-C51 COMPILER V8.05a   STC15_PWM                                                            07/17/2017 11:46:44 PAGE 1   
+C51 COMPILER V8.05a   STC15_PWM                                                            07/17/2017 13:08:43 PAGE 1   
 
 
 C51 COMPILER V8.05a, COMPILATION OF MODULE STC15_PWM
@@ -41,574 +41,584 @@ line level    source
   31            u32 period;//pwmµÄÆµÂÊ
   32            u8 state;//pwm·¢ÉúÆ÷µÄ×´Ì¬
   33            float duty;//pwmµÄÕ¼¿Õ±È
-  34          };
-  35          static  struct PWM_N_INFO PWM_N_INFO[6]; //6×épwmÊý¾Ý´æ´¢
-  36          
-  37          //========================================================================
-  38          //u8    PWM_Inilize(PWM_InitTypeDef *PWM)
-  39          // ÃèÊö:PWM³õÊ¼»¯³ÌÐò
-  40          // ²ÎÊý:u8 PWM_N:PWMÂ·Êý±êºÅ(2~7) PWM: ½á¹¹²ÎÊý,Çë²Î¿¼pwm.hÀïµÄ¶¨Òå.
-  41          // ·µ»Ø: ³É¹¦·µ»Ø0, ´íÎó·µ»Ø1
-  42          //========================================================================
-  43          void PWM_Inilize(u8 PWM_N, PWM_InitTypeDef *PWMx)
-  44          {
-  45   1        u8 i = 0;
-  46   1        for (; i < 6; i++)
-  47   1        {
-  48   2          PWM_N_INFO[i].period = 0;
-  49   2          PWM_N_INFO[i].state = 0;
-  50   2          PWM_N_INFO[i].duty = 0;
-  51   2        }
-  52   1      
-  53   1        P_SW2 |= 0X80;
-  54   1        if (ENABLE == PWMx->PWM_GOTO_ADC)            //ENABLE=¼ÆÊýÆ÷¹éÁãÊ± ´¥·¢ADC
-C51 COMPILER V8.05a   STC15_PWM                                                            07/17/2017 11:46:44 PAGE 2   
+  34            u8 DIV;
+  35          };
+  36          static  struct PWM_N_INFO PWM_N_INFO[6]; //6×épwmÊý¾Ý´æ´¢
+  37          
+  38          //========================================================================
+  39          //u8    PWM_Inilize(PWM_InitTypeDef *PWM)
+  40          // ÃèÊö:PWM³õÊ¼»¯³ÌÐò
+  41          // ²ÎÊý:u8 PWM_N:PWMÂ·Êý±êºÅ(2~7) PWM: ½á¹¹²ÎÊý,Çë²Î¿¼pwm.hÀïµÄ¶¨Òå.
+  42          // ·µ»Ø: ³É¹¦·µ»Ø0, ´íÎó·µ»Ø1
+  43          //========================================================================
+  44          void PWM_Inilize(u8 PWM_N, PWM_InitTypeDef *PWMx)
+  45          {
+  46   1        u8 i = 0;
+  47   1        for (; i < 6; i++)
+  48   1        {
+  49   2          PWM_N_INFO[i].period = 0;
+  50   2          PWM_N_INFO[i].state = 0;
+  51   2          PWM_N_INFO[i].duty = 0;
+  52   2          PWM_N_INFO[i].DIV=1; 
+  53   2        }
+  54   1      
+C51 COMPILER V8.05a   STC15_PWM                                                            07/17/2017 13:08:43 PAGE 2   
 
-  55   1        {
-  56   2          PWMCFG |= (1 << 7); //²¢µÄÒâË¼¾ÍÊÇ²»»á¸Ä±äÆäËûÎ»µÄÖµ
-  57   2        }
-  58   1        else
-  59   1        {
-  60   2          PWMCFG &= (~(1 << 7)); //ÆäÊµÒ²¿ÉÒÔÓÃÉÏ±ßµÄ°ì·¨£¬µ«ÊÇÕâÑùÐ´µÄÒâË¼¸üÖ±¹Û
-  61   2        }
-  62   1        if (PWM_HIGHT == PWMx->PWM_V_INIT)              //PWM_HIGHT=³õÊ¼¸ßµçÆ½     PWM_LOW=³õÊ¼µÍµçÆ½
-  63   1        {
-  64   2          PWMCFG |= (1 << PWM_N);
-  65   2        }
-  66   1        else
-  67   1        {
-  68   2          PWMCFG &= (~(1 << PWM_N));
-  69   2        }
-  70   1        if (ENABLE == PWMx->PWM_0ISR_EN)             //ENABLE=Ê¹ÄÜPWM¼ÆÊýÆ÷¹éÁãÖÐ¶Ï  DISABLE=¹Ø±ÕPWM¼ÆÊýÆ÷¹éÁãÖÐ¶
+  55   1        P_SW2 |= 0X80;
+  56   1        if (ENABLE == PWMx->PWM_GOTO_ADC)            //ENABLE=¼ÆÊýÆ÷¹éÁãÊ± ´¥·¢ADC
+  57   1        {
+  58   2          PWMCFG |= (1 << 7); //²¢µÄÒâË¼¾ÍÊÇ²»»á¸Ä±äÆäËûÎ»µÄÖµ
+  59   2        }
+  60   1        else
+  61   1        {
+  62   2          PWMCFG &= (~(1 << 7)); //ÆäÊµÒ²¿ÉÒÔÓÃÉÏ±ßµÄ°ì·¨£¬µ«ÊÇÕâÑùÐ´µÄÒâË¼¸üÖ±¹Û
+  63   2        }
+  64   1        if (PWM_HIGHT == PWMx->PWM_V_INIT)              //PWM_HIGHT=³õÊ¼¸ßµçÆ½     PWM_LOW=³õÊ¼µÍµçÆ½
+  65   1        {
+  66   2          PWMCFG |= (1 << PWM_N);
+  67   2        }
+  68   1        else
+  69   1        {
+  70   2          PWMCFG &= (~(1 << PWM_N));
+  71   2        }
+  72   1        if (ENABLE == PWMx->PWM_0ISR_EN)             //ENABLE=Ê¹ÄÜPWM¼ÆÊýÆ÷¹éÁãÖÐ¶Ï  DISABLE=¹Ø±ÕPWM¼ÆÊýÆ÷¹éÁãÖÐ¶
              -Ï µ« CBIFÈÔÈ»»á±»Ó²¼þÖÃÎ»
-  71   1        {
-  72   2          PWMCR |= (1 << 6);
-  73   2        }
-  74   1        else
-  75   1        {
-  76   2          PWMCR &= (~(1 << 6));
-  77   2        }
-  78   1        if (ENABLE == PWMx->PWM_OUT_EN)              //ENABLE=PWMÍ¨µÀxµÄ¶Ë¿ÚÎªPWM²¨ÐÎÊä³ö¿Ú ÊÜPWM²¨ÐÎ·¢ÉúÆ÷¿ØÖÆ
-  79   1        {
-  80   2          PWMCR |= (1 << PWM_N);
-  81   2        }
-  82   1        else
-  83   1        {
-  84   2          PWMCR &= (~(1 << PWM_N));
-  85   2        }
-  86   1        if (ENABLE == PWMx->PWM_UNUSUAL_EN)          //ENABLE=Ê¹ÄÜPWMµÄÍâ²¿Òì³£¼ì²â¹¦ÄÜ
-  87   1        {
-  88   2          PWMFDCR = (1 << 5);
-  89   2        }
-  90   1        else
-  91   1        {
-  92   2          PWMFDCR &= (~(1 << 5));
-  93   2        }
-  94   1        if (ENABLE == PWMx->PWM_UNUSUAL_OUT)         //ENABLE=·¢ÉúÒì³£Ê±£¬PWM¶ÔÓ¦µÄÊä³ö¿Ú»á±ä³É ¸ß×èÊäÈëÄ£Ê½
-  95   1        {
-  96   2          PWMFDCR = (1 << 4);
-  97   2        }
-  98   1        else
-  99   1        {
- 100   2          PWMFDCR &= (~(1 << 4));
- 101   2        }
- 102   1        if (ENABLE == PWMx->PWM_UNUSUAL_ISR_EN)      //ENABLE=Ê¹ÄÜÒì³£¼ì²âÖÐ¶Ï DISABLE=¹Ø±ÕÒì³£¼ì²âÖÐ¶Ï µ«FDIFÈÔÈ
+  73   1        {
+  74   2          PWMCR |= (1 << 6);
+  75   2        }
+  76   1        else
+  77   1        {
+  78   2          PWMCR &= (~(1 << 6));
+  79   2        }
+  80   1        if (ENABLE == PWMx->PWM_OUT_EN)              //ENABLE=PWMÍ¨µÀxµÄ¶Ë¿ÚÎªPWM²¨ÐÎÊä³ö¿Ú ÊÜPWM²¨ÐÎ·¢ÉúÆ÷¿ØÖÆ
+  81   1        {
+  82   2          PWMCR |= (1 << PWM_N);
+  83   2        }
+  84   1        else
+  85   1        {
+  86   2          PWMCR &= (~(1 << PWM_N));
+  87   2        }
+  88   1        if (ENABLE == PWMx->PWM_UNUSUAL_EN)          //ENABLE=Ê¹ÄÜPWMµÄÍâ²¿Òì³£¼ì²â¹¦ÄÜ
+  89   1        {
+  90   2          PWMFDCR = (1 << 5);
+  91   2        }
+  92   1        else
+  93   1        {
+  94   2          PWMFDCR &= (~(1 << 5));
+  95   2        }
+  96   1        if (ENABLE == PWMx->PWM_UNUSUAL_OUT)         //ENABLE=·¢ÉúÒì³£Ê±£¬PWM¶ÔÓ¦µÄÊä³ö¿Ú»á±ä³É ¸ß×èÊäÈëÄ£Ê½
+  97   1        {
+  98   2          PWMFDCR = (1 << 4);
+  99   2        }
+ 100   1        else
+ 101   1        {
+ 102   2          PWMFDCR &= (~(1 << 4));
+ 103   2        }
+ 104   1        if (ENABLE == PWMx->PWM_UNUSUAL_ISR_EN)      //ENABLE=Ê¹ÄÜÒì³£¼ì²âÖÐ¶Ï DISABLE=¹Ø±ÕÒì³£¼ì²âÖÐ¶Ï µ«FDIFÈÔÈ
              -»»á±»Ó²¼þÖÃÎ»
- 103   1        {
- 104   2          PWMFDCR = (1 << 3);
- 105   2        }
- 106   1        else
- 107   1        {
- 108   2          PWMFDCR &= (~(1 << 3));
- 109   2        }
- 110   1        if (ENABLE == PWMx->PWM_UNUSUAL_CMP0_EN)     //ENABLE=Òì³£¼ì²âÔ´Îª±È½ÏÆ÷µÄÊä³ö µ±±È½Ï½á¹ûÎª¸ßÊ± ´¥·¢PWMÒì
+ 105   1        {
+ 106   2          PWMFDCR = (1 << 3);
+ 107   2        }
+ 108   1        else
+ 109   1        {
+ 110   2          PWMFDCR &= (~(1 << 3));
+ 111   2        }
+ 112   1        if (ENABLE == PWMx->PWM_UNUSUAL_CMP0_EN)     //ENABLE=Òì³£¼ì²âÔ´Îª±È½ÏÆ÷µÄÊä³ö µ±±È½Ï½á¹ûÎª¸ßÊ± ´¥·¢PWMÒì
              -³£
- 111   1        {
- 112   2          PWMFDCR = (1 << 2);
- 113   2        }
-C51 COMPILER V8.05a   STC15_PWM                                                            07/17/2017 11:46:44 PAGE 3   
+ 113   1        {
+C51 COMPILER V8.05a   STC15_PWM                                                            07/17/2017 13:08:43 PAGE 3   
 
- 114   1        else
- 115   1        {
- 116   2          PWMFDCR &= (~(1 << 2));
- 117   2        }
- 118   1        if (ENABLE == PWMx->PWM_UNUSUAL_P24_EN)      //ENABLE=Òì³£¼ì²âÔ´ÎªP24/PWMFLT µ±P24=1 ´¥·¢PWMÒì³£
- 119   1        {
- 120   2          PWMFDCR = (1 << 1);
- 121   2        }
- 122   1        else
- 123   1        {
- 124   2          PWMFDCR &= (~(1 << 1));
- 125   2        }
- 126   1        //  PWMCKS=0;
- 127   1        if (PWM_Clock_NT == PWMx->PWM_CLOCK)               //PWM_Clock_NT=PWMµÄÊ±ÖÓÔ´ÊÇÏµÍ³Ê±ÖÓ¾­·ÖÆµºóµÄÊ±ÖÓ  PW
+ 114   2          PWMFDCR = (1 << 2);
+ 115   2        }
+ 116   1        else
+ 117   1        {
+ 118   2          PWMFDCR &= (~(1 << 2));
+ 119   2        }
+ 120   1        if (ENABLE == PWMx->PWM_UNUSUAL_P24_EN)      //ENABLE=Òì³£¼ì²âÔ´ÎªP24/PWMFLT µ±P24=1 ´¥·¢PWMÒì³£
+ 121   1        {
+ 122   2          PWMFDCR = (1 << 1);
+ 123   2        }
+ 124   1        else
+ 125   1        {
+ 126   2          PWMFDCR &= (~(1 << 1));
+ 127   2        }
+ 128   1        //  PWMCKS=0;
+ 129   1        if (PWM_Clock_NT == PWMx->PWM_CLOCK)               //PWM_Clock_NT=PWMµÄÊ±ÖÓÔ´ÊÇÏµÍ³Ê±ÖÓ¾­·ÖÆµºóµÄÊ±ÖÓ  PW
              -M_Clock_Timer2_OF=PWMµÄÊ±ÖÓÔ´ÊÇTMER2µÄÒç³öÂö³å
- 128   1        {
- 129   2          PWMCKS &= (~(1 << 4));
- 130   2        }
- 131   1        else
- 132   1        {
- 133   2          PWMCKS |= (1 << 4);
- 134   2        }
- 135   1        // PWMCKS=0x00;
- 136   1        PWMCKS |= PWMx->PWM_CLOCK_DIV;           //µ±PWM_CLOCK=PWM_Clock_NTÊ± PWMµÄÊ±ÖÓÔ´ÊÇÏµÍ³Ê±ÖÓ/(PS[3:0]+1)
- 137   1        switch (PWM_N)
- 138   1        {
- 139   2        case PWM_2:
- 140   2        {
- 141   3          if (PWM_SELECT_N == PWMx->PWM_SELECTx_IO)          //PWM_SELECT_N=PWMµÚÒ»Ñ¡ÔñIO¿Ú PWM_SELECT_N_2=PWMµÚ¶þ
+ 130   1        {
+ 131   2          PWMCKS &= (~(1 << 4));
+ 132   2        }
+ 133   1        else
+ 134   1        {
+ 135   2          PWMCKS |= (1 << 4);
+ 136   2        }
+ 137   1        // PWMCKS=0x00;
+ 138   1        PWMCKS |= PWMx->PWM_CLOCK_DIV;           //µ±PWM_CLOCK=PWM_Clock_NTÊ± PWMµÄÊ±ÖÓÔ´ÊÇÏµÍ³Ê±ÖÓ/(PS[3:0]+1)
+ 139   1        switch (PWM_N)
+ 140   1        {
+ 141   2        case PWM_2:
+ 142   2        {
+ 143   3          if (PWM_SELECT_N == PWMx->PWM_SELECTx_IO)          //PWM_SELECT_N=PWMµÚÒ»Ñ¡ÔñIO¿Ú PWM_SELECT_N_2=PWMµÚ¶þ
              -Ñ¡ÔñIO¿Ú
- 142   3          {
- 143   4            PWM2CR &= (~(1 << 3));
- 144   4          }
- 145   3          else
- 146   3          {
- 147   4            PWM2CR |= (1 << 3);
- 148   4          }
- 149   3          if (ENABLE == PWMx->PWM_ISRx_EN)             //ENABLE=Ê¹ÄÜPWMxÖÐ¶Ï Ê¹ÄÜµÚÒ»·­×ª»òµÚ¶þ·­×ªÖÐ¶Ï
- 150   3          {
- 151   4            PWM2CR |= (1 << 2);
- 152   4          }
- 153   3          else
- 154   3          {
- 155   4            PWM2CR &= (~(1 << 2));
- 156   4          }
- 157   3          if (ENABLE == PWMx->PWM_T1x_EN)              //ENABLE=Ê¹ÄÜµÚÒ»·­×ªÖÐ¶Ï
- 158   3          {
- 159   4            PWM2CR |= (1 << 1);
- 160   4          }
- 161   3          else
- 162   3          {
- 163   4            PWM2CR &= (~(1 << 1));
- 164   4          }
- 165   3          if (ENABLE == PWMx->PWM_T2x_EN)              //ENABLE=Ê¹ÄÜµÚ¶þ·­×ªÖÐ¶Ï
- 166   3          {
- 167   4            PWM2CR |= (1 << 0);
- 168   4          }
- 169   3          else
- 170   3          {
- 171   4            PWM2CR &= (~(1 << 0));
- 172   4          }
- 173   3        }
-C51 COMPILER V8.05a   STC15_PWM                                                            07/17/2017 11:46:44 PAGE 4   
+ 144   3          {
+ 145   4            PWM2CR &= (~(1 << 3));
+ 146   4          }
+ 147   3          else
+ 148   3          {
+ 149   4            PWM2CR |= (1 << 3);
+ 150   4          }
+ 151   3          if (ENABLE == PWMx->PWM_ISRx_EN)             //ENABLE=Ê¹ÄÜPWMxÖÐ¶Ï Ê¹ÄÜµÚÒ»·­×ª»òµÚ¶þ·­×ªÖÐ¶Ï
+ 152   3          {
+ 153   4            PWM2CR |= (1 << 2);
+ 154   4          }
+ 155   3          else
+ 156   3          {
+ 157   4            PWM2CR &= (~(1 << 2));
+ 158   4          }
+ 159   3          if (ENABLE == PWMx->PWM_T1x_EN)              //ENABLE=Ê¹ÄÜµÚÒ»·­×ªÖÐ¶Ï
+ 160   3          {
+ 161   4            PWM2CR |= (1 << 1);
+ 162   4          }
+ 163   3          else
+ 164   3          {
+ 165   4            PWM2CR &= (~(1 << 1));
+ 166   4          }
+ 167   3          if (ENABLE == PWMx->PWM_T2x_EN)              //ENABLE=Ê¹ÄÜµÚ¶þ·­×ªÖÐ¶Ï
+ 168   3          {
+ 169   4            PWM2CR |= (1 << 0);
+ 170   4          }
+ 171   3          else
+ 172   3          {
+ 173   4            PWM2CR &= (~(1 << 0));
+C51 COMPILER V8.05a   STC15_PWM                                                            07/17/2017 13:08:43 PAGE 4   
 
- 174   2        break;
- 175   2        case PWM_3:
- 176   2        {
- 177   3          if (PWM_SELECT_N == PWMx->PWM_SELECTx_IO)          //PWM_SELECT_N=PWMµÚÒ»Ñ¡ÔñIO¿Ú PWM_SELECT_N_2=PWMµÚ¶þ
+ 174   4          }
+ 175   3        }
+ 176   2        break;
+ 177   2        case PWM_3:
+ 178   2        {
+ 179   3          if (PWM_SELECT_N == PWMx->PWM_SELECTx_IO)          //PWM_SELECT_N=PWMµÚÒ»Ñ¡ÔñIO¿Ú PWM_SELECT_N_2=PWMµÚ¶þ
              -Ñ¡ÔñIO¿Ú
- 178   3          {
- 179   4            PWM3CR &= (~(1 << 3));
- 180   4          }
- 181   3          else
- 182   3          {
- 183   4            PWM3CR |= (1 << 3);
- 184   4          }
- 185   3          if (ENABLE == PWMx->PWM_ISRx_EN)             //ENABLE=Ê¹ÄÜPWMxÖÐ¶Ï Ê¹ÄÜµÚÒ»·­×ª»òµÚ¶þ·­×ªÖÐ¶Ï
- 186   3          {
- 187   4            PWM3CR |= (1 << 2);
- 188   4          }
- 189   3          else
- 190   3          {
- 191   4            PWM3CR &= (~(1 << 2));
- 192   4          }
- 193   3          if (ENABLE == PWMx->PWM_T1x_EN)              //ENABLE=Ê¹ÄÜµÚÒ»·­×ªÖÐ¶Ï
- 194   3          {
- 195   4            PWM3CR |= (1 << 1);
- 196   4          }
- 197   3          else
- 198   3          {
- 199   4            PWM3CR &= (~(1 << 1));
- 200   4          }
- 201   3          if (ENABLE == PWMx->PWM_T2x_EN)              //ENABLE=Ê¹ÄÜµÚ¶þ·­×ªÖÐ¶Ï
- 202   3          {
- 203   4            PWM3CR |= (1 << 0);
- 204   4          }
- 205   3          else
- 206   3          {
- 207   4            PWM3CR &= (~(1 << 0));
- 208   4          }
- 209   3        }
- 210   2        break;
- 211   2        case PWM_4:
- 212   2        {
- 213   3          if (PWM_SELECT_N == PWMx->PWM_SELECTx_IO)          //PWM_SELECT_N=PWMµÚÒ»Ñ¡ÔñIO¿Ú PWM_SELECT_N_2=PWMµÚ¶þ
+ 180   3          {
+ 181   4            PWM3CR &= (~(1 << 3));
+ 182   4          }
+ 183   3          else
+ 184   3          {
+ 185   4            PWM3CR |= (1 << 3);
+ 186   4          }
+ 187   3          if (ENABLE == PWMx->PWM_ISRx_EN)             //ENABLE=Ê¹ÄÜPWMxÖÐ¶Ï Ê¹ÄÜµÚÒ»·­×ª»òµÚ¶þ·­×ªÖÐ¶Ï
+ 188   3          {
+ 189   4            PWM3CR |= (1 << 2);
+ 190   4          }
+ 191   3          else
+ 192   3          {
+ 193   4            PWM3CR &= (~(1 << 2));
+ 194   4          }
+ 195   3          if (ENABLE == PWMx->PWM_T1x_EN)              //ENABLE=Ê¹ÄÜµÚÒ»·­×ªÖÐ¶Ï
+ 196   3          {
+ 197   4            PWM3CR |= (1 << 1);
+ 198   4          }
+ 199   3          else
+ 200   3          {
+ 201   4            PWM3CR &= (~(1 << 1));
+ 202   4          }
+ 203   3          if (ENABLE == PWMx->PWM_T2x_EN)              //ENABLE=Ê¹ÄÜµÚ¶þ·­×ªÖÐ¶Ï
+ 204   3          {
+ 205   4            PWM3CR |= (1 << 0);
+ 206   4          }
+ 207   3          else
+ 208   3          {
+ 209   4            PWM3CR &= (~(1 << 0));
+ 210   4          }
+ 211   3        }
+ 212   2        break;
+ 213   2        case PWM_4:
+ 214   2        {
+ 215   3          if (PWM_SELECT_N == PWMx->PWM_SELECTx_IO)          //PWM_SELECT_N=PWMµÚÒ»Ñ¡ÔñIO¿Ú PWM_SELECT_N_2=PWMµÚ¶þ
              -Ñ¡ÔñIO¿Ú
- 214   3          {
- 215   4            PWM4CR &= (~(1 << 3));
- 216   4          }
- 217   3          else
- 218   3          {
- 219   4            PWM4CR |= (1 << 3);
- 220   4          }
- 221   3          if (ENABLE == PWMx->PWM_ISRx_EN)             //ENABLE=Ê¹ÄÜPWMxÖÐ¶Ï Ê¹ÄÜµÚÒ»·­×ª»òµÚ¶þ·­×ªÖÐ¶Ï
- 222   3          {
- 223   4            PWM4CR |= (1 << 2);
- 224   4          }
- 225   3          else
- 226   3          {
- 227   4            PWM4CR &= (~(1 << 2));
- 228   4          }
- 229   3          if (ENABLE == PWMx->PWM_T1x_EN)              //ENABLE=Ê¹ÄÜµÚÒ»·­×ªÖÐ¶Ï
- 230   3          {
- 231   4            PWM4CR |= (1 << 1);
- 232   4          }
- 233   3          else
-C51 COMPILER V8.05a   STC15_PWM                                                            07/17/2017 11:46:44 PAGE 5   
+ 216   3          {
+ 217   4            PWM4CR &= (~(1 << 3));
+ 218   4          }
+ 219   3          else
+ 220   3          {
+ 221   4            PWM4CR |= (1 << 3);
+ 222   4          }
+ 223   3          if (ENABLE == PWMx->PWM_ISRx_EN)             //ENABLE=Ê¹ÄÜPWMxÖÐ¶Ï Ê¹ÄÜµÚÒ»·­×ª»òµÚ¶þ·­×ªÖÐ¶Ï
+ 224   3          {
+ 225   4            PWM4CR |= (1 << 2);
+ 226   4          }
+ 227   3          else
+ 228   3          {
+ 229   4            PWM4CR &= (~(1 << 2));
+ 230   4          }
+ 231   3          if (ENABLE == PWMx->PWM_T1x_EN)              //ENABLE=Ê¹ÄÜµÚÒ»·­×ªÖÐ¶Ï
+ 232   3          {
+ 233   4            PWM4CR |= (1 << 1);
+C51 COMPILER V8.05a   STC15_PWM                                                            07/17/2017 13:08:43 PAGE 5   
 
- 234   3          {
- 235   4            PWM4CR &= (~(1 << 1));
- 236   4          }
- 237   3          if (ENABLE == PWMx->PWM_T2x_EN)              //ENABLE=Ê¹ÄÜµÚ¶þ·­×ªÖÐ¶Ï
- 238   3          {
- 239   4            PWM4CR |= (1 << 0);
- 240   4          }
- 241   3          else
- 242   3          {
- 243   4            PWM4CR &= (~(1 << 0));
- 244   4          }
- 245   3        }
- 246   2        break;
- 247   2        case PWM_5:
- 248   2        {
- 249   3          if (PWM_SELECT_N == PWMx->PWM_SELECTx_IO)          //PWM_SELECT_N=PWMµÚÒ»Ñ¡ÔñIO¿Ú PWM_SELECT_N_2=PWMµÚ¶þ
+ 234   4          }
+ 235   3          else
+ 236   3          {
+ 237   4            PWM4CR &= (~(1 << 1));
+ 238   4          }
+ 239   3          if (ENABLE == PWMx->PWM_T2x_EN)              //ENABLE=Ê¹ÄÜµÚ¶þ·­×ªÖÐ¶Ï
+ 240   3          {
+ 241   4            PWM4CR |= (1 << 0);
+ 242   4          }
+ 243   3          else
+ 244   3          {
+ 245   4            PWM4CR &= (~(1 << 0));
+ 246   4          }
+ 247   3        }
+ 248   2        break;
+ 249   2        case PWM_5:
+ 250   2        {
+ 251   3          if (PWM_SELECT_N == PWMx->PWM_SELECTx_IO)          //PWM_SELECT_N=PWMµÚÒ»Ñ¡ÔñIO¿Ú PWM_SELECT_N_2=PWMµÚ¶þ
              -Ñ¡ÔñIO¿Ú
- 250   3          {
- 251   4            PWM5CR &= (~(1 << 3));
- 252   4          }
- 253   3          else
- 254   3          {
- 255   4            PWM5CR |= (1 << 3);
- 256   4          }
- 257   3          if (ENABLE == PWMx->PWM_ISRx_EN)             //ENABLE=Ê¹ÄÜPWMxÖÐ¶Ï Ê¹ÄÜµÚÒ»·­×ª»òµÚ¶þ·­×ªÖÐ¶Ï
- 258   3          {
- 259   4            PWM5CR |= (1 << 2);
- 260   4          }
- 261   3          else
- 262   3          {
- 263   4            PWM5CR &= (~(1 << 2));
- 264   4          }
- 265   3          if (ENABLE == PWMx->PWM_T1x_EN)              //ENABLE=Ê¹ÄÜµÚÒ»·­×ªÖÐ¶Ï
- 266   3          {
- 267   4            PWM5CR |= (1 << 1);
- 268   4          }
- 269   3          else
- 270   3          {
- 271   4            PWM5CR &= (~(1 << 1));
- 272   4          }
- 273   3          if (ENABLE == PWMx->PWM_T2x_EN)              //ENABLE=Ê¹ÄÜµÚ¶þ·­×ªÖÐ¶Ï
- 274   3          {
- 275   4            PWM5CR |= (1 << 0);
- 276   4          }
- 277   3          else
- 278   3          {
- 279   4            PWM5CR &= (~(1 << 0));
- 280   4          }
- 281   3        }
- 282   2        break;
- 283   2        case PWM_6:
- 284   2        {
- 285   3          if (PWM_SELECT_N == PWMx->PWM_SELECTx_IO)          //PWM_SELECT_N=PWMµÚÒ»Ñ¡ÔñIO¿Ú PWM_SELECT_N_2=PWMµÚ¶þ
+ 252   3          {
+ 253   4            PWM5CR &= (~(1 << 3));
+ 254   4          }
+ 255   3          else
+ 256   3          {
+ 257   4            PWM5CR |= (1 << 3);
+ 258   4          }
+ 259   3          if (ENABLE == PWMx->PWM_ISRx_EN)             //ENABLE=Ê¹ÄÜPWMxÖÐ¶Ï Ê¹ÄÜµÚÒ»·­×ª»òµÚ¶þ·­×ªÖÐ¶Ï
+ 260   3          {
+ 261   4            PWM5CR |= (1 << 2);
+ 262   4          }
+ 263   3          else
+ 264   3          {
+ 265   4            PWM5CR &= (~(1 << 2));
+ 266   4          }
+ 267   3          if (ENABLE == PWMx->PWM_T1x_EN)              //ENABLE=Ê¹ÄÜµÚÒ»·­×ªÖÐ¶Ï
+ 268   3          {
+ 269   4            PWM5CR |= (1 << 1);
+ 270   4          }
+ 271   3          else
+ 272   3          {
+ 273   4            PWM5CR &= (~(1 << 1));
+ 274   4          }
+ 275   3          if (ENABLE == PWMx->PWM_T2x_EN)              //ENABLE=Ê¹ÄÜµÚ¶þ·­×ªÖÐ¶Ï
+ 276   3          {
+ 277   4            PWM5CR |= (1 << 0);
+ 278   4          }
+ 279   3          else
+ 280   3          {
+ 281   4            PWM5CR &= (~(1 << 0));
+ 282   4          }
+ 283   3        }
+ 284   2        break;
+ 285   2        case PWM_6:
+ 286   2        {
+ 287   3          if (PWM_SELECT_N == PWMx->PWM_SELECTx_IO)          //PWM_SELECT_N=PWMµÚÒ»Ñ¡ÔñIO¿Ú PWM_SELECT_N_2=PWMµÚ¶þ
              -Ñ¡ÔñIO¿Ú
- 286   3          {
- 287   4            PWM6CR &= (~(1 << 3));
- 288   4          }
- 289   3          else
- 290   3          {
- 291   4            PWM6CR |= (1 << 3);
- 292   4          }
- 293   3          if (ENABLE == PWMx->PWM_ISRx_EN)             //ENABLE=Ê¹ÄÜPWMxÖÐ¶Ï Ê¹ÄÜµÚÒ»·­×ª»òµÚ¶þ·­×ªÖÐ¶Ï
-C51 COMPILER V8.05a   STC15_PWM                                                            07/17/2017 11:46:44 PAGE 6   
+ 288   3          {
+ 289   4            PWM6CR &= (~(1 << 3));
+ 290   4          }
+ 291   3          else
+ 292   3          {
+ 293   4            PWM6CR |= (1 << 3);
+C51 COMPILER V8.05a   STC15_PWM                                                            07/17/2017 13:08:43 PAGE 6   
 
- 294   3          {
- 295   4            PWM6CR |= (1 << 2);
- 296   4          }
- 297   3          else
- 298   3          {
- 299   4            PWM6CR &= (~(1 << 2));
- 300   4          }
- 301   3          if (ENABLE == PWMx->PWM_T1x_EN)              //ENABLE=Ê¹ÄÜµÚÒ»·­×ªÖÐ¶Ï
- 302   3          {
- 303   4            PWM6CR |= (1 << 1);
- 304   4          }
- 305   3          else
- 306   3          {
- 307   4            PWM6CR &= (~(1 << 1));
- 308   4          }
- 309   3          if (ENABLE == PWMx->PWM_T2x_EN)              //ENABLE=Ê¹ÄÜµÚ¶þ·­×ªÖÐ¶Ï
- 310   3          {
- 311   4            PWM6CR |= (1 << 0);
- 312   4          }
- 313   3          else
- 314   3          {
- 315   4            PWM6CR &= (~(1 << 0));
- 316   4          }
- 317   3        }
- 318   2        break;
- 319   2        case PWM_7:
- 320   2        {
- 321   3          if (PWM_SELECT_N == PWMx->PWM_SELECTx_IO)          //PWM_SELECT_N=PWMµÚÒ»Ñ¡ÔñIO¿Ú PWM_SELECT_N_2=PWMµÚ¶þ
+ 294   4          }
+ 295   3          if (ENABLE == PWMx->PWM_ISRx_EN)             //ENABLE=Ê¹ÄÜPWMxÖÐ¶Ï Ê¹ÄÜµÚÒ»·­×ª»òµÚ¶þ·­×ªÖÐ¶Ï
+ 296   3          {
+ 297   4            PWM6CR |= (1 << 2);
+ 298   4          }
+ 299   3          else
+ 300   3          {
+ 301   4            PWM6CR &= (~(1 << 2));
+ 302   4          }
+ 303   3          if (ENABLE == PWMx->PWM_T1x_EN)              //ENABLE=Ê¹ÄÜµÚÒ»·­×ªÖÐ¶Ï
+ 304   3          {
+ 305   4            PWM6CR |= (1 << 1);
+ 306   4          }
+ 307   3          else
+ 308   3          {
+ 309   4            PWM6CR &= (~(1 << 1));
+ 310   4          }
+ 311   3          if (ENABLE == PWMx->PWM_T2x_EN)              //ENABLE=Ê¹ÄÜµÚ¶þ·­×ªÖÐ¶Ï
+ 312   3          {
+ 313   4            PWM6CR |= (1 << 0);
+ 314   4          }
+ 315   3          else
+ 316   3          {
+ 317   4            PWM6CR &= (~(1 << 0));
+ 318   4          }
+ 319   3        }
+ 320   2        break;
+ 321   2        case PWM_7:
+ 322   2        {
+ 323   3          if (PWM_SELECT_N == PWMx->PWM_SELECTx_IO)          //PWM_SELECT_N=PWMµÚÒ»Ñ¡ÔñIO¿Ú PWM_SELECT_N_2=PWMµÚ¶þ
              -Ñ¡ÔñIO¿Ú
- 322   3          {
- 323   4            PWM7CR &= (~(1 << 3));
- 324   4          }
- 325   3          else
- 326   3          {
- 327   4            PWM7CR |= (1 << 3);
- 328   4          }
- 329   3          if (ENABLE == PWMx->PWM_ISRx_EN)             //ENABLE=Ê¹ÄÜPWMxÖÐ¶Ï Ê¹ÄÜµÚÒ»·­×ª»òµÚ¶þ·­×ªÖÐ¶Ï
- 330   3          {
- 331   4            PWM7CR |= (1 << 2);
- 332   4          }
- 333   3          else
- 334   3          {
- 335   4            PWM7CR &= (~(1 << 2));
- 336   4          }
- 337   3          if (ENABLE == PWMx->PWM_T1x_EN)              //ENABLE=Ê¹ÄÜµÚÒ»·­×ªÖÐ¶Ï
- 338   3          {
- 339   4            PWM7CR |= (1 << 1);
- 340   4          }
- 341   3          else
- 342   3          {
- 343   4            PWM7CR &= (~(1 << 1));
- 344   4          }
- 345   3          if (ENABLE == PWMx->PWM_T2x_EN)              //ENABLE=Ê¹ÄÜµÚ¶þ·­×ªÖÐ¶Ï
- 346   3          {
- 347   4            PWM7CR |= (1 << 0);
- 348   4          }
- 349   3          else
- 350   3          {
- 351   4            PWM7CR &= (~(1 << 0));
- 352   4          }
- 353   3        }
- 354   2        break;
-C51 COMPILER V8.05a   STC15_PWM                                                            07/17/2017 11:46:44 PAGE 7   
+ 324   3          {
+ 325   4            PWM7CR &= (~(1 << 3));
+ 326   4          }
+ 327   3          else
+ 328   3          {
+ 329   4            PWM7CR |= (1 << 3);
+ 330   4          }
+ 331   3          if (ENABLE == PWMx->PWM_ISRx_EN)             //ENABLE=Ê¹ÄÜPWMxÖÐ¶Ï Ê¹ÄÜµÚÒ»·­×ª»òµÚ¶þ·­×ªÖÐ¶Ï
+ 332   3          {
+ 333   4            PWM7CR |= (1 << 2);
+ 334   4          }
+ 335   3          else
+ 336   3          {
+ 337   4            PWM7CR &= (~(1 << 2));
+ 338   4          }
+ 339   3          if (ENABLE == PWMx->PWM_T1x_EN)              //ENABLE=Ê¹ÄÜµÚÒ»·­×ªÖÐ¶Ï
+ 340   3          {
+ 341   4            PWM7CR |= (1 << 1);
+ 342   4          }
+ 343   3          else
+ 344   3          {
+ 345   4            PWM7CR &= (~(1 << 1));
+ 346   4          }
+ 347   3          if (ENABLE == PWMx->PWM_T2x_EN)              //ENABLE=Ê¹ÄÜµÚ¶þ·­×ªÖÐ¶Ï
+ 348   3          {
+ 349   4            PWM7CR |= (1 << 0);
+ 350   4          }
+ 351   3          else
+ 352   3          {
+ 353   4            PWM7CR &= (~(1 << 0));
+ 354   4          }
+C51 COMPILER V8.05a   STC15_PWM                                                            07/17/2017 13:08:43 PAGE 7   
 
- 355   2        default:
- 356   2          //      return 1;
- 357   2          break;
- 358   2        }
- 359   1        if (ENABLE == PWMx->PWM_EN)                  //ENABLE=PWMÊ¹ÄÜ ÔÚÆäËûPWM²ÎÊýÉèÖÃºÃºó×îºóÉèÖÃ Èç¹û±»¹Ø±ÕºóÔ
+ 355   3        }
+ 356   2        break;
+ 357   2        default:
+ 358   2          //      return 1;
+ 359   2          break;
+ 360   2        }
+ 361   1        if (ENABLE == PWMx->PWM_EN)                  //ENABLE=PWMÊ¹ÄÜ ÔÚÆäËûPWM²ÎÊýÉèÖÃºÃºó×îºóÉèÖÃ Èç¹û±»¹Ø±ÕºóÔ
              -Ú´ò¿ª£¬ÔòPWM¼ÆÊýÆ÷ÖØÐÂ´Ó0¼ÆÊý
- 360   1        {
- 361   2          PWMCR |= (1 << 7);
- 362   2        }
- 363   1        else
- 364   1        {
- 365   2          PWMCR &= (~(1 << 7));
- 366   2        }
- 367   1      }
- 368          /*************************************************
- 369          * º¯ÊýÃû³Æ: u32 getPWM_period(void )
- 370          * ÃèÊö: ·µ»ØËùÉèÖÃµÄpwmÆµÂÊÐÅÏ¢
- 371          * ÊäÈë: u8 PWM_N, 2<=N<=7
- 372          * Êä³ö: ÎÞ
- 373          * ·µ»ØÖµ: pwmÆµÂÊ
- 374          * ÆäËûËµÃ÷: ÈôÃ»ÓÐÉèÖÃpwmµÄÆµÂÊ¾Íµ÷ÓÃ´Ëº¯ÊýÔò»á·µ»Ø0£»
- 375          *************************************************/
- 376          u32 get_PWM_period(u8 PWM_N)
- 377          {
- 378   1        return PWM_N_INFO[PWM_N].period;
- 379   1      }
- 380          /*************************************************
- 381          * º¯ÊýÃû³Æ: float getPWM_n_duty(u8 PWM_N)
- 382          * ÃèÊö: ·µ»ØPWM_NµÄÕ¼¿Õ±ÈÐÅÏ¢
- 383          * ÊäÈë: u8 PWM_N, 2<=N<=7
- 384          * Êä³ö: ÎÞ
- 385          * ·µ»ØÖµ: PWM_NµÄÕ¼¿Õ±ÈÐÅÏ¢,floatÐÎÊ½
- 386          * ÆäËûËµÃ÷: ÈôÃ»ÓÐÉèÖÃpwmµÄÕ¼¿Õ±È¾Íµ÷ÓÃ´Ëº¯ÊýÔò»á·µ»Ø0£»
- 387          *************************************************/
- 388          float get_PWM_N_duty(u8 PWM_N)
- 389          {
- 390   1        return  PWM_N_INFO[PWM_N].duty;
- 391   1      }
- 392          
- 393          /*************************************************
- 394          * º¯ÊýÃû³Æ:void PWM_period(u16 Hz)
- 395          * ÃèÊö: ÉèÖÃÓ²¼þpwmµÄÍ¬Ò»ÆµÂÊ £¬²¢±£´æÆµÂÊÊý¾Ý
- 396          * ±»±¾º¯Êýµ÷ÓÃµÄº¯Êý:
- 397          * 1.PWM_SET_PERIOD
- 398          * ÊäÈë:u16 Hz:ÒªÊä³öµÄpwmµÄÆµÂÊ,ÓÉÓÚÓ²¼þËùÏÞ£¬½«»áÍ¬Ê±¸Ä±ä6Â·pwmµÄÆµÂÊ
- 399          * Êä³ö: ÎÞ
- 400          * ·µ»ØÖµ: ÎÞ
- 401          * ÆäËû: ´Ëº¯ÊýÖ»ÄÜÉèÖÃpwmµÄ¼ÆÊýÆ÷³õÊ¼Öµ£¬´Ó¶øÍê³Épwm²»Í¬ÆµÂÊµÄÊä³ö£¬
- 402              µ«ÊÇÓÉÓÚµ¥Æ¬»úÓ²¼þËùÏÞ£¬²»¿ÉÒÔµ¥¶À¶ÔÃ¿Â·pwmµÄÆµÂÊ½øÐÐÐÞ¸Ä£¬
- 403              Ö»ÄÜÒ»¸ÄÈ«¸Ä¡£
- 404          *************************************************/
- 405          void set_PWM_period(u8 PWM_N,u16 Hz)
- 406          {
- 407   1        PWM_N_INFO[PWM_N].period = Hz;
- 408   1        PWM_UNLOCK;
- 409   1        PWM_ALL_NO;
- 410   1        PWM_SET_PERIOD((u16)(MAIN_Fosc/(Hz*16)));
- 411   1      //  PWM_ALL_EN;
- 412   1        PWM_LOCK;
- 413   1        
- 414   1          
- 415   1      }
-C51 COMPILER V8.05a   STC15_PWM                                                            07/17/2017 11:46:44 PAGE 8   
+ 362   1        {
+ 363   2          PWMCR |= (1 << 7);
+ 364   2        }
+ 365   1        else
+ 366   1        {
+ 367   2          PWMCR &= (~(1 << 7));
+ 368   2        }
+ 369   1      }
+ 370          /*************************************************
+ 371          * º¯ÊýÃû³Æ: u32 getPWM_period(void )
+ 372          * ÃèÊö: ·µ»ØËùÉèÖÃµÄpwmÆµÂÊÐÅÏ¢
+ 373          * ÊäÈë: u8 PWM_N, 2<=N<=7
+ 374          * Êä³ö: ÎÞ
+ 375          * ·µ»ØÖµ: pwmÆµÂÊ
+ 376          * ÆäËûËµÃ÷: ÈôÃ»ÓÐÉèÖÃpwmµÄÆµÂÊ¾Íµ÷ÓÃ´Ëº¯ÊýÔò»á·µ»Ø0£»
+ 377          *************************************************/
+ 378          u32 get_PWM_period(u8 PWM_N)
+ 379          {
+ 380   1        return PWM_N_INFO[PWM_N].period;
+ 381   1      }
+ 382          /*************************************************
+ 383          * º¯ÊýÃû³Æ: float getPWM_n_duty(u8 PWM_N)
+ 384          * ÃèÊö: ·µ»ØPWM_NµÄÕ¼¿Õ±ÈÐÅÏ¢
+ 385          * ÊäÈë: u8 PWM_N, 2<=N<=7
+ 386          * Êä³ö: ÎÞ
+ 387          * ·µ»ØÖµ: PWM_NµÄÕ¼¿Õ±ÈÐÅÏ¢,floatÐÎÊ½
+ 388          * ÆäËûËµÃ÷: ÈôÃ»ÓÐÉèÖÃpwmµÄÕ¼¿Õ±È¾Íµ÷ÓÃ´Ëº¯ÊýÔò»á·µ»Ø0£»
+ 389          *************************************************/
+ 390          float get_PWM_N_duty(u8 PWM_N)
+ 391          {
+ 392   1        return  PWM_N_INFO[PWM_N].duty;
+ 393   1      }
+ 394          
+ 395          /*************************************************
+ 396          * º¯ÊýÃû³Æ:void PWM_period(u16 Hz)
+ 397          * ÃèÊö: ÉèÖÃÓ²¼þpwmµÄÍ¬Ò»ÆµÂÊ £¬²¢±£´æÆµÂÊÊý¾Ý
+ 398          * ±»±¾º¯Êýµ÷ÓÃµÄº¯Êý:
+ 399          * 1.PWM_SET_PERIOD
+ 400          * ÊäÈë:u16 Hz:ÒªÊä³öµÄpwmµÄÆµÂÊ,ÓÉÓÚÓ²¼þËùÏÞ£¬½«»áÍ¬Ê±¸Ä±ä6Â·pwmµÄÆµÂÊ
+ 401          * Êä³ö: ÎÞ
+ 402          * ·µ»ØÖµ: ÎÞ
+ 403          * ÆäËû: ´Ëº¯ÊýÖ»ÄÜÉèÖÃpwmµÄ¼ÆÊýÆ÷³õÊ¼Öµ£¬´Ó¶øÍê³Épwm²»Í¬ÆµÂÊµÄÊä³ö£¬
+ 404              µ«ÊÇÓÉÓÚµ¥Æ¬»úÓ²¼þËùÏÞ£¬²»¿ÉÒÔµ¥¶À¶ÔÃ¿Â·pwmµÄÆµÂÊ½øÐÐÐÞ¸Ä£¬
+ 405              Ö»ÄÜÒ»¸ÄÈ«¸Ä¡£
+ 406          *************************************************/
+ 407          void set_PWM_period(u8 PWM_N,u16 Hz)
+ 408          {
+ 409   1        PWM_N_INFO[PWM_N].period = Hz;
+ 410   1        PWM_UNLOCK;
+ 411   1        PWM_ALL_NO;
+ 412   1        PWM_SET_PERIOD((u16)(MAIN_Fosc/(Hz*PWM_N_INFO[PWM_N].DIV )));
+ 413   1        PWM_LOCK;
+ 414   1        
+ 415   1          
+C51 COMPILER V8.05a   STC15_PWM                                                            07/17/2017 13:08:43 PAGE 8   
 
- 416          
- 417          /*************************************************
- 418          * º¯ÊýÃû³Æ: void PWM_duty(u8 PWM_N,float duty)
- 419          * ÃèÊö: ÐÞ¸ÄÄ³Ò»Â·pwmµÄÕ¼¿Õ±È £¬²¢±£´æÕ¼¿Õ±ÈÊý¾Ý
- 420          * ±»±¾º¯Êýµ÷ÓÃµÄº¯Êý:
- 421          * µ÷ÓÃ±¾º¯ÊýµÄº¯Êý:
- 422          * ÊäÈë:
- 423          * 1.u8 PWM_N £º ÄÄÒ»Â·pwm
- 424          * 2.float duty£ºÕ¼¿Õ±È£¬Ê¹ÓÃÐ¡Êý£¬Èç0.8´ú±í80%µÄÕ¼¿Õ±È
- 425          * Êä³ö: ÎÞ
- 426          * ·µ»ØÖµ: ÎÞ
- 427          * ÆäËûËµÃ÷:Îª·ÀÖ¹µçÆ½·¢Éú·´×ª£¬ÏÞÖÆ×îÐ¡Õ¼¿Õ±ÈÎª0.05£¬×î´óÎª0.95
- 428          *************************************************/
- 429          void set_PWM_duty(u8 PWM_N, float duty)
- 430          {
- 431   1        if (duty > 0.95f)
- 432   1        {
- 433   2          duty = 0.95f;
- 434   2        }
- 435   1        if (duty < 0.05f)
- 436   1        {
- 437   2          duty = 0.05f;
- 438   2        }
- 439   1        PWM_N_INFO[PWM_N].duty = duty;//´æ´¢Õ¼¿Õ±ÈÖµ
- 440   1        PWM_UNLOCK;
- 441   1        PWM_SET_T12_PERIOD(PWM_N, 0, (PWM_N_INFO[PWM_N].duty *(MAIN_Fosc/(PWM_N_INFO[PWM_N].period*16))));
- 442   1        PWM_LOCK;
- 443   1      }
- 444          void open_PWM_ALL(void)
- 445          {
- 446   1        PWM_UNLOCK;
- 447   1        PWM_ALL_EN;
- 448   1        PWM_LOCK;
- 449   1      }
- 450          void close_PWM_ALL(void)
- 451          {
- 452   1        PWM_UNLOCK;
- 453   1        PWM_ALL_NO; //×Ü¿ª¹Ø
- 454   1        PWM_LOCK;
- 455   1      
- 456   1      }
- 457          void open_PWM_N(u8 PWM_N)
- 458          {
- 459   1        PWM_UNLOCK;
- 460   1        PWM_N_EN(PWM_N);
- 461   1        PWM_N_INFO[PWM_N].state = ON;
- 462   1        PWM_ALL_EN; //×Ü¿ª¹Ø
+ 416   1      }
+ 417          
+ 418          /*************************************************
+ 419          * º¯ÊýÃû³Æ: void PWM_duty(u8 PWM_N,float duty)
+ 420          * ÃèÊö: ÐÞ¸ÄÄ³Ò»Â·pwmµÄÕ¼¿Õ±È £¬²¢±£´æÕ¼¿Õ±ÈÊý¾Ý
+ 421          * ±»±¾º¯Êýµ÷ÓÃµÄº¯Êý:
+ 422          * µ÷ÓÃ±¾º¯ÊýµÄº¯Êý:
+ 423          * ÊäÈë:
+ 424          * 1.u8 PWM_N £º ÄÄÒ»Â·pwm
+ 425          * 2.float duty£ºÕ¼¿Õ±È£¬Ê¹ÓÃÐ¡Êý£¬Èç0.8´ú±í80%µÄÕ¼¿Õ±È
+ 426          * Êä³ö: ÎÞ
+ 427          * ·µ»ØÖµ: ÎÞ
+ 428          * ÆäËûËµÃ÷:Îª·ÀÖ¹µçÆ½·¢Éú·´×ª£¬ÏÞÖÆ×îÐ¡Õ¼¿Õ±ÈÎª0.05£¬×î´óÎª0.95
+ 429          *************************************************/
+ 430          void set_PWM_duty(u8 PWM_N, float duty)
+ 431          {
+ 432   1        if (duty > 0.95f)
+ 433   1        {
+ 434   2          duty = 0.95f;
+ 435   2        }
+ 436   1        if (duty < 0.05f)
+ 437   1        {
+ 438   2          duty = 0.05f;
+ 439   2        }
+ 440   1        PWM_N_INFO[PWM_N].duty = duty;//´æ´¢Õ¼¿Õ±ÈÖµ
+ 441   1        PWM_UNLOCK;
+ 442   1        PWM_SET_T12_PERIOD(PWM_N, 0, (PWM_N_INFO[PWM_N].duty *(MAIN_Fosc/(PWM_N_INFO[PWM_N].period*PWM_N_INFO[PWM
+             -_N].DIV ))));
+ 443   1        PWM_LOCK;
+ 444   1      }
+ 445          void setPWM_DIV(u8 PWM_N,u8 DIV)
+ 446          {
+ 447   1          PWM_N_INFO[PWM_N].DIV = DIV;
+ 448   1      }
+ 449          u8 getPWM_DIV(u8 PWM_N)
+ 450          {
+ 451   1         return PWM_N_INFO[PWM_N].DIV ;
+ 452   1      }
+ 453          void open_PWM_ALL(void)
+ 454          {
+ 455   1        PWM_UNLOCK;
+ 456   1        PWM_ALL_EN;
+ 457   1        PWM_LOCK;
+ 458   1      }
+ 459          void close_PWM_ALL(void)
+ 460          {
+ 461   1        PWM_UNLOCK;
+ 462   1        PWM_ALL_NO; //×Ü¿ª¹Ø
  463   1        PWM_LOCK;
  464   1      
- 465   1      
- 466   1      }
- 467          void close_PWM_N(u8 PWM_N)
- 468          {
- 469   1        PWM_UNLOCK;
- 470   1        PWM_N_NO(PWM_N);
- 471   1        PWM_N_INFO[PWM_N].state = OFF;
+ 465   1      }
+ 466          void open_PWM_N(u8 PWM_N)
+ 467          {
+ 468   1        PWM_UNLOCK;
+ 469   1        PWM_N_EN(PWM_N);
+ 470   1        PWM_N_INFO[PWM_N].state = ON;
+ 471   1        PWM_ALL_EN; //×Ü¿ª¹Ø
  472   1        PWM_LOCK;
  473   1      
- 474   1      }
- 475          bit get_PWM_N_state(u8 PWM_N)
- 476          {
- 477   1      
-C51 COMPILER V8.05a   STC15_PWM                                                            07/17/2017 11:46:44 PAGE 9   
+ 474   1      
+ 475   1      }
+ 476          void close_PWM_N(u8 PWM_N)
+C51 COMPILER V8.05a   STC15_PWM                                                            07/17/2017 13:08:43 PAGE 9   
 
- 478   1        return  PWM_N_INFO[PWM_N].state;
- 479   1      }
- 480          
- 481          //////////////ÒÔÏÂÎªË½ÓÐº¯Êý£¬²»½¨Òé¸Ä¶¯//////////////////////
- 482          //
- 483          //************************************
- 484          // Method:    PWM_SET_PERIOD
- 485          // FullName:  PWM_SET_PERIOD
- 486          // Access:    public static 
- 487          // Returns:   u8
- 488          // Qualifier: ÉèÖÃPWMÖÜÆÚ
- 489          // Parameter: u16 period
- 490          //************************************
- 491          static u8 PWM_SET_PERIOD(u16 period)
- 492          {
- 493   1        if (0x8000 > period)
- 494   1        {
- 495   2          PWMCL = (u8)(period);
- 496   2          PWMCH = (u8)(period >> 8);
- 497   2          return 0;
- 498   2        }
- 499   1        else
- 500   1        {
- 501   2          return 1;
- 502   2        }
- 503   1      }
- 504          
- 505          //
- 506          //************************************
- 507          // Method:    PWM_SET_T12_PERIOD
- 508          // FullName:  PWM_SET_T12_PERIOD
- 509          // Access:    public static 
- 510          // Returns:   u8
- 511          // Qualifier: ÉèÖÃPWMµÚÒ»´ÎºÍµÚ¶þ´Î·­×ªÖÜÆÚ
- 512          // Parameter: u8 PWM_N
- 513          // Parameter: u16 period1
- 514          // Parameter: u32 period2
+ 477          {
+ 478   1        PWM_UNLOCK;
+ 479   1        PWM_N_NO(PWM_N);
+ 480   1        PWM_N_INFO[PWM_N].state = OFF;
+ 481   1        PWM_LOCK;
+ 482   1      
+ 483   1      }
+ 484          bit get_PWM_N_state(u8 PWM_N)
+ 485          {
+ 486   1      
+ 487   1        return  PWM_N_INFO[PWM_N].state;
+ 488   1      }
+ 489          
+ 490          //////////////ÒÔÏÂÎªË½ÓÐº¯Êý£¬²»½¨Òé¸Ä¶¯//////////////////////
+ 491          //
+ 492          //************************************
+ 493          // Method:    PWM_SET_PERIOD
+ 494          // FullName:  PWM_SET_PERIOD
+ 495          // Access:    public static 
+ 496          // Returns:   u8
+ 497          // Qualifier: ÉèÖÃPWMÖÜÆÚ
+ 498          // Parameter: u16 period
+ 499          //************************************
+ 500          static u8 PWM_SET_PERIOD(u16 period)
+ 501          {
+ 502   1        if (0x8000 > period)
+ 503   1        {
+ 504   2          PWMCL = (u8)(period);
+ 505   2          PWMCH = (u8)(period >> 8);
+ 506   2          return 0;
+ 507   2        }
+ 508   1        else
+ 509   1        {
+ 510   2          return 1;
+ 511   2        }
+ 512   1      }
+ 513          
+ 514          //
  515          //************************************
- 516          static u8 PWM_SET_T12_PERIOD(u8 PWM_N, u16 period1, u32 period2)
- 517          {
- 518   1        switch (PWM_N)
- 519   1        {
- 520   2        case PWM_2:
- 521   2          PWM2T1L = (u8)(period1);
- 522   2          PWM2T1H = (u8)(period1 >> 8);
- 523   2          PWM2T2L = (u8)(period2);
- 524   2          PWM2T2H = (u8)(period2 >> 8);
- 525   2          return 0;
- 526   2          break;
- 527   2        case PWM_3:
- 528   2          PWM3T1L = (u8)(period1);
- 529   2          PWM3T1H = (u8)(period1 >> 8);
- 530   2          PWM3T2L = (u8)(period2);
- 531   2          PWM3T2H = (u8)(period2 >> 8);
- 532   2          return 0;
- 533   2          break;
- 534   2        case PWM_4:
- 535   2          PWM4T1L = (u8)(period1);
- 536   2          PWM4T1H = (u8)(period1 >> 8);
- 537   2          PWM4T2L = (u8)(period2);
- 538   2          PWM4T2H = (u8)(period2 >> 8);
- 539   2          return 0;
-C51 COMPILER V8.05a   STC15_PWM                                                            07/17/2017 11:46:44 PAGE 10  
+ 516          // Method:    PWM_SET_T12_PERIOD
+ 517          // FullName:  PWM_SET_T12_PERIOD
+ 518          // Access:    public static 
+ 519          // Returns:   u8
+ 520          // Qualifier: ÉèÖÃPWMµÚÒ»´ÎºÍµÚ¶þ´Î·­×ªÖÜÆÚ
+ 521          // Parameter: u8 PWM_N
+ 522          // Parameter: u16 period1
+ 523          // Parameter: u32 period2
+ 524          //************************************
+ 525          static u8 PWM_SET_T12_PERIOD(u8 PWM_N, u16 period1, u32 period2)
+ 526          {
+ 527   1        switch (PWM_N)
+ 528   1        {
+ 529   2        case PWM_2:
+ 530   2          PWM2T1L = (u8)(period1);
+ 531   2          PWM2T1H = (u8)(period1 >> 8);
+ 532   2          PWM2T2L = (u8)(period2);
+ 533   2          PWM2T2H = (u8)(period2 >> 8);
+ 534   2          return 0;
+ 535   2          break;
+ 536   2        case PWM_3:
+ 537   2          PWM3T1L = (u8)(period1);
+ 538   2          PWM3T1H = (u8)(period1 >> 8);
+C51 COMPILER V8.05a   STC15_PWM                                                            07/17/2017 13:08:43 PAGE 10  
 
- 540   2          break;
- 541   2        case PWM_5:
- 542   2          PWM5T1L = (u8)(period1);
- 543   2          PWM5T1H = (u8)(period1 >> 8);
- 544   2          PWM5T2L = (u8)(period2);
- 545   2          PWM5T2H = (u8)(period2 >> 8);
- 546   2          return 0;
- 547   2          break;
- 548   2        case PWM_6:
- 549   2          PWM6T1L = (u8)(period1);
- 550   2          PWM6T1H = (u8)(period1 >> 8);
- 551   2          PWM6T2L = (u8)(period2);
- 552   2          PWM6T2H = (u8)(period2 >> 8);
- 553   2          return 0;
- 554   2          break;
- 555   2        case PWM_7:
- 556   2          PWM7T1L = (u8)(period1);
- 557   2          PWM7T1H = (u8)(period1 >> 8);
- 558   2          PWM7T2L = (u8)(period2);
- 559   2          PWM7T2H = (u8)(period2 >> 8);
- 560   2          return 0;
- 561   2          break;
- 562   2        default:
- 563   2          return 1;
- 564   2          break;
- 565   2        }
- 566   1      }
+ 539   2          PWM3T2L = (u8)(period2);
+ 540   2          PWM3T2H = (u8)(period2 >> 8);
+ 541   2          return 0;
+ 542   2          break;
+ 543   2        case PWM_4:
+ 544   2          PWM4T1L = (u8)(period1);
+ 545   2          PWM4T1H = (u8)(period1 >> 8);
+ 546   2          PWM4T2L = (u8)(period2);
+ 547   2          PWM4T2H = (u8)(period2 >> 8);
+ 548   2          return 0;
+ 549   2          break;
+ 550   2        case PWM_5:
+ 551   2          PWM5T1L = (u8)(period1);
+ 552   2          PWM5T1H = (u8)(period1 >> 8);
+ 553   2          PWM5T2L = (u8)(period2);
+ 554   2          PWM5T2H = (u8)(period2 >> 8);
+ 555   2          return 0;
+ 556   2          break;
+ 557   2        case PWM_6:
+ 558   2          PWM6T1L = (u8)(period1);
+ 559   2          PWM6T1H = (u8)(period1 >> 8);
+ 560   2          PWM6T2L = (u8)(period2);
+ 561   2          PWM6T2H = (u8)(period2 >> 8);
+ 562   2          return 0;
+ 563   2          break;
+ 564   2        case PWM_7:
+ 565   2          PWM7T1L = (u8)(period1);
+ 566   2          PWM7T1H = (u8)(period1 >> 8);
+ 567   2          PWM7T2L = (u8)(period2);
+ 568   2          PWM7T2H = (u8)(period2 >> 8);
+ 569   2          return 0;
+ 570   2          break;
+ 571   2        default:
+ 572   2          return 1;
+ 573   2          break;
+ 574   2        }
+ 575   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =   1720    ----
+   CODE SIZE        =   1799    ----
    CONSTANT SIZE    =   ----    ----
-   XDATA SIZE       =     54      16
+   XDATA SIZE       =     60      16
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----
    IDATA SIZE       =   ----    ----

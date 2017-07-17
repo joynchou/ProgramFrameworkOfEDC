@@ -47,7 +47,9 @@ void setup(void)
    Button_config();
 	 ADC_config(ADC_P10,ADC_540T);
 	 LCD1602_Init();
-	//Init_Str_Motor(SERVO_1,0.5f,2.5f,180,250);
+	Init_Str_Motor(SERVO_1,0.5f,2.5f,180,250);
+	set_STR_angle(SERVO_1,30);
+	open_STR(SERVO_1);
 //	  GPIO_InitStructure.Mode = GPIO_PullUp;       //指定IO的输入或输出方式,GPIO_PullUp,GPIO_HighZ,GPIO_OUT_OD,GPIO_OUT_PP
 
 //        GPIO_InitStructure.Pin  = GPIO_Pin_7 ;    //指定要初始化的IO, GPIO_Pin_0 ~ GPIO_Pin_7, 或操作
@@ -72,6 +74,7 @@ void setup(void)
 //    PWM_InitStructure.       PWM_EN=  DISABLE;
 //    PWM_Inilize(PWM_2,&PWM_InitStructure) ;
 //    PWM_LOCK;
+//			setPWM_DIV(PWM_2,16);
 //		set_PWM_period(PWM_2,50);
 //	  set_PWM_duty(PWM_2,0.7f);
 //		open_PWM_N(PWM_2);

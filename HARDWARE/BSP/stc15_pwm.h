@@ -22,7 +22,8 @@ PWM5 :P2.3 -> P4.2
 PWM6 :P1.6 -> P0.7
 PWM7 :P1.7 -> P0.6
 ************************************/
-
+ void setPWM_DIV(u8 PWM_N,u8 DIV);
+ u8 getPWM_DIV(u8 PWM_N);
 void open_PWM_ALL(void);
 void close_PWM_ALL(void);
 void close_PWM_N(u8 PWM_N);

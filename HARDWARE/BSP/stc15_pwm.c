@@ -28,7 +28,7 @@ PWM7 :P1.7 -> P0.6
 
 static struct PWM_N_INFO
 {
-	u32 period;//pwm的频率
+	u16 period;//pwm的频率
 	u8 state;//pwm发生器的状态
 	float duty;//pwm的占空比
 	u8 DIV;
@@ -409,7 +409,12 @@ void set_PWM_period(u8 PWM_N,u16 Hz)
 	PWM_N_INFO[PWM_N].period = Hz;
 	PWM_UNLOCK;
 	PWM_ALL_NO;
+<<<<<<< HEAD
+	PWM_SET_PERIOD((u16)(MAIN_Fosc/Hz));
+	PWM_ALL_EN;
+=======
 	PWM_SET_PERIOD((u16)(MAIN_Fosc/(Hz*PWM_N_INFO[PWM_N].DIV )));
+>>>>>>> 3ebc801f8d808c1e3087fb68830b1138756a6dd9
 	PWM_LOCK;
 	
 	  
@@ -439,7 +444,11 @@ void set_PWM_duty(u8 PWM_N, float duty)
 	}
 	PWM_N_INFO[PWM_N].duty = duty;//存储占空比值
 	PWM_UNLOCK;
+<<<<<<< HEAD
+	PWM_SET_T12_PERIOD(PWM_N, 0,(int)( PWM_N_INFO[PWM_N].duty*PWM_N_INFO[PWM_N].period));
+=======
 	PWM_SET_T12_PERIOD(PWM_N, 0, (PWM_N_INFO[PWM_N].duty *(MAIN_Fosc/(PWM_N_INFO[PWM_N].period*PWM_N_INFO[PWM_N].DIV ))));
+>>>>>>> 3ebc801f8d808c1e3087fb68830b1138756a6dd9
 	PWM_LOCK;
 }
 void setPWM_DIV(u8 PWM_N,u8 DIV)
@@ -522,7 +531,7 @@ static u8 PWM_SET_PERIOD(u16 period)
 // Parameter: u16 period1
 // Parameter: u32 period2
 //************************************
-static u8 PWM_SET_T12_PERIOD(u8 PWM_N, u16 period1, u32 period2)
+static u8 PWM_SET_T12_PERIOD(u8 PWM_N, int period1, int period2)
 {
 	switch (PWM_N)
 	{

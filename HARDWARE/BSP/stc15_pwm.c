@@ -426,6 +426,7 @@ void set_PWM_period(u8 PWM_N,u16 Hz)
 * 输出: 无
 * 返回值: 无
 * 其他说明:为防止电平发生反转，限制最小占空比为0.05，最大为0.95
+*          更改了最低占空比的限定，用于符合舵机的最低占空比————0.05f -> 0.02f
 *************************************************/
 void set_PWM_duty(u8 PWM_N, float duty)
 {
@@ -433,9 +434,9 @@ void set_PWM_duty(u8 PWM_N, float duty)
 	{
 		duty = 0.95f;
 	}
-	if (duty < 0.05f)
+	if (duty < 0.025f)
 	{
-		duty = 0.05f;
+		duty = 0.025f;
 	}
 	PWM_N_INFO[PWM_N].duty = duty;//存储占空比值
 	PWM_UNLOCK;

@@ -1,4 +1,4 @@
-C51 COMPILER V8.05a   STC15_PWM                                                            07/17/2017 13:08:43 PAGE 1   
+C51 COMPILER V8.05a   STC15_PWM                                                            07/17/2017 21:46:16 PAGE 1   
 
 
 C51 COMPILER V8.05a, COMPILATION OF MODULE STC15_PWM
@@ -62,7 +62,7 @@ line level    source
   52   2          PWM_N_INFO[i].DIV=1; 
   53   2        }
   54   1      
-C51 COMPILER V8.05a   STC15_PWM                                                            07/17/2017 13:08:43 PAGE 2   
+C51 COMPILER V8.05a   STC15_PWM                                                            07/17/2017 21:46:16 PAGE 2   
 
   55   1        P_SW2 |= 0X80;
   56   1        if (ENABLE == PWMx->PWM_GOTO_ADC)            //ENABLE=计数器归零时 触发ADC
@@ -126,7 +126,7 @@ line level    source
  112   1        if (ENABLE == PWMx->PWM_UNUSUAL_CMP0_EN)     //ENABLE=异常检测源为比较器的输出 当比较结果为高时 触发PWM异
              -常
  113   1        {
-C51 COMPILER V8.05a   STC15_PWM                                                            07/17/2017 13:08:43 PAGE 3   
+C51 COMPILER V8.05a   STC15_PWM                                                            07/17/2017 21:46:16 PAGE 3   
 
  114   2          PWMFDCR = (1 << 2);
  115   2        }
@@ -190,7 +190,7 @@ line level    source
  171   3          else
  172   3          {
  173   4            PWM2CR &= (~(1 << 0));
-C51 COMPILER V8.05a   STC15_PWM                                                            07/17/2017 13:08:43 PAGE 4   
+C51 COMPILER V8.05a   STC15_PWM                                                            07/17/2017 21:46:16 PAGE 4   
 
  174   4          }
  175   3        }
@@ -254,7 +254,7 @@ line level    source
  231   3          if (ENABLE == PWMx->PWM_T1x_EN)              //ENABLE=使能第一翻转中断
  232   3          {
  233   4            PWM4CR |= (1 << 1);
-C51 COMPILER V8.05a   STC15_PWM                                                            07/17/2017 13:08:43 PAGE 5   
+C51 COMPILER V8.05a   STC15_PWM                                                            07/17/2017 21:46:16 PAGE 5   
 
  234   4          }
  235   3          else
@@ -318,7 +318,7 @@ line level    source
  291   3          else
  292   3          {
  293   4            PWM6CR |= (1 << 3);
-C51 COMPILER V8.05a   STC15_PWM                                                            07/17/2017 13:08:43 PAGE 6   
+C51 COMPILER V8.05a   STC15_PWM                                                            07/17/2017 21:46:16 PAGE 6   
 
  294   4          }
  295   3          if (ENABLE == PWMx->PWM_ISRx_EN)             //ENABLE=使能PWMx中断 使能第一翻转或第二翻转中断
@@ -382,7 +382,7 @@ line level    source
  352   3          {
  353   4            PWM7CR &= (~(1 << 0));
  354   4          }
-C51 COMPILER V8.05a   STC15_PWM                                                            07/17/2017 13:08:43 PAGE 7   
+C51 COMPILER V8.05a   STC15_PWM                                                            07/17/2017 21:46:16 PAGE 7   
 
  355   3        }
  356   2        break;
@@ -446,7 +446,7 @@ line level    source
  413   1        PWM_LOCK;
  414   1        
  415   1          
-C51 COMPILER V8.05a   STC15_PWM                                                            07/17/2017 13:08:43 PAGE 8   
+C51 COMPILER V8.05a   STC15_PWM                                                            07/17/2017 21:46:16 PAGE 8   
 
  416   1      }
  417          
@@ -461,164 +461,165 @@ line level    source
  426          * 输出: 无
  427          * 返回值: 无
  428          * 其他说明:为防止电平发生反转，限制最小占空比为0.05，最大为0.95
- 429          *************************************************/
- 430          void set_PWM_duty(u8 PWM_N, float duty)
- 431          {
- 432   1        if (duty > 0.95f)
- 433   1        {
- 434   2          duty = 0.95f;
- 435   2        }
- 436   1        if (duty < 0.05f)
- 437   1        {
- 438   2          duty = 0.05f;
- 439   2        }
- 440   1        PWM_N_INFO[PWM_N].duty = duty;//存储占空比值
- 441   1        PWM_UNLOCK;
- 442   1        PWM_SET_T12_PERIOD(PWM_N, 0, (PWM_N_INFO[PWM_N].duty *(MAIN_Fosc/(PWM_N_INFO[PWM_N].period*PWM_N_INFO[PWM
-             -_N].DIV ))));
- 443   1        PWM_LOCK;
- 444   1      }
- 445          void setPWM_DIV(u8 PWM_N,u8 DIV)
- 446          {
- 447   1          PWM_N_INFO[PWM_N].DIV = DIV;
- 448   1      }
- 449          u8 getPWM_DIV(u8 PWM_N)
- 450          {
- 451   1         return PWM_N_INFO[PWM_N].DIV ;
- 452   1      }
- 453          void open_PWM_ALL(void)
- 454          {
- 455   1        PWM_UNLOCK;
- 456   1        PWM_ALL_EN;
- 457   1        PWM_LOCK;
- 458   1      }
- 459          void close_PWM_ALL(void)
- 460          {
- 461   1        PWM_UNLOCK;
- 462   1        PWM_ALL_NO; //总开关
- 463   1        PWM_LOCK;
- 464   1      
- 465   1      }
- 466          void open_PWM_N(u8 PWM_N)
- 467          {
- 468   1        PWM_UNLOCK;
- 469   1        PWM_N_EN(PWM_N);
- 470   1        PWM_N_INFO[PWM_N].state = ON;
- 471   1        PWM_ALL_EN; //总开关
- 472   1        PWM_LOCK;
- 473   1      
+ 429          *          更改了最低占空比的限定，用于符合舵机的最低占空比————0.05f -> 0.02f
+ 430          *************************************************/
+ 431          void set_PWM_duty(u8 PWM_N, float duty)
+ 432          {
+ 433   1      //  if (duty > 0.95f)
+ 434   1      //  {
+ 435   1      //    duty = 0.95f;
+ 436   1      //  }
+ 437   1      //  if (duty < 0.025f)
+ 438   1      //  {
+ 439   1      //    duty = 0.025f;
+ 440   1      //  }
+ 441   1        PWM_N_INFO[PWM_N].duty = duty;//存储占空比值
+ 442   1        PWM_UNLOCK;
+ 443   1        PWM_SET_T12_PERIOD(PWM_N, 0, (( PWM_N_INFO[PWM_N].duty *  ( MAIN_Fosc/(PWM_N_INFO[PWM_N].period*PWM_N_INFO
+             -[PWM_N].DIV )))*10+5)/10);
+ 444   1        PWM_LOCK;
+ 445   1      }
+ 446          void setPWM_DIV(u8 PWM_N,u8 DIV)
+ 447          {
+ 448   1          PWM_N_INFO[PWM_N].DIV = DIV;
+ 449   1      }
+ 450          u8 getPWM_DIV(u8 PWM_N)
+ 451          {
+ 452   1         return PWM_N_INFO[PWM_N].DIV ;
+ 453   1      }
+ 454          void open_PWM_ALL(void)
+ 455          {
+ 456   1        PWM_UNLOCK;
+ 457   1        PWM_ALL_EN;
+ 458   1        PWM_LOCK;
+ 459   1      }
+ 460          void close_PWM_ALL(void)
+ 461          {
+ 462   1        PWM_UNLOCK;
+ 463   1        PWM_ALL_NO; //总开关
+ 464   1        PWM_LOCK;
+ 465   1      
+ 466   1      }
+ 467          void open_PWM_N(u8 PWM_N)
+ 468          {
+ 469   1        PWM_UNLOCK;
+ 470   1        PWM_N_EN(PWM_N);
+ 471   1        PWM_N_INFO[PWM_N].state = ON;
+ 472   1        PWM_ALL_EN; //总开关
+ 473   1        PWM_LOCK;
  474   1      
- 475   1      }
- 476          void close_PWM_N(u8 PWM_N)
-C51 COMPILER V8.05a   STC15_PWM                                                            07/17/2017 13:08:43 PAGE 9   
+ 475   1      
+ 476   1      }
+C51 COMPILER V8.05a   STC15_PWM                                                            07/17/2017 21:46:16 PAGE 9   
 
- 477          {
- 478   1        PWM_UNLOCK;
- 479   1        PWM_N_NO(PWM_N);
- 480   1        PWM_N_INFO[PWM_N].state = OFF;
- 481   1        PWM_LOCK;
- 482   1      
- 483   1      }
- 484          bit get_PWM_N_state(u8 PWM_N)
- 485          {
- 486   1      
- 487   1        return  PWM_N_INFO[PWM_N].state;
- 488   1      }
- 489          
- 490          //////////////以下为私有函数，不建议改动//////////////////////
- 491          //
- 492          //************************************
- 493          // Method:    PWM_SET_PERIOD
- 494          // FullName:  PWM_SET_PERIOD
- 495          // Access:    public static 
- 496          // Returns:   u8
- 497          // Qualifier: 设置PWM周期
- 498          // Parameter: u16 period
- 499          //************************************
- 500          static u8 PWM_SET_PERIOD(u16 period)
- 501          {
- 502   1        if (0x8000 > period)
- 503   1        {
- 504   2          PWMCL = (u8)(period);
- 505   2          PWMCH = (u8)(period >> 8);
- 506   2          return 0;
- 507   2        }
- 508   1        else
- 509   1        {
- 510   2          return 1;
- 511   2        }
- 512   1      }
- 513          
- 514          //
- 515          //************************************
- 516          // Method:    PWM_SET_T12_PERIOD
- 517          // FullName:  PWM_SET_T12_PERIOD
- 518          // Access:    public static 
- 519          // Returns:   u8
- 520          // Qualifier: 设置PWM第一次和第二次翻转周期
- 521          // Parameter: u8 PWM_N
- 522          // Parameter: u16 period1
- 523          // Parameter: u32 period2
- 524          //************************************
- 525          static u8 PWM_SET_T12_PERIOD(u8 PWM_N, u16 period1, u32 period2)
- 526          {
- 527   1        switch (PWM_N)
- 528   1        {
- 529   2        case PWM_2:
- 530   2          PWM2T1L = (u8)(period1);
- 531   2          PWM2T1H = (u8)(period1 >> 8);
- 532   2          PWM2T2L = (u8)(period2);
- 533   2          PWM2T2H = (u8)(period2 >> 8);
- 534   2          return 0;
- 535   2          break;
- 536   2        case PWM_3:
- 537   2          PWM3T1L = (u8)(period1);
- 538   2          PWM3T1H = (u8)(period1 >> 8);
-C51 COMPILER V8.05a   STC15_PWM                                                            07/17/2017 13:08:43 PAGE 10  
+ 477          void close_PWM_N(u8 PWM_N)
+ 478          {
+ 479   1        PWM_UNLOCK;
+ 480   1        PWM_N_NO(PWM_N);
+ 481   1        PWM_N_INFO[PWM_N].state = OFF;
+ 482   1        PWM_LOCK;
+ 483   1      
+ 484   1      }
+ 485          bit get_PWM_N_state(u8 PWM_N)
+ 486          {
+ 487   1      
+ 488   1        return  PWM_N_INFO[PWM_N].state;
+ 489   1      }
+ 490          
+ 491          //////////////以下为私有函数，不建议改动//////////////////////
+ 492          //
+ 493          //************************************
+ 494          // Method:    PWM_SET_PERIOD
+ 495          // FullName:  PWM_SET_PERIOD
+ 496          // Access:    public static 
+ 497          // Returns:   u8
+ 498          // Qualifier: 设置PWM周期
+ 499          // Parameter: u16 period
+ 500          //************************************
+ 501          static u8 PWM_SET_PERIOD(u16 period)
+ 502          {
+ 503   1        if (0x8000 > period)
+ 504   1        {
+ 505   2          PWMCL = (u8)(period);
+ 506   2          PWMCH = (u8)(period >> 8);
+ 507   2          return 0;
+ 508   2        }
+ 509   1        else
+ 510   1        {
+ 511   2          return 1;
+ 512   2        }
+ 513   1      }
+ 514          
+ 515          //
+ 516          //************************************
+ 517          // Method:    PWM_SET_T12_PERIOD
+ 518          // FullName:  PWM_SET_T12_PERIOD
+ 519          // Access:    public static 
+ 520          // Returns:   u8
+ 521          // Qualifier: 设置PWM第一次和第二次翻转周期
+ 522          // Parameter: u8 PWM_N
+ 523          // Parameter: u16 period1
+ 524          // Parameter: u32 period2
+ 525          //************************************
+ 526          static u8 PWM_SET_T12_PERIOD(u8 PWM_N, u16 period1, u16 period2)
+ 527          {
+ 528   1        switch (PWM_N)
+ 529   1        {
+ 530   2        case PWM_2:
+ 531   2          PWM2T1L = (u8)(period1);
+ 532   2          PWM2T1H = (u8)(period1 >> 8);
+ 533   2          PWM2T2L = (u8)(period2);
+ 534   2          PWM2T2H = (u8)(period2 >> 8);
+ 535   2          return 0;
+ 536   2          break;
+ 537   2        case PWM_3:
+ 538   2          PWM3T1L = (u8)(period1);
+C51 COMPILER V8.05a   STC15_PWM                                                            07/17/2017 21:46:16 PAGE 10  
 
- 539   2          PWM3T2L = (u8)(period2);
- 540   2          PWM3T2H = (u8)(period2 >> 8);
- 541   2          return 0;
- 542   2          break;
- 543   2        case PWM_4:
- 544   2          PWM4T1L = (u8)(period1);
- 545   2          PWM4T1H = (u8)(period1 >> 8);
- 546   2          PWM4T2L = (u8)(period2);
- 547   2          PWM4T2H = (u8)(period2 >> 8);
- 548   2          return 0;
- 549   2          break;
- 550   2        case PWM_5:
- 551   2          PWM5T1L = (u8)(period1);
- 552   2          PWM5T1H = (u8)(period1 >> 8);
- 553   2          PWM5T2L = (u8)(period2);
- 554   2          PWM5T2H = (u8)(period2 >> 8);
- 555   2          return 0;
- 556   2          break;
- 557   2        case PWM_6:
- 558   2          PWM6T1L = (u8)(period1);
- 559   2          PWM6T1H = (u8)(period1 >> 8);
- 560   2          PWM6T2L = (u8)(period2);
- 561   2          PWM6T2H = (u8)(period2 >> 8);
- 562   2          return 0;
- 563   2          break;
- 564   2        case PWM_7:
- 565   2          PWM7T1L = (u8)(period1);
- 566   2          PWM7T1H = (u8)(period1 >> 8);
- 567   2          PWM7T2L = (u8)(period2);
- 568   2          PWM7T2H = (u8)(period2 >> 8);
- 569   2          return 0;
- 570   2          break;
- 571   2        default:
- 572   2          return 1;
- 573   2          break;
- 574   2        }
- 575   1      }
+ 539   2          PWM3T1H = (u8)(period1 >> 8);
+ 540   2          PWM3T2L = (u8)(period2);
+ 541   2          PWM3T2H = (u8)(period2 >> 8);
+ 542   2          return 0;
+ 543   2          break;
+ 544   2        case PWM_4:
+ 545   2          PWM4T1L = (u8)(period1);
+ 546   2          PWM4T1H = (u8)(period1 >> 8);
+ 547   2          PWM4T2L = (u8)(period2);
+ 548   2          PWM4T2H = (u8)(period2 >> 8);
+ 549   2          return 0;
+ 550   2          break;
+ 551   2        case PWM_5:
+ 552   2          PWM5T1L = (u8)(period1);
+ 553   2          PWM5T1H = (u8)(period1 >> 8);
+ 554   2          PWM5T2L = (u8)(period2);
+ 555   2          PWM5T2H = (u8)(period2 >> 8);
+ 556   2          return 0;
+ 557   2          break;
+ 558   2        case PWM_6:
+ 559   2          PWM6T1L = (u8)(period1);
+ 560   2          PWM6T1H = (u8)(period1 >> 8);
+ 561   2          PWM6T2L = (u8)(period2);
+ 562   2          PWM6T2H = (u8)(period2 >> 8);
+ 563   2          return 0;
+ 564   2          break;
+ 565   2        case PWM_7:
+ 566   2          PWM7T1L = (u8)(period1);
+ 567   2          PWM7T1H = (u8)(period1 >> 8);
+ 568   2          PWM7T2L = (u8)(period2);
+ 569   2          PWM7T2H = (u8)(period2 >> 8);
+ 570   2          return 0;
+ 571   2          break;
+ 572   2        default:
+ 573   2          return 1;
+ 574   2          break;
+ 575   2        }
+ 576   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =   1799    ----
+   CODE SIZE        =   1590    ----
    CONSTANT SIZE    =   ----    ----
-   XDATA SIZE       =     60      16
+   XDATA SIZE       =     60       9
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----
    IDATA SIZE       =   ----    ----

@@ -92,7 +92,7 @@ void set_PWM_duty(u8 PWM_N,float duty);
 
 
 static u8 PWM_SET_PERIOD(u16 period);
-static u8 PWM_SET_T12_PERIOD(u8 PWM_N, u16 period1, u32 period2);
+static u8 PWM_SET_T12_PERIOD(u8 PWM_N, u16 period1, u16 period2);
 //u8   PWM_SET_PERIOD(u16 period);
 //u8   PWM_SET_T12_PERIOD(u8 PWM_N,u16 period1,u32 period2);
 //void PWM_Inilize(u8 PWM_N,PWM_InitTypeDef *PWMx);

@@ -1,5 +1,5 @@
 /************************************************************
-* 组织名称： (C), 1988-1999, Tech. Co., Ltd.
+* 组织名称： 电子大赛小组
 * 文件名称: STC15_PWM.C
 * 作者:  周晨阳
 * 版本:  1.3
@@ -16,8 +16,8 @@
 #include "GPIO.h"
 //PWM信息存储
 /************************************
-硬件PWMio引脚
-PWM_N| io  | 第二组
+硬件PWM io引脚
+PWM_N| 第一组| 第二组
 PWM2 :P3.7 -> P2.7
 PWM3 :P2.1 -> P4.5
 PWM4 :P2.2 -> P4.4
@@ -31,7 +31,7 @@ static struct PWM_N_INFO
 	u32 period;//pwm的频率
 	u8 state;//pwm发生器的状态
 	float duty;//pwm的占空比
-	u8 DIV;
+	u8 DIV; //预分频值，用来产生较低频率的pwm
 };
 static  struct PWM_N_INFO PWM_N_INFO[6]; //6组pwm数据存储
 
@@ -49,7 +49,7 @@ void PWM_Inilize(u8 PWM_N, PWM_InitTypeDef *PWMx)
 		PWM_N_INFO[i].period = 0;
 		PWM_N_INFO[i].state = 0;
 		PWM_N_INFO[i].duty = 0;
-		PWM_N_INFO[i].DIV=1; 
+		PWM_N_INFO[i].DIV = 1;
 	}
 
 	P_SW2 |= 0X80;
@@ -404,15 +404,15 @@ float get_PWM_N_duty(u8 PWM_N)
 		但是由于单片机硬件所限，不可以单独对每路pwm的频率进行修改，
 		只能一改全改。
 *************************************************/
-void set_PWM_period(u8 PWM_N,u16 Hz)
+void set_PWM_period(u8 PWM_N, u16 Hz)
 {
 	PWM_N_INFO[PWM_N].period = Hz;
 	PWM_UNLOCK;
 	PWM_ALL_NO;
-	PWM_SET_PERIOD((u16)(MAIN_Fosc/(Hz*PWM_N_INFO[PWM_N].DIV )));
+	PWM_SET_PERIOD((u16)(MAIN_Fosc / (Hz*PWM_N_INFO[PWM_N].DIV)));
 	PWM_LOCK;
-	
-	  
+
+
 }
 
 /*************************************************
@@ -426,7 +426,7 @@ void set_PWM_period(u8 PWM_N,u16 Hz)
 * 输出: 无
 * 返回值: 无
 * 其他说明:为防止电平发生反转，限制最小占空比为0.05，最大为0.95
-*          更改了最低占空比的限定，用于符合舵机的最低占空比————0.05f -> 0.02f
+*          更改了最低占空比的限定，用于符合舵机的最低占空比————0.05f -> 0.025f
 *************************************************/
 void set_PWM_duty(u8 PWM_N, float duty)
 {
@@ -440,16 +440,25 @@ void set_PWM_duty(u8 PWM_N, float duty)
 	}
 	PWM_N_INFO[PWM_N].duty = duty;//存储占空比值
 	PWM_UNLOCK;
-	PWM_SET_T12_PERIOD(PWM_N, 0, (PWM_N_INFO[PWM_N].duty *(MAIN_Fosc/(PWM_N_INFO[PWM_N].period*PWM_N_INFO[PWM_N].DIV ))));
+	PWM_SET_T12_PERIOD(PWM_N, 0, ((PWM_N_INFO[PWM_N].duty *	(MAIN_Fosc / (PWM_N_INFO[PWM_N].period*PWM_N_INFO[PWM_N].DIV))) * 10 + 5) / 10);
 	PWM_LOCK;
 }
-void setPWM_DIV(u8 PWM_N,u8 DIV)
+//************************************
+// Method:    setPWM_DIV
+// FullName:  setPWM_DIV
+// Access:    public 
+// Returns:   void
+// Qualifier: 设置预分配
+// Parameter: u8 PWM_N
+// Parameter: u8 DIV
+//************************************
+void setPWM_DIV(u8 PWM_N, u8 DIV)
 {
-		PWM_N_INFO[PWM_N].DIV = DIV;
+	PWM_N_INFO[PWM_N].DIV = DIV;
 }
 u8 getPWM_DIV(u8 PWM_N)
 {
-	 return PWM_N_INFO[PWM_N].DIV ;
+	return PWM_N_INFO[PWM_N].DIV;
 }
 void open_PWM_ALL(void)
 {
@@ -469,7 +478,7 @@ void open_PWM_N(u8 PWM_N)
 	PWM_UNLOCK;
 	PWM_N_EN(PWM_N);
 	PWM_N_INFO[PWM_N].state = ON;
-	PWM_ALL_EN; //总开关
+	PWM_ALL_EN; //总开关,根据手册中的要求
 	PWM_LOCK;
 
 
@@ -488,7 +497,7 @@ bit get_PWM_N_state(u8 PWM_N)
 	return  PWM_N_INFO[PWM_N].state;
 }
 
-//////////////以下为私有函数，不建议改动//////////////////////
+//////////////！以下为私有函数，禁止改动！//////////////////////
 //
 //************************************
 // Method:    PWM_SET_PERIOD
@@ -521,9 +530,9 @@ static u8 PWM_SET_PERIOD(u16 period)
 // Qualifier: 设置PWM第一次和第二次翻转周期
 // Parameter: u8 PWM_N
 // Parameter: u16 period1
-// Parameter: u32 period2
+// Parameter: u16 period2
 //************************************
-static u8 PWM_SET_T12_PERIOD(u8 PWM_N, u16 period1, u32 period2)
+static u8 PWM_SET_T12_PERIOD(u8 PWM_N, u16 period1, u16 period2)
 {
 	switch (PWM_N)
 	{

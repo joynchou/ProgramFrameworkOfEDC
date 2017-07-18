@@ -8,9 +8,7 @@ Project File Date:  07/14/2017
 
 <h2>Output:</h2>
 Build target '电子大赛程序框架'
-compiling setup.c...
-..\SOFTWARE\TASK\SETUP.C(44): warning C280: 'GPIO_InitStructure': unreferenced local variable
-..\SOFTWARE\TASK\SETUP.C(45): warning C280: 'PWM_InitStructure': unreferenced local variable
+compiling stc15_pwm.c...
 linking...
 *** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
     SEGMENT: ?PR?MODE1?MODE
@@ -87,9 +85,21 @@ linking...
 *** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
     SEGMENT: ?PR?_CLOSE_STR?SERVO
 *** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SETSTEPMOTORWITHROUND?STEP_MOTOR
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
     SEGMENT: ?PR?_GETSTEPMOTORSTATE?STEP_MOTOR
 *** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SETSTEPMOTORDIVERSION?STEP_MOTOR
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
     SEGMENT: ?PR?_CLOSE_STEPMOTOR?STEP_MOTOR
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_OPEN_STEPMOTOR?STEP_MOTOR
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_FREESTEPMOTOR?STEP_MOTOR
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_LOCKSTEPMOTOR?STEP_MOTOR
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?STEPMOTOR_INIT?STEP_MOTOR
 *** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
     SEGMENT: ?PR?_SETRELAY?RELAY
 *** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
@@ -174,23 +184,47 @@ linking...
     SEGMENT: ?PR?_FILTER?FILTER
     CALLER1: ?PR?TASK8?ABSTASK
     CALLER2: ?PR?TASK9?ABSTASK
-Program Size: data=46.4 xdata=1496 code=15621
+Program Size: data=46.4 xdata=1514 code=15750
 creating hex file from "电子大赛程序框架"...
-"电子大赛程序框架" - 0 Error(s), 81 Warning(s).
+"电子大赛程序框架" - 0 Error(s), 85 Warning(s).
 compiling STEP_MOTOR.C...
-..\HARDWARE\DEVICES\MOTOR\STEP_MOTOR\STEP_MOTOR.C(74): warning C280: 'motor': unreferenced local variable
-..\HARDWARE\DEVICES\MOTOR\STEP_MOTOR\STEP_MOTOR.C - 0 Error(s), 1 Warning(s).
+..\HARDWARE\DEVICES\MOTOR\STEP_MOTOR\STEP_MOTOR.H(11): warning C317: attempt to redefine macro 'STEP_MOTOR_3'
+..\HARDWARE\DEVICES\MOTOR\STEP_MOTOR\STEP_MOTOR.C(32): error C136: invalid dimension size: [0]
+..\HARDWARE\DEVICES\MOTOR\STEP_MOTOR\STEP_MOTOR.C(32): error C231: 'g_stepMotor': redefinition
+..\HARDWARE\DEVICES\MOTOR\STEP_MOTOR\STEP_MOTOR.C(32): error C202: 'LOCDED': undefined identifier
+..\HARDWARE\DEVICES\MOTOR\STEP_MOTOR\STEP_MOTOR.C - 3 Error(s), 1 Warning(s).
 compiling STEP_MOTOR.C...
-..\HARDWARE\DEVICES\MOTOR\STEP_MOTOR\STEP_MOTOR.C(74): warning C280: 'motor': unreferenced local variable
-..\HARDWARE\DEVICES\MOTOR\STEP_MOTOR\STEP_MOTOR.C(106): warning C280: 'motor': unreferenced local variable
-..\HARDWARE\DEVICES\MOTOR\STEP_MOTOR\STEP_MOTOR.C(111): warning C280: 'motor': unreferenced local variable
-..\HARDWARE\DEVICES\MOTOR\STEP_MOTOR\STEP_MOTOR.C - 0 Error(s), 3 Warning(s).
-compiling SERVO.C...
-..\HARDWARE\DEVICES\MOTOR\SERVO\SERVO.C - 0 Error(s), 0 Warning(s).
-compiling SERVO.C...
-..\HARDWARE\DEVICES\MOTOR\SERVO\SERVO.C - 0 Error(s), 0 Warning(s).
-compiling SERVO.C...
-..\HARDWARE\DEVICES\MOTOR\SERVO\SERVO.C - 0 Error(s), 0 Warning(s).
+..\HARDWARE\DEVICES\MOTOR\STEP_MOTOR\STEP_MOTOR.H(11): warning C317: attempt to redefine macro 'STEP_MOTOR_3'
+..\HARDWARE\DEVICES\MOTOR\STEP_MOTOR\STEP_MOTOR.C(32): error C136: invalid dimension size: [0]
+..\HARDWARE\DEVICES\MOTOR\STEP_MOTOR\STEP_MOTOR.C(32): error C231: 'g_stepMotor': redefinition
+..\HARDWARE\DEVICES\MOTOR\STEP_MOTOR\STEP_MOTOR.C - 2 Error(s), 1 Warning(s).
+compiling setup.c...
+..\SOFTWARE\TASK\../../HARDWARE/DEVICES/MOTOR/STEP_MOTOR/STEP_MOTOR.H(11): warning C317: attempt to redefine macro 'STEP_MOTOR_3'
+..\SOFTWARE\TASK\SETUP.C(74): error C200: left side of '.' requires struct/union
+..\SOFTWARE\TASK\SETUP.C(77): error C202: 'GPIO_InitStructure': undefined identifier
+..\SOFTWARE\TASK\SETUP.C(96): error C202: 'PWM_InitStructure': undefined identifier
+..\SOFTWARE\TASK\SETUP.C(103): error C202: 'i': undefined identifier
+..\SOFTWARE\TASK\SETUP.C(105): error C202: 'i': undefined identifier
+..\SOFTWARE\TASK\SETUP.C(116): error C141: syntax error near 'int'
+..\SOFTWARE\TASK\SETUP.C(116): error C202: 'i': undefined identifier
+..\SOFTWARE\TASK\SETUP.C(117): error C141: syntax error near 'GPIO_InitTypeDef'
+..\SOFTWARE\TASK\SETUP.C(117): error C202: 'GPIO_InitStructure': undefined identifier
+..\SOFTWARE\TASK\SETUP.C(118): error C141: syntax error near 'PWM_InitTypeDef'
+..\SOFTWARE\TASK\SETUP.C(118): error C202: 'PWM_InitStructure': undefined identifier
+..\SOFTWARE\TASK\setup.c - 11 Error(s), 1 Warning(s).
+compiling setup.c...
+..\SOFTWARE\TASK\../../HARDWARE/DEVICES/MOTOR/STEP_MOTOR/STEP_MOTOR.H(11): warning C317: attempt to redefine macro 'STEP_MOTOR_3'
+..\SOFTWARE\TASK\SETUP.C(74): error C200: left side of '.' requires struct/union
+..\SOFTWARE\TASK\SETUP.C(77): error C202: 'GPIO_InitStructure': undefined identifier
+..\SOFTWARE\TASK\SETUP.C(96): error C202: 'PWM_InitStructure': undefined identifier
+..\SOFTWARE\TASK\SETUP.C(103): error C202: 'i': undefined identifier
+..\SOFTWARE\TASK\SETUP.C(105): error C202: 'i': undefined identifier
+..\SOFTWARE\TASK\setup.c - 5 Error(s), 1 Warning(s).
+compiling setup.c...
+..\SOFTWARE\TASK\../../HARDWARE/DEVICES/MOTOR/STEP_MOTOR/STEP_MOTOR.H(11): warning C317: attempt to redefine macro 'STEP_MOTOR_3'
+..\SOFTWARE\TASK\setup.c - 0 Error(s), 1 Warning(s).
+compiling setup.c...
+..\SOFTWARE\TASK\setup.c - 0 Error(s), 0 Warning(s).
 </pre>
 </body>
 </html>

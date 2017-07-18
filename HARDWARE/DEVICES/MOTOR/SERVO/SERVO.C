@@ -47,7 +47,12 @@ void Init_Str_Motor(u8 MOTOR,float pl,float ph,float ma,unsigned int n)
 	  GPIO_InitStructure.Mode = GPIO_PullUp;       //指定IO的输入或输出方式,GPIO_PullUp,GPIO_HighZ,GPIO_OUT_OD,GPIO_OUT_PP
     GPIO_InitStructure.Pin  = GPIO_Pin_7 ;    //指定要初始化的IO, GPIO_Pin_0 ~ GPIO_Pin_7, 或操作
     GPIO_Inilize(GPIO_P3,&GPIO_InitStructure);  //初始化
+//		  GPIO_InitStructure.Mode = GPIO_PullUp;       //指定IO的输入或输出方式,GPIO_PullUp,GPIO_HighZ,GPIO_OUT_OD,GPIO_OUT_PP
+//    GPIO_InitStructure.Pin  = GPIO_Pin_1 ;    //指定要初始化的IO, GPIO_Pin_0 ~ GPIO_Pin_7, 或操作
+//    GPIO_Inilize(GPIO_P2,&GPIO_InitStructure);  //初始化
+
     P37=1;
+//	  P21=1;
 		PWM_UNLOCK;
     PWM_InitStructure.PWM_GOTO_ADC=DISABLE;
     PWM_InitStructure.      PWM_V_INIT= PWM_LOW;
@@ -65,17 +70,18 @@ void Init_Str_Motor(u8 MOTOR,float pl,float ph,float ma,unsigned int n)
     PWM_InitStructure.       PWM_T1x_EN=   DISABLE;
     PWM_InitStructure.       PWM_T2x_EN=    DISABLE;
     PWM_InitStructure.       PWM_EN=  DISABLE;
-    PWM_Inilize(PWM_2,&PWM_InitStructure) ;
+    PWM_Inilize(MOTOR,&PWM_InitStructure) ;
+
     PWM_LOCK;
-		setPWM_DIV(PWM_2,16);
-		set_PWM_period(PWM_2,50);
-	str_motor[MOTOR].Pulse_Width_L = pl;
-	str_motor[MOTOR].Pulse_Width_H = ph;
-	str_motor[MOTOR].Str_MAX_angle = ma;
-	str_motor[MOTOR].Str_N = n;
-	str_motor[MOTOR].Str_DIV = (str_motor[MOTOR].Pulse_Width_H - str_motor[MOTOR].Pulse_Width_L) / str_motor[MOTOR].Str_N;//计算舵机的最小精度，单位为ms
-	str_motor[MOTOR].Str_ACC_angle = str_motor[MOTOR].Str_MAX_angle / (float)str_motor[MOTOR].Str_N;
-	str_motor[MOTOR].Current_angle = 0;
+		setPWM_DIV(MOTOR,16);
+		set_PWM_period(MOTOR,50);
+		str_motor[MOTOR].Pulse_Width_L = pl;
+		str_motor[MOTOR].Pulse_Width_H = ph;
+		str_motor[MOTOR].Str_MAX_angle = ma;
+		str_motor[MOTOR].Str_N = n;
+		str_motor[MOTOR].Str_DIV = (str_motor[MOTOR].Pulse_Width_H - str_motor[MOTOR].Pulse_Width_L) / str_motor[MOTOR].Str_N;//计算舵机的最小精度，单位为ms
+		str_motor[MOTOR].Str_ACC_angle = str_motor[MOTOR].Str_MAX_angle / (float)str_motor[MOTOR].Str_N;
+		str_motor[MOTOR].Current_angle = 0;
 }
 
 /**********************************************
@@ -91,19 +97,19 @@ void set_STR_angle(u8 MOTOR,float angle)
 {
 		float str_duty;
 		str_motor[MOTOR].Set_angle = angle;
-		str_motor[MOTOR].Actual_Pulse_Width = (	(angle / str_motor[MOTOR].Str_ACC_angle) * str_motor[MOTOR].Str_DIV )+ 0.5f;
-	if(str_motor[MOTOR].Actual_Pulse_Width >= 2.5f)
+		str_motor[MOTOR].Actual_Pulse_Width = (	(angle / str_motor[MOTOR].Str_ACC_angle) * str_motor[MOTOR].Str_DIV )+str_motor[MOTOR].Pulse_Width_L ;
+//	if(str_motor[MOTOR].Actual_Pulse_Width >= str_motor[MOTOR].Pulse_Width_H)
+//	{
+//		set_PWM_duty(MOTOR,0.125f);
+//	}
+//	 else if(str_motor[MOTOR].Actual_Pulse_Width <= str_motor[MOTOR].Pulse_Width_L)
+//	{
+//		set_PWM_duty(MOTOR,0.025f);
+//	}
+//	else
 	{
-		set_PWM_duty(PWM_2,0.125f);
-	}
-	else if(str_motor[MOTOR].Actual_Pulse_Width <= 0.5f)
-	{
-		set_PWM_duty(PWM_2,0.025f);
-	}
-	else
-	{
-			str_duty =	str_motor[MOTOR].Actual_Pulse_Width	 / 20;
-		set_PWM_duty(PWM_2,str_duty);
+		str_duty =	str_motor[MOTOR].Actual_Pulse_Width	 / 20;
+		set_PWM_duty(MOTOR,str_duty);
 	}
 		str_motor[MOTOR].Current_angle = str_motor[MOTOR].Set_angle;
 }

@@ -1,7 +1,7 @@
 #ifndef _SERVO_H_
 #define _SERVO_H_
 #include "../../../BSP/config.h"
-#define SERVO_NUM 3
+#define SERVO_NUM 2
 #define SERVO_1 0
 #define SERVO_2 1
 #define SERVO_3 2

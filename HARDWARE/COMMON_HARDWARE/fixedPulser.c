@@ -4,19 +4,31 @@
 * 作者:   周晨阳
 * 版本:  1.0
 * 日期:     2017/07/18
-* 描述:	用来产生固定脉冲数的器件,最多定义两个脉冲发生器，PULSER_1使用PWM_7 ，PULSER_2使用PWM_6
+* 描述:	用来产生固定脉冲数的软件,最多定义两个脉冲发生器，PULSER_1使用定时器3 p04，PULSER_2使用定时器4  p06
 * 历史修改记录:
 * <作者> <时间> <版本 > <描述>
-*
+*  周晨阳 7/25  1.1  更改了定时器的定时时间，由原来最大能产生2500hz的脉冲变成可以产生5000hz的脉冲
+*  周晨阳 7/27  1.2   重新定义了脉冲发生器的产生方式，使用两个定时器来产生两路脉冲，最小可以产生16hz的脉冲
 ***********************************************************/
 
 #include "fixedPulser.h"
 #include "../BSP/STC15_PWM.h"
 #include "../BSP/GPIO.H"
 #include <limits.h>
+#include <stdlib.h>
+#include <stdio.h>
 #include "../BSP/USART1.h"
-#define PULSER_NUM	2	//定义需要使用多少个脉冲发生器
+#include "../BSP/timer.h"
+#define PULSER_NUM	2	//定义需要使用多少个脉冲发生器，最多可产生两路不同频率的脉冲
+#define DEFAULT_PT	HIGH //脉冲发生器的起始电位
 
+#define OPEN_TIMER3_CLKOUT() T4T3M |= 1
+#define OPEN_TIMER4_CLKOUT() T4T3M |= (1 << 4)
+#define CLOSE_TIMER3_CLKOUT() T4T3M &=(~ 1)
+#define CLOSE_TIMER4_CLKOUT() T4T3M &=(~(1 << 4))
+
+
+//#define DEFAULT_PT	LOW //
 struct Pulser //脉冲发生器有关参数数据结构
 {
 	u32 count;  //脉冲个数
@@ -26,29 +38,85 @@ struct Pulser //脉冲发生器有关参数数据结构
 };
 
 static struct Pulser g_pulser[PULSER_NUM];  //脉冲发生器信息存储数组
-
+static u16 tmp = 0;//软件定时器需要使用的变量，写在外面是为了减轻中断的计算量，增加定时精度
+static bit timer2UseBit = 0;//是否需要使用计数变量来产生低于定时器最低可产生的频率的标志位
+static bit timer3UseBit = 0;//是否需要使用计数变量来产生低于定时器最低可产生的频率的标志位
 bool setPulse(u8 pulser_num, u16 Hz, u32 count)
 {
-	set_PWM_period(5 - pulser_num, Hz);//pulser_1 使用PWM_7
+	u16 timerTmp = 0;
+	u16 TIM_Value;
 	g_pulser[pulser_num].Hz = Hz;
 	g_pulser[pulser_num].count = count;
+	if (pulser_num == PULSER_1)
+	{
+		if (Hz > 20)//大于20hz直接使用定时器赋值
+		{
+			//PrintString1("hz >20\r\n");
+
+			TIM_Value = (65536UL - ((MAIN_Fosc / 12) / Hz / 2));
+			timer2UseBit = 0;
+			INT_CLKO |= 0x04;	//输出时钟
+			TH2 = (u8)(TIM_Value >> 8);
+			TL2 = (u8)TIM_Value;
+
+		}
+		else//小于20hz则另外计算
+		{
+			timer2UseBit = 1;
+			//	CLOSE_TIMER2_CLKOUT();
+		}
+	}
+	else
+	{
+		if (Hz > 20)
+		{
+			TIM_Value = (65536UL - ((MAIN_Fosc / 12) / Hz / 2));
+			timer3UseBit = 0;
+			T4T3M |= 1;	//输出时钟
+			TH3 = (u8)(TIM_Value >> 8);
+			TL3 = (u8)TIM_Value;
+
+		}
+		else
+		{
+			timer3UseBit = 1;
+		}
+	}
 
 	return 1;
 }
 bool openPulser(u8 pulser_num)
 {
-	open_PWM_N(5 - pulser_num);
 	g_pulser[pulser_num].state = ON;
 
-	return 1;
+	if (pulser_num == PULSER_1) //pulser2
+	{
+		Timer2_Run();
+		//	PrintString1("pulser 1 is start\n");
+
+	}
+	else   //pulser1
+	{
+		Timer3_Run();
+	}
+
+	return OK;
 }
 bool closePulser(u8 pulser_num)
 {
+	if (pulser_num == PULSER_1)//pulser2
+	{
+		Timer2_Stop();
 
-	close_PWM_N(5 - pulser_num);
 
+	}
+	else //pulser1
+	{
+		Timer3_Stop();
+
+	}
 	g_pulser[pulser_num].state = OFF;
-	return 1;
+	return OK;
 
 }
 bool getPulserState(u8 pulser_num)
@@ -59,118 +127,116 @@ bool getPulserState(u8 pulser_num)
 }
 void PulserInit(void)//初始化程序
 {
-	/************************************
-	硬件PWM io引脚
-	PWM_N| 第一组| 第二组
-	PWM2 :P3.7 -> P2.7
-	PWM3 :P2.1 -> P4.5
-	PWM4 :P2.2 -> P4.4
-	PWM5 :P2.3 -> P4.2
-	PWM6 :P1.6 -> P0.7
-	PWM7 :P1.7 -> P0.6
-	************************************/
-
+	//PULSER_1 使用P30 PULSER_2 使用P04
 
 	GPIO_InitTypeDef    GPIO_InitStructure;     //结构定义
-	PWM_InitTypeDef  PWM_InitStructure;
 	GPIO_InitStructure.Mode = GPIO_PullUp;       //指定IO的输入或输出方式,GPIO_PullUp,GPIO_HighZ,GPIO_OUT_OD,GPIO_OUT_PP
-
-	GPIO_InitStructure.Pin = GPIO_Pin_6 || GPIO_Pin_7;    //指定要初始化的IO, GPIO_Pin_0 ~ GPIO_Pin_7, 或操作
-	GPIO_Inilize(GPIO_P1, &GPIO_InitStructure);  //初始化
-
-	P16 = 1;
-	P17 = 1;
-
-	PWM_UNLOCK;
-	PWM_InitStructure.PWM_GOTO_ADC = DISABLE;            //ENABLE=计数器归零时 触发ADC
-	PWM_InitStructure.PWM_V_INIT = PWM_LOW;             //PWM_HIGHT=初始高电平  PWM_LOW=初始低电平
-	PWM_InitStructure.PWM_0ISR_EN = DISABLE;           //ENABLE=使能PWM计数器归零中断  DISABLE=关闭PWM计数器归零中断 但 CBIF仍然会被硬件置位
-	PWM_InitStructure.PWM_OUT_EN = ENABLE;               //ENABLE=PWM通道x的端口为PWM波形输出口 受PWM波形发生器控制
-	PWM_InitStructure.PWM_UNUSUAL_EN = DISABLE;         //ENABLE=使能PWM的外部异常检测功能
-	PWM_InitStructure.PWM_UNUSUAL_OUT = DISABLE;       //ENABLE=发生异常时，PWM对应的输出口会变成 高阻输入模式
-	PWM_InitStructure.PWM_UNUSUAL_ISR_EN = DISABLE;      //ENABLE=使能异常检测中断 DISABLE=关闭异常检测中断 但FDIF仍然会被硬件置位
-	PWM_InitStructure.PWM_UNUSUAL_CMP0_EN = DISABLE;     //ENABLE=异常检测源为比较器的输出 当比较结果为高时 触发PWM异常
-	PWM_InitStructure.PWM_UNUSUAL_P24_EN = DISABLE;      //ENABLE=异常检测源为P24/PWMFLT 当P24=1 触发PWM异常
-	PWM_InitStructure.PWM_CLOCK = PWM_Clock_NT;          //PWM_Clock_NT=PWM的时钟源是系统时钟经分频后的时钟  PWM_Clock_Timer2_OF=PWM的时钟源是TMER2的溢出脉冲
-	PWM_InitStructure.PWM_CLOCK_DIV = 15;              //当PWM_CLOCK=PWM_Clock_NT时 PWM的时钟源是系统时钟/(PS[3:0]+1)
-	PWM_InitStructure.PWM_SELECTx_IO = PWM_SELECT_N;     //PWM_SELECT_N=PWM第一选择IO口 PWM_SELECT_N_2=PWM第二选择IO口
-	PWM_InitStructure.PWM_ISRx_EN = ENABLE;           //ENABLE=使能PWMx中断 使能第一翻转或第二翻转中断
-	PWM_InitStructure.PWM_T1x_EN = DISABLE;           //ENABLE=使能第一翻转中断
-	PWM_InitStructure.PWM_T2x_EN = ENABLE;          //ENABLE=使能第二翻转中断
-	PWM_InitStructure.PWM_EN = DISABLE;                //ENABLE=PWM使能 在其他PWM参数设置好后最后设置 如果被关闭后在打开，则PWM计数器重新从0计数
-
-	PWM_Inilize(PWM_6, &PWM_InitStructure);
-	PWM_Inilize(PWM_7, &PWM_InitStructure);
-
-	setPWM_DIV(PWM_6, 16); //此设置必须再inilize以后写
-	setPWM_DIV(PWM_7, 16);
-
-	set_PWM_period(PWM_6, 500);//设置频率之前必须设置PWM时钟分频
-	set_PWM_period(PWM_7, 500);
-	set_PWM_duty(PWM_6, PWM_DEFAULT_DUTY); //使用默认0.5的占空比
-	set_PWM_duty(PWM_7, PWM_DEFAULT_DUTY); //使用默认0.5的占空比
-
-	PWM_LOCK;
+	GPIO_InitStructure.Pin = GPIO_Pin_0;    //指定要初始化的IO, GPIO_Pin_0 ~ GPIO_Pin_7, 或操作!!!!!!!GPIO初始化使用按位或不是逻辑或，之前因为这个被坑了
+	GPIO_Inilize(GPIO_P3, &GPIO_InitStructure);  //初始化
+	GPIO_InitStructure.Pin = GPIO_Pin_4;    //指定要初始化的IO, GPIO_Pin_0 ~ GPIO_Pin_7, 或操作!!!!!!!GPIO初始化使用按位或不是逻辑或，之前因为这个被坑了
+	GPIO_Inilize(GPIO_P0, &GPIO_InitStructure);  //初始化
+	g_pulser[PULSER_1].state = OFF;
+	g_pulser[PULSER_2].state = OFF;
+#ifdef DEBUG
+	PrintString1("two pulser was initialized");
+#endif
 }
 
-static u32 g_PWM_7tmp = 0;//计数变量
-static u32 g_PWM_6tmp = 0;//计数变量
-static u32 g_PWM_5tmp = 0;//计数变量
-static u32 g_PWM_4tmp = 0;//计数变量
-static u32 g_PWM_3tmp = 0;//计数变量
-static u32 g_PWM_2tmp = 0;//计数变量
 
-						  /***************！以下为私有函数，不建议更改！********************************/
-static void PWM_Routine(void) interrupt 22   //中断执行程序，用来几率脉冲的个数并及时关闭发生器
-{
-	//  PWMIF &= (~(1 << 6));  //软件清零标志位
-	if (PWMIF ^ 5 == 1)//PWM_7
-	{
-		PWMIF &= (~(1 << 5));  //软件清零标志位
-		PrintString1("into pwm7 count++\n");
+/***************！以下为私有函数，不建议更改！********************************/
 
-		if (g_PWM_7tmp++ >= g_pulser[PULSER_1].count)
-		{
-			PrintString1("close pwm7\n");
-
-			g_pulser[PULSER_1].count = 0;
-			close_PWM_N(PWM_7);
-		}
-	}
-	else if (PWMIF ^ 4 == 1)//PWM_6
-	{
-		PWMIF &= (~(1 << 4));  //软件清零标志位
-		if (g_PWM_6tmp++ >= g_pulser[PULSER_2].count)
-		{
-			g_pulser[PULSER_2].count = 0;
-			close_PWM_N(PWM_6);
-		}
-	}
-	else if (PWMIF ^ 3 == 1)
-	{
-		PWMIF &= (~(1 << 3));  //软件清零标志位
-	}
-	else if (PWMIF ^ 2 == 1)
-	{
-		PWMIF &= (~(1 << 2));  //软件清零标志位
-
-	}
-	else if (PWMIF ^ 1 == 1)
-	{
-		PWMIF &= (~(1 << 1));  //软件清零标志位
-	}
-	else if (PWMIF ^ 0 == 1)
-	{
-		PWMIF &= (~(1 << 0));  //软件清零标志位
-	}
-	else
-	{
-
-	}
-
-}
-
-//static void PWMFD_Routine(void) interrupt 23
+/********************* Timer3中断函数，用于产生指定脉冲************************/
+//200us产生一次中断，
+static u16 pulser1Tmp = 0;
+static u16 count1Tmp = 0;
+//static void Pulser_1Int(void) interrupt TIMER2_VECTOR   //2.5ms产生一次中断
 //{
-//
+//	//PrintString1("into timer inte\n");
+////	if (timer2UseBit == 1)//如果设置的频率小于20hz再使用计数器累加的办法产生
+////	{
+////		if (++pulser1Tmp >= tmp)
+
+////		{
+////			//	PrintString1("p15 state changed\n");
+
+////			pulser1Tmp = 0;
+////			if (count1Tmp++ <= g_pulser[PULSER_1].count)
+////			{
+////				P30 = ~P30;
+
+////				//	PrintString1("p15 state is changed\n");
+////			}
+////			else
+////			{
+////				closePulser(PULSER_1);
+////				count1Tmp = 0;
+
+////			}
+////		}
+////	}
+////	else//如果频率大于20则直接用高速脉冲产生
+//	{
+//		if (++count1Tmp >= g_pulser[PULSER_1].count*2)
+//		{
+//			count1Tmp = 0;
+//			closePulser(PULSER_1);
+//		}
+//	}
+static void Pulser_1Int(void) interrupt TIMER2_VECTOR   //2.5ms产生一次中断
+{
+	if ((++pulser1Tmp) >= 2 * g_pulser[PULSER_1].count)
+	{
+		closePulser(PULSER_1);
+		pulser1Tmp = 0;
+	}
+
+}
+static u16 pulser2Tmp = 0;
+static u16 count2Tmp = 0;
+
+static void Pulser_2Int(void) interrupt TIMER3_VECTOR   //2.5ms产生一次中断
+{
+	if ((++pulser2Tmp) >= 2 * g_pulser[PULSER_2].count)
+	{
+		closePulser(PULSER_2);
+		pulser2Tmp = 0;
+	}
+
+}
+
+
+//static u32 g_PWM_7tmp = 0;//计数变量
+////中断执行程序，用来记录脉冲的个数并及时关闭发生器
+//static void PWM_Routine(void) interrupt 22   
+//{
+
+//	if (PWMIF ^ 5 == 1)//PWM_7第二反转中断
+//	{
+
+//		PWMIF &= (~(1 << 5));  //软件清零标志位
+//	//	PrintString1(" pwm7 count++\n");
+
+//		if (g_PWM_7tmp++ >= g_pulser[PULSER_1].count)
+//		{
+//			//			PrintString1("pwm7 temp >= count\n");
+//			g_PWM_7tmp = 0;
+//			closePulser(PULSER_1); //到了指定的脉冲数后就关闭脉冲发生器
+
+//		}
+
+//	}
+//	//现在选择使用定时器模拟一路脉冲发生器了
+//	//	if (PWMIF ^ 4 == 1)//PWM_6
+//	//	{
+//	//		PWMIF &= (~(1 << 4));  //软件清零标志位
+//	////			PrintString1("pwm6 count++\n");
+//	//		if (g_PWM_6tmp++ >= g_pulser[PULSER_2].count)
+//	//		{
+//	//			//					PrintString1(" pwm6 temp >= count\n");
+//	//			g_PWM_6tmp = 0;
+//	//			closePulser(PULSER_2);
+//	//			close_PWM_ALL();
+//	//		}
+//	//
+//	//	}
 //}

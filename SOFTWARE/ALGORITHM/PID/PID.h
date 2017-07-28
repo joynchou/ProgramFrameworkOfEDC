@@ -70,6 +70,7 @@ void PID_config(u8 PID_N, float kp, float ki, float kd);//pidÀ„∑®≥ı ºªØ∫Ø ˝£¨≤Œ 
 void openPID(u8 PID_N);
 void closePID(u8 PID_N);
 bit PID(u8 PID_N);
+bit Incremental_PID(u8 PID_N);//‘ˆ¡ø ΩPIDÀ„∑®
 void setParameterInferiorLimit(u8 PID_N, float value);
 void setParameterUpperLimit(u8 PID_N, float value);
 void setActualParameter(u8 PID_N, float value);

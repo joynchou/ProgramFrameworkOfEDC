@@ -36,3 +36,13 @@ void  delay_ms(unsigned char ms)
     }
     while(--ms);
 }
+void delay_us(unsigned int us)
+{
+	unsigned int j;
+	j = us * MAIN_Fosc / 12 / 1000000;
+	if(MAIN_Fosc < 12000000 && j <= 0)return;
+	for(;j;j--)
+	{
+		_nop_();
+	}
+}

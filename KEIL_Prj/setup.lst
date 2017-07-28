@@ -1,4 +1,4 @@
-C51 COMPILER V8.05a   SETUP                                                                07/20/2017 09:59:31 PAGE 1   
+C51 COMPILER V8.05a   SETUP                                                                07/28/2017 09:58:56 PAGE 1   
 
 
 C51 COMPILER V8.05a, COMPILATION OF MODULE SETUP
@@ -49,7 +49,7 @@ line level    source
   39          {
   40   1        COMx_InitDefine     COMx_InitStructure;
   41   1        COMx_InitStructure.UART_Mode = UART_8bit_BRTx;
-  42   1        COMx_InitStructure.UART_BRT_Use = BRT_Timer2;
+  42   1        COMx_InitStructure.UART_BRT_Use = BRT_Timer1;
   43   1        COMx_InitStructure.UART_BaudRate = BandRate;
   44   1        COMx_InitStructure.UART_RxEnable = ENABLE;
   45   1        COMx_InitStructure.BaudRateDouble = DISABLE;
@@ -62,7 +62,7 @@ line level    source
   52   1      }
   53          void test(void)//Æ÷¼þ²âÊÔ
   54          {    
-C51 COMPILER V8.05a   SETUP                                                                07/20/2017 09:59:31 PAGE 2   
+C51 COMPILER V8.05a   SETUP                                                                07/28/2017 09:58:56 PAGE 2   
 
   55   1      
   56   1      }

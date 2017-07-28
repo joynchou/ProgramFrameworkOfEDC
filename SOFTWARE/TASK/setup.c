@@ -39,7 +39,7 @@ void    UART1_init(unsigned long BandRate)
 {
 	COMx_InitDefine     COMx_InitStructure;
 	COMx_InitStructure.UART_Mode = UART_8bit_BRTx;
-	COMx_InitStructure.UART_BRT_Use = BRT_Timer2;
+	COMx_InitStructure.UART_BRT_Use = BRT_Timer1;
 	COMx_InitStructure.UART_BaudRate = BandRate;
 	COMx_InitStructure.UART_RxEnable = ENABLE;
 	COMx_InitStructure.BaudRateDouble = DISABLE;

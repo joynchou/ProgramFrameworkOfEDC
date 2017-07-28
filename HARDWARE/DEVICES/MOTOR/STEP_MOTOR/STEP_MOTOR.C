@@ -12,25 +12,50 @@
 
 #include "STEP_MOTOR.H"
 #include "../../../COMMON_HARDWARE/fixedPulser.h"
-#define STEP_MOTOR_NUM 2 
-typedef struct
-{
-	u16 angle;//旋转角度
-	u8 state;//电机状态：停转（堵住），停转（自由态），旋转
-	u16 round;//旋转圈数
-	u8 speed;//旋转速度
-	float DIV;//步进电机单步角度值 ，如1.8°
-	u8 driverDiv;//步进电机驱动板上所选的角度细分值 2，4，8，16
-	u16 maxPeriod; 	//步进电机所能承受的最大频率
-	u8 diversion;//电机转向
+#include "../../../BSP/GPIO.H"
+#include "../../../BSP/USART1.h"
+#include <stdlib.h>
+#include <stdio.h>
 
+#define STEP_MOTOR_NUM 2  //定义需要使用多少个步进电机，步进电机和舵机或者直流电机不能同时使用
+#define	 PI  3.1415f   //pi的值
 
-}StepMotor;
 static  StepMotor g_stepMotor[STEP_MOTOR_NUM];
-//enum {
-//	 RUNNING,FREE,LOCKED
-//}g_stepMotor[0]=LOCKED;
 
+//************************************
+// Method:    setStepMotorWithPulse
+// FullName:  setStepMotorWithPulse
+// Access:    public 
+// Returns:   bit
+// Qualifier: 设置步进电机的脉冲数，单纯设置脉冲
+// Parameter: u8 motor
+// Parameter: u32 pulse
+// Parameter: u16 speed
+//************************************
+bit setStepMotorWithPulse(u8 motor, u32 pulse,u16 speed)
+{
+	setPulse(motor,speed,pulse);
+	return 1;
+}
+//************************************
+// Method:    setStepMotorWithDistance
+// FullName:  setStepMotorWithDistance
+// Access:    public 
+// Returns:   bit
+// Qualifier: //旋转指定长度脉冲发生器需要产生的脉冲数,根据初始化中的数据，自适应不同的步进电机。
+// Parameter: u8 motor
+// Parameter: float distance
+// Parameter: u16 speed
+//************************************
+bit setStepMotorWithDistance(u8 motor,float distance,u16 speed)//旋转指定长度脉冲发生器需要产生的脉冲数,
+{
+
+	setStepMotorWithPulse(motor
+						, (u32)((distance * 360 * g_stepMotor[motor].driverDiv) / (PI*g_stepMotor[motor].bearingDia*g_stepMotor[motor].DIV))
+						, speed);
+	return 1;
+
+}
 //************************************
 // Method:    setStepMotorWithAngle
 // FullName:  setStepMotorWithAngle
@@ -38,13 +63,13 @@ static  StepMotor g_stepMotor[STEP_MOTOR_NUM];
 // Returns:   bit
 // Qualifier: 设置步进电机的旋转角度
 // Parameter: u8 motor：哪一个电机
-// Parameter: u16 angle 旋转角度，不限于360°，可以超过360°
+// Parameter: u16 angle 旋转角度，可以超过360°
 // Parameter: u8 speed：旋转速度，1-100
 //************************************
-bit setStepMotorWithAngle(u8 motor, float angle, u8 speed)
+bit setStepMotorWithAngle(u8 motor, float angle, u16 speed)
 {
-	setPulse(motor, (u16)((1 + g_stepMotor[motor].maxPeriod / 99)*speed - (g_stepMotor[motor].maxPeriod / 99)), \
-		(u16)((angle*g_stepMotor[STEP_MOTOR_1].driverDiv) / g_stepMotor[STEP_MOTOR_1].DIV));
+	setPulse(motor, speed, 
+		(u32)((angle*g_stepMotor[motor].driverDiv) / g_stepMotor[motor].DIV));
 	return 1;
 }
 //************************************
@@ -57,10 +82,21 @@ bit setStepMotorWithAngle(u8 motor, float angle, u8 speed)
 // Parameter: u16 round
 // Parameter: u8 speed
 //************************************
-bit setStepMotorWithRound(u8 motor, u16 round, u8 speed)
+bit setStepMotorWithRound(u8 motor, u16 round, u16 speed)
 {
 	setStepMotorWithAngle(motor, 360 * round, speed);
 	return 1;
+}
+void setStepMotorState(u8 motor,enum StepMotorState state)
+{
+	if (motor == STEP_MOTOR_1)
+	{
+		g_stepMotor[STEP_MOTOR_1].state = state;
+	}
+	else
+	{
+		g_stepMotor[STEP_MOTOR_2].state = state;
+	}
 }
 //************************************
 // Method:    getStepMotorState
@@ -69,14 +105,39 @@ bit setStepMotorWithRound(u8 motor, u16 round, u8 speed)
 // Returns:   bit
 // Qualifier: 读取步进电机当前的状态
 // Parameter: u8 motor
-//************************************
-u8 getStepMotorState(u8 motor)
+//***********************************
+enum StepMotorState getStepMotorState(u8 motor)
 {
 	return g_stepMotor[motor].state;
 }
-bit setStepMotorDiversion(u8 motor)
+//设置电机旋转方向
+bit setStepMotorDiversion(u8 motor,bit diversion)
 {
-
+  
+			if(motor==STEP_MOTOR_1)
+			{
+				if(diversion==CW)
+				{
+				StepMotor_1_DiversionControl=0;
+				}
+				else
+				{
+				StepMotor_1_DiversionControl=1;
+				}
+			}
+			if(motor==STEP_MOTOR_2)
+			{
+				if(diversion==CW)
+				{
+				StepMotor_2_DiversionControl=0;
+				}
+				else
+				{
+				StepMotor_2_DiversionControl=1;
+				}
+			}
+		
+		
 	return 1;
 }
 //************************************
@@ -84,13 +145,13 @@ bit setStepMotorDiversion(u8 motor)
 // FullName:  close_StepMotor
 // Access:    public 
 // Returns:   void
-// Qualifier: 关闭步进电机
+// Qualifier: 不考虑电机当前状态，强行关闭步进电机
 // Parameter: u8 motor
 //************************************
 void close_StepMotor(u8 motor)
 {
 	closePulser(motor);
-	g_stepMotor[motor].state = OFF;
+	g_stepMotor[motor].state = UNLOCKED;
 
 }
 //************************************
@@ -98,21 +159,54 @@ void close_StepMotor(u8 motor)
 // FullName:  open_StepMotor
 // Access:    public 
 // Returns:   void
-// Qualifier: 打开步进电机
+// Qualifier: 设置好旋转参数之后，打开步进电机，电机开始运转
 // Parameter: u8 motor
 //************************************
 void open_StepMotor(u8 motor)
 {
+	g_stepMotor[motor].state = RUNNING;
 	openPulser(motor);
-	g_stepMotor[motor].state = ON;
 }
+//************************************
+// Method:    freeStepMotor
+// FullName:  freeStepMotor
+// Access:    public 
+// Returns:   bit
+// Qualifier: 解锁步进电机，同时不受到控制器的控制
+// Parameter: u8 motor
+//************************************
 bit freeStepMotor(u8 motor)
 {
-
+   if(motor==STEP_MOTOR_1)
+	 {
+		  StepMotor_1_LockControl=0;
+	 }
+	 else
+	 {
+		 StepMotor_2_LockControl=0;
+	 }
+   g_stepMotor[motor].state = UNLOCKED;
 	return 1;
 }
+//************************************
+// Method:    lockStepMotor
+// FullName:  lockStepMotor
+// Access:    public 
+// Returns:   bit
+// Qualifier: 锁定步进电机，同时受到控制器控制
+// Parameter: u8 motor
+//************************************
 bit lockStepMotor(u8 motor)
 {
+   if(motor==STEP_MOTOR_1)
+	 {
+		StepMotor_1_LockControl=1;
+	 }
+	 else
+	 {
+		 StepMotor_2_LockControl=1;
+	 }
+   g_stepMotor[motor].state = LOCKED;
 
 	return 1;
 }
@@ -121,15 +215,31 @@ bit lockStepMotor(u8 motor)
 // FullName:  stepMotor_Init
 // Access:    public 
 // Returns:   void
-// Qualifier: 设置
-// div:步进电机步进角
-// driverDiv：驱动板细分值
-// maxPeriod：电机所能承受的最大启动频率
+// Qualifier: 步进电机初始化，传入初始化参数
+// div:		  步进电机步进角，单位度，如1.8°
+// driverDiv：驱动板细分值，如16细分
+// maxPeriod：电机所能承受的最大启动频率，单位hz，如1000，
+// bearingDia:旋转轴承齿轮的直径，单位cm，如3.9f 
 //************************************
-void stepMotor_Init(u8 motor,float div,u8 driverDiv,u16 maxPeriod)
-{
+void stepMotor_Init(u8 motor,float div,u8 driverDiv,u16 maxPeriod,float bearingDia)
+{ 
+#ifdef DEBUG
+
+			u8 initInfo[10];
+#endif
+	GPIO_InitTypeDef    GPIO_InitStructure;     //结构定义
+	GPIO_InitStructure.Mode = GPIO_PullUp;  
+	GPIO_InitStructure.Pin = GPIO_Pin_7|GPIO_Pin_6|GPIO_Pin_5|GPIO_Pin_4;    //指定要初始化的IO, GPIO_Pin_0 ~ GPIO_Pin_7, 或操作
+	GPIO_Inilize(GPIO_P2, &GPIO_InitStructure);  //初始化  
 	g_stepMotor[motor].DIV = div;//1.8°的步进角
-	g_stepMotor[motor].driverDiv = driverDiv; //驱动板上使用8的细分
+	g_stepMotor[motor].driverDiv = driverDiv; //驱动板上使用16的细分
 	g_stepMotor[motor].maxPeriod = maxPeriod;
-	PulserInit();
+	g_stepMotor[motor].bearingDia = bearingDia;
+	g_stepMotor[motor].state = UNLOCKED;
+	PulserInit();//脉冲发生器初始化
+#ifdef DEBUG
+	sprintf(initInfo, "\r\n stepMotor %u was initialized \r\n", motor + 1);
+	PrintString1(initInfo);
+#endif
+	
 }

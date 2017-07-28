@@ -594,6 +594,11 @@
               <FileType>1</FileType>
               <FilePath>..\HARDWARE\DEVICES\DISPLAY\LCD5110\LCD5510_V2.C</FilePath>
             </File>
+            <File>
+              <FileName>TM1638.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\HARDWARE\DEVICES\TM1638\TM1638.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

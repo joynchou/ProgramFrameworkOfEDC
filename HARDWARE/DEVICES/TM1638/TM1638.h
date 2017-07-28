@@ -2,7 +2,7 @@
 #define __TM1638_H__
 
 //#include "../../BSP/STC15Fxxxx.H"
-#include "../../BSP/DELAY.H"
+#include "../../BSP/delay.h"
 
 #define segA 0x40
 #define segB 0x20

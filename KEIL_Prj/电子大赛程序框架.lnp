@@ -17,6 +17,7 @@
 ".\LCD1602.obj",
 ".\74HC595.obj",
 ".\LCD5510_V2.obj",
+".\TM1638.obj",
 ".\fixedPulser.obj",
 ".\ADC.obj",
 ".\delay.obj",

@@ -1,4 +1,4 @@
-C51 COMPILER V8.05a   DELAY                                                                07/20/2017 09:59:34 PAGE 1   
+C51 COMPILER V8.05a   DELAY                                                                07/28/2017 09:55:26 PAGE 1   
 
 
 C51 COMPILER V8.05a, COMPILATION OF MODULE DELAY
@@ -46,12 +46,24 @@ line level    source
   36   2          }
   37   1          while(--ms);
   38   1      }
+  39          void delay_us(unsigned int us)
+  40          {
+  41   1        unsigned int j;
+  42   1        j = us * MAIN_Fosc / 12 / 1000000;
+  43   1        if(MAIN_Fosc < 12000000 && j <= 0)return;
+  44   1        for(;j;j--)
+  45   1        {
+  46   2          _nop_();
+  47   2        }
+  48   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =     16    ----
+   CODE SIZE        =     62    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
+C51 COMPILER V8.05a   DELAY                                                                07/28/2017 09:55:26 PAGE 2   
+
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----
    IDATA SIZE       =   ----    ----

@@ -11,7 +11,30 @@
 #ifndef __STC15_PWM_H__
 #define __STC15_PWM_H__
 #include    "config.h"
-                             /*********对外参数和接口函数***********/
+////PWM对应管脚初始值
+////i=PWM_2~PWM_7
+//#define PWM_INIT_HIGHT(i)        PWMCFG|=(1<<(i));
+//#define PWM_INIT_LOW(i)          PWMCFG&=(~(1<<(i)))
+typedef struct
+{
+	u8 PWM_GOTO_ADC;            //ENABLE=计数器归零时 触发ADC
+	u8 PWM_V_INIT;              //PWM_HIGHT=初始高电平  PWM_LOW=初始低电平
+	u8 PWM_0ISR_EN;             //ENABLE=使能PWM计数器归零中断  DISABLE=关闭PWM计数器归零中断 但 CBIF仍然会被硬件置位
+	u8 PWM_OUT_EN;              //ENABLE=PWM通道x的端口为PWM波形输出口 受PWM波形发生器控制
+	u8 PWM_UNUSUAL_EN;          //ENABLE=使能PWM的外部异常检测功能
+	u8 PWM_UNUSUAL_OUT;         //ENABLE=发生异常时，PWM对应的输出口会变成 高阻输入模式
+	u8 PWM_UNUSUAL_ISR_EN;      //ENABLE=使能异常检测中断 DISABLE=关闭异常检测中断 但FDIF仍然会被硬件置位
+	u8 PWM_UNUSUAL_CMP0_EN;     //ENABLE=异常检测源为比较器的输出 当比较结果为高时 触发PWM异常
+	u8 PWM_UNUSUAL_P24_EN;      //ENABLE=异常检测源为P24/PWMFLT 当P24=1 触发PWM异常
+	u8 PWM_CLOCK;               //PWM_Clock_NT=PWM的时钟源是系统时钟经分频后的时钟  PWM_Clock_Timer2_OF=PWM的时钟源是TMER2的溢出脉冲
+	u8 PWM_CLOCK_DIV;           //当PWM_CLOCK=PWM_Clock_NT时 PWM的时钟源是系统时钟/(PS[3:0]+1)
+	u8 PWM_SELECTx_IO;          //PWM_SELECT_N=PWM第一选择IO口 PWM_SELECT_N_2=PWM第二选择IO口
+	u8 PWM_ISRx_EN;             //ENABLE=使能PWMx中断 使能第一翻转或第二翻转中断
+	u8 PWM_T1x_EN;              //ENABLE=使能第一翻转中断
+	u8 PWM_T2x_EN;              //ENABLE=使能第二翻转中断
+	u8 PWM_EN;                  //ENABLE=PWM使能 在其他PWM参数设置好后最后设置 如果被关闭后在打开，则PWM计数器重新从0计数
+} PWM_InitTypeDef;
+/*********对外参数和接口函数***********/
 /************************************
 硬件PWMio引脚
 PWM_N| io  | 第二组
@@ -22,14 +45,65 @@ PWM5 :P2.3 -> P4.2
 PWM6 :P1.6 -> P0.7
 PWM7 :P1.7 -> P0.6
 ************************************/
- void setPWM_DIV(u8 PWM_N,u8 DIV);
- u8 getPWM_DIV(u8 PWM_N);
+void setPWM_DIV(u8 PWM_N, u8 DIV);
+//************************************
+// Method:    getPWM_DIV
+// FullName:  getPWM_DIV
+// Access:    public 
+// Returns:   u8
+// Qualifier:
+// Parameter: u8 PWM_N
+//************************************
+u8 getPWM_DIV(u8 PWM_N);
 void open_PWM_ALL(void);
+//************************************
+// Method:    close_PWM_ALL
+// FullName:  close_PWM_ALL
+// Access:    public 
+// Returns:   void
+// Qualifier:
+// Parameter: void
+//************************************
 void close_PWM_ALL(void);
-void close_PWM_N(u8 PWM_N);
 void open_PWM_N(u8 PWM_N);
-bit getPWM_state(u8 PWM_N) ;
-	/*************************************************
+//************************************
+// Method:    close_PWM_N
+// FullName:  close_PWM_N
+// Access:    public 
+// Returns:   void
+// Qualifier:
+// Parameter: u8 PWM_N
+//************************************
+void close_PWM_N(u8 PWM_N);
+//************************************
+// Method:    getPWM_state
+// FullName:  getPWM_state
+// Access:    public 
+// Returns:   bit
+// Qualifier:
+// Parameter: u8 PWM_N
+//************************************
+bit getPWM_state(u8 PWM_N);
+/*************************************************
+* 函数名称:void PWM_period(u16 Hz)
+* 描述: 设置硬件pwm的同一频率 ，并保存频率数据
+* 被本函数调用的函数:
+* 1.PWM_SET_PERIOD
+* 调用本函数的函数:
+* 输入:
+* 1.u16 Hz:要输出的pwm的频率，作为计数器的参数值，由于硬件所限，将会改变所有6个pwm的频率
+* 输出: 无
+* 返回值: 无
+* 其他: 此函数只能设置pwm的计数器初始值，从而完成pwm不同频率的输出，
+		但是由于单片机硬件所限，不可以单独对每路pwm的频率进行修改，
+		只能一改全改。
+*************************************************/
+void set_PWM_period(u8 PWM_N, u16 Hz);
+
+
+
+
+/*************************************************
 * 函数名称: u32 getPWM_period(void )
 * 描述: 读取所设置的pwm频率信息
 * 输入: 无
@@ -38,6 +112,22 @@ bit getPWM_state(u8 PWM_N) ;
 * 其他说明: 若没有设置pwm的频率就调用此函数则返回不确定数值；
 *************************************************/
 u32  get_PWM_period(u8 PWN_N);
+
+
+
+/*************************************************
+* 函数名称: void PWM_duty(u8 PWM_N,float duty)
+* 描述: 修改某一路pwm的占空比 ，并保存占空比数据
+* 被本函数调用的函数:
+* 调用本函数的函数:
+* 输入:
+* 1.u8 PWM_N ： 哪一路pwm
+* 2.float duty：占空比，使用小数，如0.8代表80%的占空比
+* 输出: 无
+* 返回值: 无
+* 其他说明:
+*************************************************/
+void set_PWM_duty(u8 PWM_N, float duty);
 
 
 
@@ -56,39 +146,7 @@ float get_PWM_N_duty(u8 PWM_N);
 
 
 
-/*************************************************
-* 函数名称:void PWM_period(u16 Hz)
-* 描述: 设置硬件pwm的同一频率 ，并保存频率数据
-* 被本函数调用的函数:
-* 1.PWM_SET_PERIOD
-* 调用本函数的函数:
-* 输入:
-* 1.u16 Hz:要输出的pwm的频率，作为计数器的参数值，由于硬件所限，将会改变所有6个pwm的频率
-* 输出: 无
-* 返回值: 无
-* 其他: 此函数只能设置pwm的计数器初始值，从而完成pwm不同频率的输出，
-        但是由于单片机硬件所限，不可以单独对每路pwm的频率进行修改，
-        只能一改全改。
-*************************************************/
-void set_PWM_period(u8 PWM_N,u16 Hz)  ;
-
-
-
-
-/*************************************************
-* 函数名称: void PWM_duty(u8 PWM_N,float duty)
-* 描述: 修改某一路pwm的占空比 ，并保存占空比数据
-* 被本函数调用的函数:
-* 调用本函数的函数:
-* 输入:
-* 1.u8 PWM_N ： 哪一路pwm
-* 2.float duty：占空比，使用小数，如0.8代表80%的占空比
-* 输出: 无
-* 返回值: 无
-* 其他说明:
-*************************************************/
-void set_PWM_duty(u8 PWM_N,float duty);
-
+void PWM_Inilize(u8 PWM_N, PWM_InitTypeDef *PWMx);
 
 
 static u8 PWM_SET_PERIOD(u16 period);
@@ -97,7 +155,7 @@ static u8 PWM_SET_T12_PERIOD(u8 PWM_N, u16 period1, u16 period2);
 //u8   PWM_SET_T12_PERIOD(u8 PWM_N,u16 period1,u32 period2);
 //void PWM_Inilize(u8 PWM_N,PWM_InitTypeDef *PWMx);
 //u8 PWM_N,
-             /******************内部参数，无须查看********************/
+			 /******************内部参数，无须查看********************/
 #define PWM_2           0
 #define PWM_3           1
 #define PWM_4           2
@@ -127,31 +185,5 @@ static u8 PWM_SET_T12_PERIOD(u8 PWM_N, u16 period1, u16 period2);
 //PWM次级开关
 #define PWM_N_EN(PWM_N)   PWMCR|=(1<<(PWM_N))
 #define PWM_N_NO(PWM_N)   PWMCR&=(~(1<<(PWM_N)))
-
-////PWM对应管脚初始值
-////i=PWM_2~PWM_7
-//#define PWM_INIT_HIGHT(i)        PWMCFG|=(1<<(i));
-//#define PWM_INIT_LOW(i)          PWMCFG&=(~(1<<(i)))
-typedef struct
-{
-    u8 PWM_GOTO_ADC;            //ENABLE=计数器归零时 触发ADC
-    u8 PWM_V_INIT;              //PWM_HIGHT=初始高电平  PWM_LOW=初始低电平
-    u8 PWM_0ISR_EN;             //ENABLE=使能PWM计数器归零中断  DISABLE=关闭PWM计数器归零中断 但 CBIF仍然会被硬件置位
-    u8 PWM_OUT_EN;              //ENABLE=PWM通道x的端口为PWM波形输出口 受PWM波形发生器控制
-    u8 PWM_UNUSUAL_EN;          //ENABLE=使能PWM的外部异常检测功能
-    u8 PWM_UNUSUAL_OUT;         //ENABLE=发生异常时，PWM对应的输出口会变成 高阻输入模式
-    u8 PWM_UNUSUAL_ISR_EN;      //ENABLE=使能异常检测中断 DISABLE=关闭异常检测中断 但FDIF仍然会被硬件置位
-    u8 PWM_UNUSUAL_CMP0_EN;     //ENABLE=异常检测源为比较器的输出 当比较结果为高时 触发PWM异常
-    u8 PWM_UNUSUAL_P24_EN;      //ENABLE=异常检测源为P24/PWMFLT 当P24=1 触发PWM异常
-    u8 PWM_CLOCK;               //PWM_Clock_NT=PWM的时钟源是系统时钟经分频后的时钟  PWM_Clock_Timer2_OF=PWM的时钟源是TMER2的溢出脉冲
-    u8 PWM_CLOCK_DIV;           //当PWM_CLOCK=PWM_Clock_NT时 PWM的时钟源是系统时钟/(PS[3:0]+1)
-    u8 PWM_SELECTx_IO;          //PWM_SELECT_N=PWM第一选择IO口 PWM_SELECT_N_2=PWM第二选择IO口
-    u8 PWM_ISRx_EN;             //ENABLE=使能PWMx中断 使能第一翻转或第二翻转中断
-    u8 PWM_T1x_EN;              //ENABLE=使能第一翻转中断
-    u8 PWM_T2x_EN;              //ENABLE=使能第二翻转中断
-    u8 PWM_EN;                  //ENABLE=PWM使能 在其他PWM参数设置好后最后设置 如果被关闭后在打开，则PWM计数器重新从0计数
-} PWM_InitTypeDef;
- void PWM_Inilize(u8 PWM_N,PWM_InitTypeDef *PWMx);
-                             
 
 #endif

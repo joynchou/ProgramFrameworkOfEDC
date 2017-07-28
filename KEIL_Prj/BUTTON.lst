@@ -1,4 +1,4 @@
-C51 COMPILER V8.05a   BUTTON                                                               07/17/2017 21:31:24 PAGE 1   
+C51 COMPILER V8.05a   BUTTON                                                               07/20/2017 09:59:32 PAGE 1   
 
 
 C51 COMPILER V8.05a, COMPILATION OF MODULE BUTTON
@@ -62,7 +62,7 @@ line level    source
   50          static bit BUTTON1_bit=0;
   51          static bit BUTTON2_bit=0;
   52          static bit BUTTON3_bit=0;
-C51 COMPILER V8.05a   BUTTON                                                               07/17/2017 21:31:24 PAGE 2   
+C51 COMPILER V8.05a   BUTTON                                                               07/20/2017 09:59:32 PAGE 2   
 
   53          static bit BUTTON4_bit=0;
   54          /*************************************************
@@ -126,7 +126,7 @@ line level    source
  112   3              }
  113   2          }
  114   1          else
-C51 COMPILER V8.05a   BUTTON                                                               07/17/2017 21:31:24 PAGE 3   
+C51 COMPILER V8.05a   BUTTON                                                               07/20/2017 09:59:32 PAGE 3   
 
  115   1          {
  116   2              BUTTON2_bit=0;

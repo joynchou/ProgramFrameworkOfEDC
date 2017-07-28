@@ -456,6 +456,21 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>ALGORITHM</GroupName>
+          <Files>
+            <File>
+              <FileName>PID.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\SOFTWARE\ALGORITHM\PID\PID.c</FilePath>
+            </File>
+            <File>
+              <FileName>FILTER.C</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\SOFTWARE\ALGORITHM\FILTER\FILTER.C</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
           <GroupName>COMMON_SOFTWARE</GroupName>
           <Files>
             <File>
@@ -628,21 +643,6 @@
               <FileName>stc15_eeprom.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\HARDWARE\BSP\stc15_eeprom.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>ALGORITHM</GroupName>
-          <Files>
-            <File>
-              <FileName>PID.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\SOFTWARE\ALGORITHM\PID\PID.c</FilePath>
-            </File>
-            <File>
-              <FileName>FILTER.C</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\SOFTWARE\ALGORITHM\FILTER\FILTER.C</FilePath>
             </File>
           </Files>
         </Group>

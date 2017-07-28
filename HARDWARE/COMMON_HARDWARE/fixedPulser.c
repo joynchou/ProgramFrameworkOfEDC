@@ -1,20 +1,21 @@
 /************************************************************
 * ×éÖ¯Ãû³Æ£º
 * ÎÄ¼şÃû³Æ: K:\µ¥Æ¬»úÏà¹Ø\µç×Ó´óÈü³ÌĞò¿ò¼Ü\HARDWARE\COMMON_HARDWARE\FIXEDPULSER.C
-* ×÷Õß:   ÖÜ³¿Ñô  
-* °æ±¾:  1.0  
+* ×÷Õß:   ÖÜ³¿Ñô
+* °æ±¾:  1.0
 * ÈÕÆÚ:     2017/07/18
-* ÃèÊö:	ÓÃÀ´²úÉú¹Ì¶¨Âö³åÊıµÄÆ÷¼ş
+* ÃèÊö:	ÓÃÀ´²úÉú¹Ì¶¨Âö³åÊıµÄÆ÷¼ş,×î¶à¶¨ÒåÁ½¸öÂö³å·¢ÉúÆ÷£¬PULSER_1Ê¹ÓÃPWM_7 £¬PULSER_2Ê¹ÓÃPWM_6
 * ÀúÊ·ĞŞ¸Ä¼ÇÂ¼:
 * <×÷Õß> <Ê±¼ä> <°æ±¾ > <ÃèÊö>
-* 
+*
 ***********************************************************/
 
 #include "fixedPulser.h"
 #include "../BSP/STC15_PWM.h"
 #include "../BSP/GPIO.H"
 #include <limits.h>
-#define PULSER_NUM	1	//¶¨ÒåĞèÒªÊ¹ÓÃ¶àÉÙ¸öÂö³å·¢ÉúÆ÷
+#include "../BSP/USART1.h"
+#define PULSER_NUM	2	//¶¨ÒåĞèÒªÊ¹ÓÃ¶àÉÙ¸öÂö³å·¢ÉúÆ÷
 
 struct Pulser //Âö³å·¢ÉúÆ÷ÓĞ¹Ø²ÎÊıÊı¾İ½á¹¹
 {
@@ -28,7 +29,7 @@ static struct Pulser g_pulser[PULSER_NUM];  //Âö³å·¢ÉúÆ÷ĞÅÏ¢´æ´¢Êı×é
 
 bool setPulse(u8 pulser_num, u16 Hz, u32 count)
 {
-	set_PWM_period(PWM_7, Hz);
+	set_PWM_period(5 - pulser_num, Hz);//pulser_1 Ê¹ÓÃPWM_7
 	g_pulser[pulser_num].Hz = Hz;
 	g_pulser[pulser_num].count = count;
 
@@ -36,7 +37,7 @@ bool setPulse(u8 pulser_num, u16 Hz, u32 count)
 }
 bool openPulser(u8 pulser_num)
 {
-	open_PWM_N(PWM_7);
+	open_PWM_N(5 - pulser_num);
 	g_pulser[pulser_num].state = ON;
 
 	return 1;
@@ -44,7 +45,7 @@ bool openPulser(u8 pulser_num)
 bool closePulser(u8 pulser_num)
 {
 
-	close_PWM_N(pulser_num + 5);
+	close_PWM_N(5 - pulser_num);
 
 	g_pulser[pulser_num].state = OFF;
 	return 1;
@@ -59,25 +60,26 @@ bool getPulserState(u8 pulser_num)
 void PulserInit(void)//³õÊ¼»¯³ÌĞò
 {
 	/************************************
-Ó²¼şPWM ioÒı½Å
-PWM_N| µÚÒ»×é| µÚ¶ş×é
-PWM2 :P3.7 -> P2.7
-PWM3 :P2.1 -> P4.5
-PWM4 :P2.2 -> P4.4
-PWM5 :P2.3 -> P4.2
-PWM6 :P1.6 -> P0.7
-PWM7 :P1.7 -> P0.6
-************************************/
+	Ó²¼şPWM ioÒı½Å
+	PWM_N| µÚÒ»×é| µÚ¶ş×é
+	PWM2 :P3.7 -> P2.7
+	PWM3 :P2.1 -> P4.5
+	PWM4 :P2.2 -> P4.4
+	PWM5 :P2.3 -> P4.2
+	PWM6 :P1.6 -> P0.7
+	PWM7 :P1.7 -> P0.6
+	************************************/
 
 
 	GPIO_InitTypeDef    GPIO_InitStructure;     //½á¹¹¶¨Òå
 	PWM_InitTypeDef  PWM_InitStructure;
 	GPIO_InitStructure.Mode = GPIO_PullUp;       //Ö¸¶¨IOµÄÊäÈë»òÊä³ö·½Ê½,GPIO_PullUp,GPIO_HighZ,GPIO_OUT_OD,GPIO_OUT_PP
 
-	GPIO_InitStructure.Pin = GPIO_Pin_7;    //Ö¸¶¨Òª³õÊ¼»¯µÄIO, GPIO_Pin_0 ~ GPIO_Pin_7, »ò²Ù×÷
+	GPIO_InitStructure.Pin = GPIO_Pin_6 || GPIO_Pin_7;    //Ö¸¶¨Òª³õÊ¼»¯µÄIO, GPIO_Pin_0 ~ GPIO_Pin_7, »ò²Ù×÷
 	GPIO_Inilize(GPIO_P1, &GPIO_InitStructure);  //³õÊ¼»¯
+
+	P16 = 1;
 	P17 = 1;
-	set_PWM_duty(PWM_7, PWM_DEFAULT_DUTY); //Ê¹ÓÃÄ¬ÈÏ0.5µÄÕ¼¿Õ±È
 
 	PWM_UNLOCK;
 	PWM_InitStructure.PWM_GOTO_ADC = DISABLE;            //ENABLE=¼ÆÊıÆ÷¹éÁãÊ± ´¥·¢ADC
@@ -97,11 +99,18 @@ PWM7 :P1.7 -> P0.6
 	PWM_InitStructure.PWM_T2x_EN = ENABLE;          //ENABLE=Ê¹ÄÜµÚ¶ş·­×ªÖĞ¶Ï
 	PWM_InitStructure.PWM_EN = DISABLE;                //ENABLE=PWMÊ¹ÄÜ ÔÚÆäËûPWM²ÎÊıÉèÖÃºÃºó×îºóÉèÖÃ Èç¹û±»¹Ø±ÕºóÔÚ´ò¿ª£¬ÔòPWM¼ÆÊıÆ÷ÖØĞÂ´Ó0¼ÆÊı
 
-//	PWM_Inilize(PWM_6, &PWM_InitStructure);
+	PWM_Inilize(PWM_6, &PWM_InitStructure);
 	PWM_Inilize(PWM_7, &PWM_InitStructure);
 
-	PWM_LOCK;
+	setPWM_DIV(PWM_6, 16); //´ËÉèÖÃ±ØĞëÔÙinilizeÒÔºóĞ´
 	setPWM_DIV(PWM_7, 16);
+
+	set_PWM_period(PWM_6, 500);//ÉèÖÃÆµÂÊÖ®Ç°±ØĞëÉèÖÃPWMÊ±ÖÓ·ÖÆµ
+	set_PWM_period(PWM_7, 500);
+	set_PWM_duty(PWM_6, PWM_DEFAULT_DUTY); //Ê¹ÓÃÄ¬ÈÏ0.5µÄÕ¼¿Õ±È
+	set_PWM_duty(PWM_7, PWM_DEFAULT_DUTY); //Ê¹ÓÃÄ¬ÈÏ0.5µÄÕ¼¿Õ±È
+
+	PWM_LOCK;
 }
 
 static u32 g_PWM_7tmp = 0;//¼ÆÊı±äÁ¿
@@ -111,16 +120,19 @@ static u32 g_PWM_4tmp = 0;//¼ÆÊı±äÁ¿
 static u32 g_PWM_3tmp = 0;//¼ÆÊı±äÁ¿
 static u32 g_PWM_2tmp = 0;//¼ÆÊı±äÁ¿
 
-/***************£¡ÒÔÏÂÎªË½ÓĞº¯Êı£¬²»½¨Òé¸ü¸Ä£¡********************************/
+						  /***************£¡ÒÔÏÂÎªË½ÓĞº¯Êı£¬²»½¨Òé¸ü¸Ä£¡********************************/
 static void PWM_Routine(void) interrupt 22   //ÖĞ¶ÏÖ´ĞĞ³ÌĞò£¬ÓÃÀ´¼¸ÂÊÂö³åµÄ¸öÊı²¢¼°Ê±¹Ø±Õ·¢ÉúÆ÷
 {
 	//  PWMIF &= (~(1 << 6));  //Èí¼şÇåÁã±êÖ¾Î»
 	if (PWMIF ^ 5 == 1)//PWM_7
 	{
 		PWMIF &= (~(1 << 5));  //Èí¼şÇåÁã±êÖ¾Î»
+		PrintString1("into pwm7 count++\n");
 
 		if (g_PWM_7tmp++ >= g_pulser[PULSER_1].count)
 		{
+			PrintString1("close pwm7\n");
+
 			g_pulser[PULSER_1].count = 0;
 			close_PWM_N(PWM_7);
 		}
@@ -149,7 +161,7 @@ static void PWM_Routine(void) interrupt 22   //ÖĞ¶ÏÖ´ĞĞ³ÌĞò£¬ÓÃÀ´¼¸ÂÊÂö³åµÄ¸öÊı²
 	}
 	else if (PWMIF ^ 0 == 1)
 	{
-		PWMIF &= (~(1 << 1));  //Èí¼şÇåÁã±êÖ¾Î»
+		PWMIF &= (~(1 << 0));  //Èí¼şÇåÁã±êÖ¾Î»
 	}
 	else
 	{

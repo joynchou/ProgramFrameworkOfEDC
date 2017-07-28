@@ -33,7 +33,190 @@ static struct PWM_N_INFO
 	float duty;//pwm的占空比
 	u8 DIV; //预分频值，用来产生较低频率的pwm
 };
-static  struct PWM_N_INFO PWM_N_INFO[6]; //6组pwm数据存储
+#define PWM_NUM 6
+static  struct PWM_N_INFO PWM_N_INFO[PWM_NUM]; //6组pwm数据存储
+
+/*************************************************
+* 函数名称:void PWM_period(u16 Hz)
+* 描述: 设置硬件pwm的同一频率 ，并保存频率数据
+* 被本函数调用的函数:
+* 1.PWM_SET_PERIOD
+* 输入:u16 Hz:要输出的pwm的频率,由于硬件所限，将会同时改变6路pwm的频率
+* 输出: 无
+* 返回值: 无
+* 其他: 此函数只能设置pwm的计数器初始值，从而完成pwm不同频率的输出，
+		但是由于单片机硬件所限，不可以单独对每路pwm的频率进行修改，
+		只能一改全改。
+*************************************************/
+void set_PWM_period(u8 PWM_N, u16 Hz)
+{
+	PWM_N_INFO[PWM_N].period = Hz;
+	PWM_UNLOCK;
+	PWM_ALL_NO;
+	PWM_SET_PERIOD((u16)(MAIN_Fosc / (Hz*PWM_N_INFO[PWM_N].DIV)));
+	//PWM_SET_PERIOD(5);
+
+	PWM_LOCK;
+
+
+}
+
+/*************************************************
+* 函数名称: u32 getPWM_period(void )
+* 描述: 返回所设置的pwm频率信息
+* 输入: u8 PWM_N, 2<=N<=7
+* 输出: 无
+* 返回值: pwm频率
+* 其他说明: 若没有设置pwm的频率就调用此函数则会返回0；
+*************************************************/
+u32 get_PWM_period(u8 PWM_N)
+{
+	return PWM_N_INFO[PWM_N].period;
+}
+/*************************************************
+* 函数名称: void PWM_duty(u8 PWM_N,float duty)
+* 描述: 修改某一路pwm的占空比 ，并保存占空比数据
+* 被本函数调用的函数:
+* 调用本函数的函数:
+* 输入:
+* 1.u8 PWM_N ： 哪一路pwm
+* 2.float duty：占空比，使用小数，如0.8代表80%的占空比
+* 输出: 无
+* 返回值: 无
+* 其他说明:为防止电平发生反转，限制最小占空比为0.05，最大为0.95
+*          更改了最低占空比的限定，用于符合舵机的最低占空比————0.05f -> 0.025f
+*************************************************/
+void set_PWM_duty(u8 PWM_N, float duty)
+{
+	if (duty > 0.95f)
+	{
+		duty = 0.95f;
+	}
+	if (duty < 0.025f)
+	{
+		duty = 0.025f;
+	}
+	PWM_N_INFO[PWM_N].duty = duty;//存储占空比值
+	PWM_UNLOCK;
+	PWM_SET_T12_PERIOD(PWM_N, 10, (u16)(duty *	(MAIN_Fosc / (PWM_N_INFO[PWM_N].period*PWM_N_INFO[PWM_N].DIV))));
+	//PWM_SET_T12_PERIOD(PWM_N, 1,3 );
+
+	PWM_LOCK;
+}
+/*************************************************
+* 函数名称: float getPWM_n_duty(u8 PWM_N)
+* 描述: 返回PWM_N的占空比信息
+* 输入: u8 PWM_N, 2<=N<=7
+* 输出: 无
+* 返回值: PWM_N的占空比信息,float形式
+* 其他说明: 若没有设置pwm的占空比就调用此函数则会返回0；
+*************************************************/
+float get_PWM_N_duty(u8 PWM_N)
+{
+	return  PWM_N_INFO[PWM_N].duty;
+}
+
+//************************************
+// Method:    setPWM_DIV
+// FullName:  setPWM_DIV
+// Access:    public 
+// Returns:   void
+// Qualifier: 设置预分频，范围为1~16
+// Parameter: u8 PWM_N
+// Parameter: u8 DIV
+//************************************
+void setPWM_DIV(u8 PWM_N, u8 DIV)
+{
+	PWM_N_INFO[PWM_N].DIV = DIV;
+}
+//************************************
+// Method:    getPWM_DIV
+// FullName:  getPWM_DIV
+// Access:    public 
+// Returns:   u8
+// Qualifier:
+// Parameter: u8 PWM_N
+//************************************
+u8 getPWM_DIV(u8 PWM_N)
+{
+	return PWM_N_INFO[PWM_N].DIV;
+}
+//************************************
+// Method:    open_PWM_ALL
+// FullName:  open_PWM_ALL
+// Access:    public 
+// Returns:   void
+// Qualifier:
+// Parameter: void
+//************************************
+void open_PWM_ALL(void)
+{
+	PWM_UNLOCK;
+	PWM_ALL_EN;
+	PWM_LOCK;
+}
+//************************************
+// Method:    close_PWM_ALL
+// FullName:  close_PWM_ALL
+// Access:    public 
+// Returns:   void
+// Qualifier:
+// Parameter: void
+//************************************
+void close_PWM_ALL(void)
+{
+	PWM_UNLOCK;
+	PWM_ALL_NO; //总开关
+	PWM_LOCK;
+
+}
+//************************************
+// Method:    open_PWM_N
+// FullName:  open_PWM_N
+// Access:    public 
+// Returns:   void
+// Qualifier:
+// Parameter: u8 PWM_N
+//************************************
+void open_PWM_N(u8 PWM_N)
+{
+	PWM_UNLOCK;
+	PWM_N_EN(PWM_N);
+	PWM_N_INFO[PWM_N].state = ON;
+	PWM_ALL_EN; //总开关,根据手册中的要求
+	PWM_LOCK;
+
+
+}
+//************************************
+// Method:    close_PWM_N
+// FullName:  close_PWM_N
+// Access:    public 
+// Returns:   void
+// Qualifier:
+// Parameter: u8 PWM_N
+//************************************
+void close_PWM_N(u8 PWM_N)
+{
+	PWM_UNLOCK;
+	PWM_N_NO(PWM_N);
+	PWM_N_INFO[PWM_N].state = OFF;
+	PWM_LOCK;
+
+}
+//************************************
+// Method:    get_PWM_N_state
+// FullName:  get_PWM_N_state
+// Access:    public 
+// Returns:   bit
+// Qualifier:
+// Parameter: u8 PWM_N
+//************************************
+bit get_PWM_N_state(u8 PWM_N)
+{
+
+	return  PWM_N_INFO[PWM_N].state;
+}
 
 //========================================================================
 //u8    PWM_Inilize(PWM_InitTypeDef *PWM)
@@ -367,136 +550,6 @@ void PWM_Inilize(u8 PWM_N, PWM_InitTypeDef *PWMx)
 		PWMCR &= (~(1 << 7));
 	}
 }
-/*************************************************
-* 函数名称: u32 getPWM_period(void )
-* 描述: 返回所设置的pwm频率信息
-* 输入: u8 PWM_N, 2<=N<=7
-* 输出: 无
-* 返回值: pwm频率
-* 其他说明: 若没有设置pwm的频率就调用此函数则会返回0；
-*************************************************/
-u32 get_PWM_period(u8 PWM_N)
-{
-	return PWM_N_INFO[PWM_N].period;
-}
-/*************************************************
-* 函数名称: float getPWM_n_duty(u8 PWM_N)
-* 描述: 返回PWM_N的占空比信息
-* 输入: u8 PWM_N, 2<=N<=7
-* 输出: 无
-* 返回值: PWM_N的占空比信息,float形式
-* 其他说明: 若没有设置pwm的占空比就调用此函数则会返回0；
-*************************************************/
-float get_PWM_N_duty(u8 PWM_N)
-{
-	return  PWM_N_INFO[PWM_N].duty;
-}
-
-/*************************************************
-* 函数名称:void PWM_period(u16 Hz)
-* 描述: 设置硬件pwm的同一频率 ，并保存频率数据
-* 被本函数调用的函数:
-* 1.PWM_SET_PERIOD
-* 输入:u16 Hz:要输出的pwm的频率,由于硬件所限，将会同时改变6路pwm的频率
-* 输出: 无
-* 返回值: 无
-* 其他: 此函数只能设置pwm的计数器初始值，从而完成pwm不同频率的输出，
-		但是由于单片机硬件所限，不可以单独对每路pwm的频率进行修改，
-		只能一改全改。
-*************************************************/
-void set_PWM_period(u8 PWM_N, u16 Hz)
-{
-	PWM_N_INFO[PWM_N].period = Hz;
-	PWM_UNLOCK;
-	PWM_ALL_NO;
-	PWM_SET_PERIOD((u16)(MAIN_Fosc / (Hz*PWM_N_INFO[PWM_N].DIV)));
-	PWM_LOCK;
-
-
-}
-
-/*************************************************
-* 函数名称: void PWM_duty(u8 PWM_N,float duty)
-* 描述: 修改某一路pwm的占空比 ，并保存占空比数据
-* 被本函数调用的函数:
-* 调用本函数的函数:
-* 输入:
-* 1.u8 PWM_N ： 哪一路pwm
-* 2.float duty：占空比，使用小数，如0.8代表80%的占空比
-* 输出: 无
-* 返回值: 无
-* 其他说明:为防止电平发生反转，限制最小占空比为0.05，最大为0.95
-*          更改了最低占空比的限定，用于符合舵机的最低占空比————0.05f -> 0.025f
-*************************************************/
-void set_PWM_duty(u8 PWM_N, float duty)
-{
-	if (duty > 0.95f)
-	{
-		duty = 0.95f;
-	}
-	if (duty < 0.025f)
-	{
-		duty = 0.025f;
-	}
-	PWM_N_INFO[PWM_N].duty = duty;//存储占空比值
-	PWM_UNLOCK;
-	PWM_SET_T12_PERIOD(PWM_N, 0, ((PWM_N_INFO[PWM_N].duty *	(MAIN_Fosc / (PWM_N_INFO[PWM_N].period*PWM_N_INFO[PWM_N].DIV))) * 10 + 5) / 10);
-	PWM_LOCK;
-}
-//************************************
-// Method:    setPWM_DIV
-// FullName:  setPWM_DIV
-// Access:    public 
-// Returns:   void
-// Qualifier: 设置预分配
-// Parameter: u8 PWM_N
-// Parameter: u8 DIV
-//************************************
-void setPWM_DIV(u8 PWM_N, u8 DIV)
-{
-	PWM_N_INFO[PWM_N].DIV = DIV;
-}
-u8 getPWM_DIV(u8 PWM_N)
-{
-	return PWM_N_INFO[PWM_N].DIV;
-}
-void open_PWM_ALL(void)
-{
-	PWM_UNLOCK;
-	PWM_ALL_EN;
-	PWM_LOCK;
-}
-void close_PWM_ALL(void)
-{
-	PWM_UNLOCK;
-	PWM_ALL_NO; //总开关
-	PWM_LOCK;
-
-}
-void open_PWM_N(u8 PWM_N)
-{
-	PWM_UNLOCK;
-	PWM_N_EN(PWM_N);
-	PWM_N_INFO[PWM_N].state = ON;
-	PWM_ALL_EN; //总开关,根据手册中的要求
-	PWM_LOCK;
-
-
-}
-void close_PWM_N(u8 PWM_N)
-{
-	PWM_UNLOCK;
-	PWM_N_NO(PWM_N);
-	PWM_N_INFO[PWM_N].state = OFF;
-	PWM_LOCK;
-
-}
-bit get_PWM_N_state(u8 PWM_N)
-{
-
-	return  PWM_N_INFO[PWM_N].state;
-}
-
 //////////////！以下为私有函数，禁止改动！//////////////////////
 //
 //************************************
@@ -509,19 +562,20 @@ bit get_PWM_N_state(u8 PWM_N)
 //************************************
 static u8 PWM_SET_PERIOD(u16 period)
 {
-	if (0x8000 > period)
+	if (0x8000 > period) //2的15次方为最大值
 	{
 		PWMCL = (u8)(period);
 		PWMCH = (u8)(period >> 8);
 		return 0;
 	}
-	else
+	else //如果大于等于0x8000，则默认使用最大周期，既最小频率
 	{
-		return 1;
+		PWMCL = (u8)(32767);
+		PWMCH = (u8)(32767 >> 8);
 	}
 }
 
-//
+
 //************************************
 // Method:    PWM_SET_T12_PERIOD
 // FullName:  PWM_SET_T12_PERIOD

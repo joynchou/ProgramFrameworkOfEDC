@@ -6,6 +6,8 @@
 * 日期:     10/06/17
 * 描述:
 * 历史修改记录:
+*  1.新增了增量式PID算法，在结构体中加入了前两次的误差计算
+*
 * <作者> <时间> <版本 > <描述>
 ***********************************************************/
 
@@ -14,7 +16,6 @@
 #ifdef PID_ALG
 #include <math.h>
 #define  INTEGRAL_SEPARATE //使用积分分离法
-
 //pid算法的静态结构体
 
 typedef  struct
@@ -23,6 +24,7 @@ typedef  struct
 	float actualParameter;//实际角度值
 	float err;//偏差值
 	float err_last;//上一次偏差值
+	float err_prev;//err_last上一次的偏差
 	float Kp;
 	float Ki;
 	float Kd;//比例，积分，微分系数
@@ -50,6 +52,7 @@ void PID_config(u8 PID_N, float kp, float ki, float kd)//pid算法初始化函数，参数
 {
 	g_pid_n_info[PID_N].err = 0;
 	g_pid_n_info[PID_N].err_last = 0;
+	g_pid_n_info[PID_N].err_prev = 0;
 	g_pid_n_info[PID_N].output = 0;
 	g_pid_n_info[PID_N].integral = 0;
 	g_pid_n_info[PID_N].Kp = kp;
@@ -130,6 +133,29 @@ bit PID(u8 PID_N)
 	}
 
 }
+
+//************************************
+// Method:    Incremental_PID
+// FullName:  Incremental_PID
+// Access:    public 
+// Returns:   void
+// Qualifier: 增量式PID算法，设置好参数后使用此函数进行pid运算，之后使用get**函数获取计算后的值，需要先打开pid再使用此函数
+// Parameter: u8 PID_N
+//************************************
+bit Incremental_PID(u8 PID_N)
+{
+	if(g_pid_n_info[PID_N].state)
+	{
+		g_pid_n_info[PID_N].err = g_pid_n_info[PID_N].setParameter - g_pid_n_info[PID_N].actualParameter;
+		g_pid_n_info[PID_N].output = g_pid_n_info[PID_N].Kp * g_pid_n_info[PID_N].err// kp * err
+																 - g_pid_n_info[PID_N].Ki * g_pid_n_info[PID_N].err_last// ki * err_last
+																 + g_pid_n_info[PID_N].Kd * g_pid_n_info[PID_N].err_prev;//kd * err_prev
+		g_pid_n_info[PID_N].err_prev = g_pid_n_info[PID_N].err_last;
+		g_pid_n_info[PID_N].err_last = g_pid_n_info[PID_N].err;
+		return 1;
+	}
+}
+
 //************************************
 // Method:    setParameterInferiorLimit
 // FullName:  setParameterInferiorLimit

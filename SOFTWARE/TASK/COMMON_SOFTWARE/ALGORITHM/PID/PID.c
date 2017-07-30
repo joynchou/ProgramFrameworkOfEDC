@@ -13,9 +13,13 @@
  #include <math.h>
 
 #include "PID.h"
-#define PID_ALG
-#ifdef PID_ALG
-#define  INTEGRAL_SEPARATE //使用积分分离法
+#include "PID.h"
+#include <math.h>
+#define POSITION 					 0// 位置式PID
+#define INCREMENTAL				 1//增量式PID
+#define INTEGRAL_SEPARATE  2//积分分离法PID
+#define ANTI_WINDUP 			 3//抗积分饱和PID
+#define TRAPEZOIDAL    		 4//梯形积分PID
 //pid算法的静态结构体
 
 typedef  struct
@@ -35,6 +39,7 @@ typedef  struct
 	float Kd_temp; //保存pid三个参数的静态变量
 	float parameterUpperLimit;//参数上限
 	float parameterInferiorLimit;//参数下限
+	float err_max;//Be allowed max error
 	u8 state;//pid工作状态
 } pid_info;
 
@@ -89,49 +94,195 @@ void closePID(u8 PID_N)
 	//add the code here
 
 }
+
 //************************************
-// Method:    PID
-// FullName:  PID
+// Method:    Position_PID
+// FullName:  Position_PID
 // Access:    public 
 // Returns:   bit
 // Qualifier: 设置好参数后使用此函数进行pid运算，之后使用get**函数获取计算后的值，需要先打开pid再使用此函数
 // Parameter: u8 PID_N
 //************************************
-bit PID(u8 PID_N)
+bit Position_PID(u8 PID_N)
 {
-
-
 	if (g_pid_n_info[PID_N].state)
 	{
-
 		g_pid_n_info[PID_N].err = g_pid_n_info[PID_N].setParameter - g_pid_n_info[PID_N].actualParameter;
-		//#ifdef  INTEGRAL_SEPARATE //是否使用积分分离法
-		//  if(abs(pid.err)<15.0f)//积分分离法，防止误差过大时积分累积过大造成震荡，同时减小比例和微分
-		//    {
-		//      pid.Ki        =        Ki_temp;
-		//      pid.integral  +=       pid.err;
-		//      pid.Kp        =        Kp_temp-0.7f;
-		//      pid.Kd        =        Kd_temp-0.5f;
-		//    }
-		//  else//误差过大时去除积分项和累计误差 ，仅使用比例和微分 ，同时在原基础上加大微分的作用
-		//    {
-		//      pid.Ki        =        0;
-		//      pid.integral  =        0;
-		//      pid.Kd        =        Kd_temp+0.5f;
-		//    }
-		//#else
-		g_pid_n_info[PID_N].integral += g_pid_n_info[PID_N].err;
-		//#endif
-		//PID算法核心
-		g_pid_n_info[PID_N].output  = g_pid_n_info[PID_N].Kp*g_pid_n_info[PID_N].err		  \
-									+ g_pid_n_info[PID_N].Ki*g_pid_n_info[PID_N].integral     \
-									+ g_pid_n_info[PID_N].Kd*(g_pid_n_info[PID_N].err - g_pid_n_info[PID_N].err_last);
+		g_pid_n_info[PID_N].integral += g_pid_n_info[PID_N].err;//误差积累
+		g_pid_n_info[PID_N].output  = g_pid_n_info[PID_N].Kp * g_pid_n_info[PID_N].err		  //kp * error//误差
+																+ g_pid_n_info[PID_N].Ki * g_pid_n_info[PID_N].integral     //ki * error_integral//误差积分
+																+ g_pid_n_info[PID_N].Kd * (g_pid_n_info[PID_N].err - g_pid_n_info[PID_N].err_last);//kd * error_differential//误差微分
 		g_pid_n_info[PID_N].err_last = g_pid_n_info[PID_N].err;
-
-
 		return 1;
 	}
+	return 0;
+}
 
+
+
+//************************************
+// Method:    Integral_Separa_PID
+// FullName:  Integral_Separa_PID
+// Access:    public 
+// Returns:   bit
+// Qualifier: 积分分离PID设置好参数后使用此函数进行pid运算，之后使用get**函数获取计算后的值，需要先打开pid再使用此函数
+// Parameter: u8 PID_N
+//************************************
+bit Integral_Separa_PID(u8 PID_N)
+{
+	unsigned int multiple;
+	g_pid_n_info[PID_N].err = g_pid_n_info[PID_N].setParameter - g_pid_n_info[PID_N].actualParameter;
+	if (g_pid_n_info[PID_N].state)
+	{
+		if(g_pid_n_info[PID_N].err > g_pid_n_info[PID_N].err_max)
+		{
+			multiple = 0;
+		}
+		else
+		{
+			multiple = 1;
+			g_pid_n_info[PID_N].integral += g_pid_n_info[PID_N].err;//误差积累
+		}
+/*************PID算法部分*****************/
+		g_pid_n_info[PID_N].output  = g_pid_n_info[PID_N].Kp * g_pid_n_info[PID_N].err		  //kp * error//误差
+																+ g_pid_n_info[PID_N].Ki * g_pid_n_info[PID_N].integral * multiple    //ki * error_integral//误差积分
+																+ g_pid_n_info[PID_N].Kd * (g_pid_n_info[PID_N].err - g_pid_n_info[PID_N].err_last);//kd * error_differential//误差微分
+		g_pid_n_info[PID_N].err_last = g_pid_n_info[PID_N].err;
+		return 1;
+	}
+	return 0;
+}
+
+//************************************
+// Method:    Anti_Windup_PID
+// FullName:  Anti_Windup_PID
+// Access:    public 
+// Returns:   bit
+// Qualifier: 抗积分饱和PID设置好参数后使用此函数进行pid运算，之后使用get**函数获取计算后的值，需要先打开pid再使用此函数
+// Parameter: u8 PID_N
+//************************************
+bit Anti_Windup_PID(u8 PID_N)
+{
+	unsigned int multiple;
+	g_pid_n_info[PID_N].err = g_pid_n_info[PID_N].setParameter - g_pid_n_info[PID_N].actualParameter;
+	if (g_pid_n_info[PID_N].state)
+	{
+		if(g_pid_n_info[PID_N].actualParameter > g_pid_n_info[PID_N].parameterUpperLimit)
+		{
+			if(abs(g_pid_n_info[PID_N].err) > g_pid_n_info[PID_N].err_max)
+			{
+				multiple = 0;
+			}
+			else
+			{
+				multiple = 1;
+				if(g_pid_n_info[PID_N].err < 0)
+				{
+					g_pid_n_info[PID_N].integral += g_pid_n_info[PID_N].err;//误差积累
+				}
+			}
+		}
+		else if(g_pid_n_info[PID_N].actualParameter < g_pid_n_info[PID_N].parameterUpperLimit)
+		{
+			if(abs(g_pid_n_info[PID_N].err) > g_pid_n_info[PID_N].err_max)
+			{
+				multiple = 0;
+			}
+			else
+			{
+				multiple = 1;
+				if(g_pid_n_info[PID_N].err > 0)
+				{
+					g_pid_n_info[PID_N].integral += g_pid_n_info[PID_N].err;//误差积累
+				}
+			}
+		}
+		else
+		{
+			if(abs(g_pid_n_info[PID_N].err) > g_pid_n_info[PID_N].err_max)
+			{
+				multiple = 0;
+			}
+			else
+			{
+				multiple = 1;
+				g_pid_n_info[PID_N].integral += g_pid_n_info[PID_N].err;//误差积累
+			}
+		}
+/*************PID算法部分*****************/
+		g_pid_n_info[PID_N].output  = g_pid_n_info[PID_N].Kp * g_pid_n_info[PID_N].err		 //kp * error//误差
+																+ g_pid_n_info[PID_N].Ki * g_pid_n_info[PID_N].integral * multiple    //ki * error_integral//误差积分
+																+ g_pid_n_info[PID_N].Kd * (g_pid_n_info[PID_N].err - g_pid_n_info[PID_N].err_last);//kd * error_differential//误差微分
+		g_pid_n_info[PID_N].err_last = g_pid_n_info[PID_N].err;
+		return 1;
+	}
+	return 0;
+}
+
+//************************************
+// Method:    Trapezoidal_Integral_PID
+// FullName:  Trapezoidal_Integral_PID
+// Access:    public 
+// Returns:   bit
+// Qualifier: 梯形积分PID设置好参数后使用此函数进行pid运算，之后使用get**函数获取计算后的值，需要先打开pid再使用此函数
+// Parameter: u8 PID_N
+//************************************
+bit Trapezoidal_Integral_PID(u8 PID_N)
+{
+	unsigned int multiple;
+	g_pid_n_info[PID_N].err = g_pid_n_info[PID_N].setParameter - g_pid_n_info[PID_N].actualParameter;
+	if (g_pid_n_info[PID_N].state)
+	{
+		if(g_pid_n_info[PID_N].actualParameter > g_pid_n_info[PID_N].parameterUpperLimit)
+		{
+			if(abs(g_pid_n_info[PID_N].err) > g_pid_n_info[PID_N].err_max)
+			{
+				multiple = 0;
+			}
+			else
+			{
+				multiple = 1;
+				if(g_pid_n_info[PID_N].err < 0)
+				{
+					g_pid_n_info[PID_N].integral += g_pid_n_info[PID_N].err;//误差积累
+				}
+			}
+		}
+		else if(g_pid_n_info[PID_N].actualParameter < g_pid_n_info[PID_N].parameterUpperLimit)
+		{
+			if(abs(g_pid_n_info[PID_N].err) > g_pid_n_info[PID_N].err_max)
+			{
+				multiple = 0;
+			}
+			else
+			{
+				multiple = 1;
+				if(g_pid_n_info[PID_N].err > 0)
+				{
+					g_pid_n_info[PID_N].integral += g_pid_n_info[PID_N].err;//误差积累
+				}
+			}
+		}
+		else
+		{
+			if(abs(g_pid_n_info[PID_N].err) > g_pid_n_info[PID_N].err_max)
+			{
+				multiple = 0;
+			}
+			else
+			{
+				multiple = 1;
+				g_pid_n_info[PID_N].integral += g_pid_n_info[PID_N].err;//误差积累
+			}
+		}
+/*************PID算法部分*****************/
+		g_pid_n_info[PID_N].output  = g_pid_n_info[PID_N].Kp * g_pid_n_info[PID_N].err		  //kp * error//误差
+																+ g_pid_n_info[PID_N].Ki * g_pid_n_info[PID_N].integral * multiple / 2    //ki * error_integral//误差积分
+																+ g_pid_n_info[PID_N].Kd * (g_pid_n_info[PID_N].err - g_pid_n_info[PID_N].err_last);//kd * error_differential//误差微分
+		g_pid_n_info[PID_N].err_last = g_pid_n_info[PID_N].err;
+		return 1;
+	}	
+	return 0;
 }
 
 //************************************
@@ -154,6 +305,7 @@ bit Incremental_PID(u8 PID_N)
 		g_pid_n_info[PID_N].err_last = g_pid_n_info[PID_N].err;
 		return 1;
 	}
+	return 0;
 }
 
 //************************************
@@ -359,5 +511,69 @@ float getIntegral(u8 PID_N)
 {
 	return  g_pid_n_info[PID_N].integral;
 }
-#endif
 
+//************************************
+// Method:    setMaxError
+// FullName:  setMaxError
+// Access:    public 
+// Returns:   float
+// Qualifier: set max error of pid calculate can be awlloed
+// Parameter: u8 PID_N
+//************************************
+void setMaxError(u8 PID_N,float err_max)
+{
+	g_pid_n_info[PID_N].err_max = err_max;
+}
+
+//************************************
+// Method:    PID
+// FullName:  PID
+// Access:    public 
+// Returns:   bit
+// Qualifier: 设置好参数后使用此函数进行pid运算，之后使用get**函数获取计算后的值，需要先打开pid再使用此函数
+//            仅提供位置类PID算法
+// Parameter: u8 PID_N
+//************************************
+void PosClassPID(u8 PID_N,u8 PID_MODE)
+{
+	if(g_pid_n_info[PID_N].state)
+	{
+		switch(PID_MODE)
+		{
+			case POSITION:
+				Position_PID(PID_N);
+				break;
+			case INTEGRAL_SEPARATE:
+				Integral_Separa_PID(PID_N);
+				break;
+			case ANTI_WINDUP:
+				Anti_Windup_PID(PID_N);
+				break;
+			case TRAPEZOIDAL:
+				Trapezoidal_Integral_PID(PID_N);
+				break;
+		}
+	}
+}
+
+//************************************
+// Method:    IncClassPID
+// FullName:  IncClassPID
+// Access:    public 
+// Returns:   bit
+// Qualifier: 设置好参数后使用此函数进行pid运算，之后使用get**函数获取计算后的值，需要先打开pid再使用此函数
+//            仅提供增量类PID算法
+// Parameter: u8 PID_N
+//************************************
+void IncClassPID(u8 PID_N,u8 PID_MODE)
+{
+	if(g_pid_n_info[PID_N].state)
+	{
+		switch(PID_MODE)
+		{
+			case INCREMENTAL:
+				Incremental_PID(PID_N);
+				break;
+		}
+	}
+}

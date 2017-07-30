@@ -1,36 +1,27 @@
-C51 COMPILER V8.05a   ABSTASK                                                              07/28/2017 09:53:37 PAGE 1   
+C51 COMPILER V8.05a   ABSTASK                                                              07/30/2017 21:35:55 PAGE 1   
 
 
 C51 COMPILER V8.05a, COMPILATION OF MODULE ABSTASK
 OBJECT MODULE PLACED IN .\absTask.obj
-COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE ..\SOFTWARE\ABS_TASK\absTask.c LARGE BROWSE DEBUG OBJECTEXTEND PRINT(.\a
-                    -bsTask.lst) TABS(2) OBJECT(.\absTask.obj)
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE ..\SOFTWARE\absTask.c LARGE WARNINGLEVEL(0) BROWSE DEBUG OBJECTEXTEND PR
+                    -INT(.\absTask.lst) TABS(2) OBJECT(.\absTask.obj)
 
 line level    source
 
-   1          #include "../TASK/TASK.h"
-   2          #include <rtx51tny.h>                 /* RTX-51 tiny functions & defines      */
-   3          #include <stdio.h>
-   4          #include <stdlib.h>
-   5          #include "../TASK/setup.h"
-   6          #include "../../HARDWARE/DEVICES/BUTTON/BUTTON.H"
-   7          #include "../../HARDWARE/DEVICES/LED/LED.H"
-   8          #include "../../HARDWARE/BSP/USART1.H"
-   9          #include "../HARDWARE/DEVICES/SENSOR/ANGLE/ANGLE.h"
-  10          #include "../COMMON_SOFTWARE/DATA_SCOPE/DataScope_DP.h"
-  11          #include "../COMMON_SOFTWARE/STORAGE/STORAGE.h"
-*** WARNING C322 IN LINE 54 OF ../HARDWARE/BSP/STC15_EEPROM.h: unknown identifier
-*** WARNING C322 IN LINE 54 OF ../HARDWARE/BSP/STC15_EEPROM.h: unknown identifier
-  12          
-  13          void taskStart() _task_ 0
-  14          { 
-  15   1        setup();
-  16   1        blink(4);
-  17   1      }
+   1          #include <stdlib.h>
+   2          #include "TASK/task.h"
+   3          void taskStart() _task_ 0
+   4          { 
+   5   1        setup();
+   6   1        blink(4);
+   7   1        
+   8   1        os_delete_task(0);
+   9   1        
+  10   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =      8    ----
+   CODE SIZE        =     13    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
@@ -40,4 +31,4 @@ MODULE INFORMATION:   STATIC OVERLAYABLE
 END OF MODULE INFORMATION.
 
 
-C51 COMPILATION COMPLETE.  2 WARNING(S),  0 ERROR(S)
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

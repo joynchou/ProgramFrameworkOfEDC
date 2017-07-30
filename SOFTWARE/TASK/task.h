@@ -12,6 +12,7 @@
 
 #ifndef _TASK_H_
 #define _TASK_H_
-#include "../HARDWARE/BSP/config.h"
+#include "mode/mode.h"
+#include "setup/setup.h"
 
 #endif

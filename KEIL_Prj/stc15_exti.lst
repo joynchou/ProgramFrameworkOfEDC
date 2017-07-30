@@ -1,10 +1,10 @@
-C51 COMPILER V8.05a   STC15_EXTI                                                           07/17/2017 09:09:47 PAGE 1   
+C51 COMPILER V8.05a   STC15_EXTI                                                           07/30/2017 21:35:59 PAGE 1   
 
 
 C51 COMPILER V8.05a, COMPILATION OF MODULE STC15_EXTI
 OBJECT MODULE PLACED IN .\stc15_exti.obj
-COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE ..\HARDWARE\BSP\stc15_exti.c LARGE BROWSE DEBUG OBJECTEXTEND PRINT(.\stc15_
-                    -exti.lst) OBJECT(.\stc15_exti.obj)
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE ..\HARDWARE\COMMON_HARDWARE\BSP\EXTI\stc15_exti.c LARGE WARNINGLEVEL(0) 
+                    -BROWSE DEBUG OBJECTEXTEND PRINT(.\stc15_exti.lst) TABS(2) OBJECT(.\stc15_exti.obj)
 
 line level    source
 
@@ -13,109 +13,109 @@ line level    source
    3           * 硬件平台 ：飛天三號 FSST15实验板
    4           * 软件环境 ：Keil uVision5.13
    5           * 
-   6           * 版本代号     : V1.0                                          
-   7           * 修改日期     : 2015-08-29
+   6           * 版本代号 : V1.0              
+   7           * 修改日期 : 2015-08-29
    8           * 技术论坛 ：电子工程师基地（http://www.ieebase.net）
    9           * 淘宝店铺 ：http://fsmcu.taobao.com
   10           * 例程说明 ：本例程为教材《与STC15单片机牵手的那些年》（清华大学出版社）配套例程
-  11                                    为视频《深入浅出玩转STC15单片机》配套例程（录制100讲--西安：愚公）
-  12                                    视频和书籍均被STC（深圳宏晶科技）官方大学计划和高校高性能联合实验室权威推荐
+  11                  为视频《深入浅出玩转STC15单片机》配套例程（录制100讲--西安：愚公）
+  12                  视频和书籍均被STC（深圳宏晶科技）官方大学计划和高校高性能联合实验室权威推荐
   13          
   14           * Copyright (C), 2013-2015, 刘平（xymbmcu@163.com）/清华大学出版社/STC MCU International Limited
   15           
   16           * 仅供学习使用，未经作者许可，不得用于其它商业用途，盗版必究。
   17          ************************************************************************************** */
   18          
-  19          #include        "stc15_exti.h"
+  19          #include  "stc15_exti.h"
   20          
   21          
   22          /********************* INT0中断函数 *************************/
-  23          void Ext_INT0 (void) interrupt INT0_VECTOR              //进中断时已经清除标志
+  23          void Ext_INT0 (void) interrupt INT0_VECTOR    //进中断时已经清除标志
   24          {
-  25   1              ;
+  25   1        ;
   26   1      }
   27          
   28          /********************* INT1中断函数 *************************/
-  29          void Ext_INT1 (void) interrupt INT1_VECTOR              //进中断时已经清除标志
+  29          void Ext_INT1 (void) interrupt INT1_VECTOR    //进中断时已经清除标志
   30          {
-  31   1              ;
+  31   1        ;
   32   1      }
   33          
   34          /********************* INT2中断函数 *************************/
-  35          void Ext_INT2 (void) interrupt INT2_VECTOR      //
+  35          void Ext_INT2 (void) interrupt INT2_VECTOR  //
   36          {
-  37   1              ;
+  37   1        ;
   38   1      }
   39          
   40          /********************* INT3中断函数 *************************/
   41          void Ext_INT3 (void) interrupt INT3_VECTOR
   42          {
-  43   1              ;
+  43   1        ;
   44   1      }
   45          
   46          /********************* INT4中断函数 *************************/
   47          void Ext_INT4 (void) interrupt INT4_VECTOR
   48          {
-  49   1              ;
+  49   1        ;
   50   1      }
   51          
   52          //========================================================================
-  53          // 函数: u8     Ext_Inilize(u8 EXT, EXTI_InitTypeDef *INTx)
+  53          // 函数: u8 Ext_Inilize(u8 EXT, EXTI_InitTypeDef *INTx)
   54          // 描述: 外部中断初始化程序.
-C51 COMPILER V8.05a   STC15_EXTI                                                           07/17/2017 09:09:47 PAGE 2   
+C51 COMPILER V8.05a   STC15_EXTI                                                           07/30/2017 21:35:59 PAGE 2   
 
   55          // 参数: INTx: 结构参数,请参考Exti.h里的定义.
   56          // 返回: 成功返回0, 空操作返回1,错误返回2.
   57          // 版本: V1.0, 2012-10-22
   58          // 注意：上升 下降沿中断只适用INT0 1; INT234不用设置中断沿,因为是固定的下降沿
   59          //========================================================================
-  60          u8      Ext_Inilize(u8 EXT, EXTI_InitTypeDef *INTx)
+  60          u8  Ext_Inilize(u8 EXT, EXTI_InitTypeDef *INTx)
   61          {
-  62   1              if(EXT >  EXT_INT4)     return 1;       //空操作
-  63   1              
-  64   1              if(EXT == EXT_INT0)     //外中断0
-  65   1              {
-  66   2                      if(INTx->EXTI_Interrupt == ENABLE)              EX0 = 1;        //允许中断
-  67   2                      else                                                                    EX0 = 0;        //禁止中断
-  68   2                      if(INTx->EXTI_Polity == PolityHigh)             PX0 = 1;        //高优先级中断
-  69   2                      else                                                                    PX0 = 0;        //低优先级中断
-  70   2                      if(INTx->EXTI_Mode == EXT_MODE_Fall)    IT0 = 1;        //下降沿中断
-  71   2                      else                                                                    IT0 = 0;        //上升,下降沿中断
-  72   2                      return  0;              //成功
-  73   2              }
+  62   1        if(EXT >  EXT_INT4) return 1; //空操作
+  63   1        
+  64   1        if(EXT == EXT_INT0) //外中断0
+  65   1        {
+  66   2          if(INTx->EXTI_Interrupt == ENABLE)    EX0 = 1;  //允许中断
+  67   2          else                  EX0 = 0;  //禁止中断
+  68   2          if(INTx->EXTI_Polity == PolityHigh)   PX0 = 1;  //高优先级中断
+  69   2          else                  PX0 = 0;  //低优先级中断
+  70   2          if(INTx->EXTI_Mode == EXT_MODE_Fall)  IT0 = 1;  //下降沿中断
+  71   2          else                  IT0 = 0;  //上升,下降沿中断
+  72   2          return  0;    //成功
+  73   2        }
   74   1      
-  75   1              if(EXT == EXT_INT1)     //外中断1
-  76   1              {
-  77   2                      if(INTx->EXTI_Interrupt == ENABLE)              EX1 = 1;        //允许中断
-  78   2                      else                                                                    EX1 = 0;        //禁止中断
-  79   2                      if(INTx->EXTI_Polity == PolityHigh)             PX1 = 1;        //高优先级中断
-  80   2                      else                                                                    PX1 = 0;        //低优先级中断
-  81   2                      if(INTx->EXTI_Mode == EXT_MODE_Fall)    IT1 = 1;        //下降沿中断
-  82   2                      else                                                                    IT1 = 0;        //上升,下降沿中断
-  83   2                      return  0;              //成功
-  84   2              }
+  75   1        if(EXT == EXT_INT1) //外中断1
+  76   1        {
+  77   2          if(INTx->EXTI_Interrupt == ENABLE)    EX1 = 1;  //允许中断
+  78   2          else                  EX1 = 0;  //禁止中断
+  79   2          if(INTx->EXTI_Polity == PolityHigh)   PX1 = 1;  //高优先级中断
+  80   2          else                  PX1 = 0;  //低优先级中断
+  81   2          if(INTx->EXTI_Mode == EXT_MODE_Fall)  IT1 = 1;  //下降沿中断
+  82   2          else                  IT1 = 0;  //上升,下降沿中断
+  83   2          return  0;    //成功
+  84   2        }
   85   1      
-  86   1              if(EXT == EXT_INT2)             //外中断2, 固定为下降沿低优先级中断
-  87   1              {
-  88   2                      if(INTx->EXTI_Interrupt == ENABLE)      INT_CLKO |=  (1 << 4);  //允许中断      
-  89   2                      else                                                            INT_CLKO &= ~(1 << 4);  //禁止中断
-  90   2                      return  0;              //成功
-  91   2              }
+  86   1        if(EXT == EXT_INT2)   //外中断2, 固定为下降沿低优先级中断
+  87   1        {
+  88   2          if(INTx->EXTI_Interrupt == ENABLE)  INT_CLKO |=  (1 << 4);  //允许中断  
+  89   2          else                INT_CLKO &= ~(1 << 4);  //禁止中断
+  90   2          return  0;    //成功
+  91   2        }
   92   1      
-  93   1              if(EXT == EXT_INT3)             //外中断3, 固定为下降沿低优先级中断
-  94   1              {
-  95   2                      if(INTx->EXTI_Interrupt == ENABLE)      INT_CLKO |=  (1 << 5);  //允许中断      
-  96   2                      else                                                            INT_CLKO &= ~(1 << 5);  //禁止中断
-  97   2                      return  0;              //成功
-  98   2              }
+  93   1        if(EXT == EXT_INT3)   //外中断3, 固定为下降沿低优先级中断
+  94   1        {
+  95   2          if(INTx->EXTI_Interrupt == ENABLE)  INT_CLKO |=  (1 << 5);  //允许中断  
+  96   2          else                INT_CLKO &= ~(1 << 5);  //禁止中断
+  97   2          return  0;    //成功
+  98   2        }
   99   1      
- 100   1              if(EXT == EXT_INT4)             //外中断4, 固定为下降沿低优先级中断
- 101   1              {
- 102   2                      if(INTx->EXTI_Interrupt == ENABLE)      INT_CLKO |=  (1 << 6);  //允许中断      
- 103   2                      else                                                            INT_CLKO &= ~(1 << 6);  //禁止中断
- 104   2                      return  0;              //成功
- 105   2              }
- 106   1              return 2;       //失败
+ 100   1        if(EXT == EXT_INT4)   //外中断4, 固定为下降沿低优先级中断
+ 101   1        {
+ 102   2          if(INTx->EXTI_Interrupt == ENABLE)  INT_CLKO |=  (1 << 6);  //允许中断  
+ 103   2          else                INT_CLKO &= ~(1 << 6);  //禁止中断
+ 104   2          return  0;    //成功
+ 105   2        }
+ 106   1        return 2; //失败
  107   1      }
 
 
@@ -126,7 +126,7 @@ MODULE INFORMATION:   STATIC OVERLAYABLE
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----
    IDATA SIZE       =   ----    ----
-C51 COMPILER V8.05a   STC15_EXTI                                                           07/17/2017 09:09:47 PAGE 3   
+C51 COMPILER V8.05a   STC15_EXTI                                                           07/30/2017 21:35:59 PAGE 3   
 
    BIT SIZE         =   ----    ----
 END OF MODULE INFORMATION.

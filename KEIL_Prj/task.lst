@@ -1,10 +1,10 @@
-C51 COMPILER V8.05a   TASK                                                                 07/20/2017 09:59:31 PAGE 1   
+C51 COMPILER V8.05a   TASK                                                                 07/30/2017 19:58:14 PAGE 1   
 
 
 C51 COMPILER V8.05a, COMPILATION OF MODULE TASK
 OBJECT MODULE PLACED IN .\task.obj
-COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE ..\SOFTWARE\TASK\task.c LARGE BROWSE DEBUG OBJECTEXTEND PRINT(.\task.lst
-                    -) TABS(2) OBJECT(.\task.obj)
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE ..\SOFTWARE\ABS_TASK\TASK\mode\task.c LARGE BROWSE DEBUG OBJECTEXTEND PR
+                    -INT(.\task.lst) TABS(2) OBJECT(.\task.obj)
 
 line level    source
 
@@ -20,12 +20,13 @@ line level    source
   10          * 
   11          ***********************************************************/
   12          
-  13          #include "task.h"
-  14          #include "../COMMON_SOFTWARE/DATA_SCOPE/DataScope_DP.h"
-  15          #include "setup.h"
-  16          #include "../HARDWARE/BSP/USART1.h"
-  17          #include "../HARDWARE/DEVICES/SENSOR/ANGLE/ANGLE.h"
-  18          
+  13          #include "../COMMON_SOFTWARE/common_SF.h"
+*** WARNING C322 IN LINE 54 OF \单片机相关\电子大赛程序框架\HARDWARE\COMMON_HARDWARE\BSP\EEPROM/STC15_EEPROM.H: unknown 
+             -identifier
+*** WARNING C322 IN LINE 54 OF \单片机相关\电子大赛程序框架\HARDWARE\COMMON_HARDWARE\BSP\EEPROM/STC15_EEPROM.H: unknown 
+             -identifier
+  14          
+*** WARNING C316 IN LINE 14 OF ..\SOFTWARE\ABS_TASK\TASK\mode\task.c: unterminated conditionals
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
@@ -39,4 +40,4 @@ MODULE INFORMATION:   STATIC OVERLAYABLE
 END OF MODULE INFORMATION.
 
 
-C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
+C51 COMPILATION COMPLETE.  3 WARNING(S),  0 ERROR(S)

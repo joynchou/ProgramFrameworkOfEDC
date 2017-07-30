@@ -1,0 +1,13 @@
+TRANSFER
+".\ADC.obj",
+".\delay.obj",
+".\stc15_eeprom.obj",
+".\stc15_exti.obj",
+".\GPIO.obj",
+".\stc15_iic.obj",
+".\PCA.obj",
+".\stc15_pwm.obj",
+".\stc15_spi.obj",
+".\timer.obj",
+".\USART1.obj" 
+TO "BSPofSTC15W.LIB"

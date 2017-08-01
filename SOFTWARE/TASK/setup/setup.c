@@ -38,18 +38,40 @@ void    UART1_init(unsigned long BandRate)
 }
 void test(void)//器件测试
 {    
+				setTimeout(Timer1,1000); //设置定时器定时长度 ,5秒
+				restartTimer(Timer1);
 
+				while(1)
+				{
+					if(!isActiveTimer(Timer1))   //如果达到定时时间
+					{
+						 stopTimer(Timer1);//达到定时时间后一定要关闭定时器，否则会无法重复使用定时器
+						 PrintString1("123\n");
+						//定时时间到，你的代码写在这
+					}
+					else//如果未达到定时时间或定时器未启动
+					{
+
+						PrintString1("345\n");
+
+           delay_ms(50);
+					}
+				}
 }
 void setup(void)
 {
-	UART1_init(115200L);
-  timerInit();
+	UART1_init(9600);
+	timerInit();
 	Board_LED_Init();
 	LCD5510_Init();
-	LCD_prints(0,0,"lcd5110 is ok!");
+//	LCD_printNum_I(0,0,1000,4);
+	//LCD_prints(0,0,"lcd5110 is ok!");
+	InitJY901(JY901_1);
+	EnableJY901(JY901_1);
+	openJY901SbufMode(JY901_1);
 //	Button_config();
 //	ADC_config(ADC_P10, ADC_540T);
-//  test();
+  test();
 
 }
 

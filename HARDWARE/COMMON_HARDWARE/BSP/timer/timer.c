@@ -24,6 +24,8 @@
 
 
 				setTimeout(Timer1,5000); //设置定时器定时长度 ,5秒
+											restartTimer(Timer1);
+
 				while(1)
 				{
 					if(isExpiredTimer(Timer1))   //如果达到定时时间
@@ -35,7 +37,6 @@
 					{
 
 
-							restartTimer(Timer1);
 
 
 					}
@@ -49,9 +50,10 @@
 
 
 #include	"timer.h"
+#include "../USART1/USART1.h"
 enum
 {
-	ACTIVE, EXPIRED, STOPPED
+	STOPPED, EXPIRED, ACTIVE
 }
 Timer1_state = STOPPED,
 Timer2_state = STOPPED;
@@ -91,8 +93,8 @@ void timerInit()
 	//	
 	//  	//用户自定义定时器		
 	USER_Timer.TIM_Mode = TIM_16BitAutoReload;	//指定工作模式,16位自动重装模式    TIM_16BitAutoReload,TIM_16Bit,TIM_8BitAutoReload,\\																																																								TIM_16BitAutoReloadNoMask
-	USER_Timer.TIM_Polity = PolityLow;			//指定中断优先级, PolityHigh,PolityLow
-	USER_Timer.TIM_Interrupt = DISABLE;				//中断是否允许,   ENABLE或DISABLE
+	USER_Timer.TIM_Polity = PolityHigh;			//指定中断优先级, PolityHigh,PolityLow
+	USER_Timer.TIM_Interrupt = ENABLE;				//中断是否允许,   ENABLE或DISABLE
 	USER_Timer.TIM_ClkSource = TIM_CLOCK_1T;	//指定时钟源,     TIM_CLOCK_1T,TIM_CLOCK_12T,TIM_CLOCK_Ext
 	USER_Timer.TIM_ClkOut = DISABLE;				//是否输出高速脉冲, ENABLE或DISABLE
 	USER_Timer.TIM_Run = DISABLE;				//是否初始化后启动定时器, ENABLE或DISABLE
@@ -112,23 +114,22 @@ void timerInit()
 	Pulser_2_Timer.TIM_ClkSource = TIM_CLOCK_12T;	//指定时钟源,     TIM_CLOCK_1T,TIM_CLOCK_12T,TIM_CLOCK_Ext
 	//Pulser_2_Timer.TIM_ClkOut = ENABLE;				//是否输出高速脉冲, ENABLE或DISABLE
 	Pulser_2_Timer.TIM_Run = DISABLE;				//是否初始化后启动定时器, ENABLE或DISABLE
-
+	Timer_Inilize(Timer4, &USER_Timer);
 	Timer_Inilize(Timer2, &Pulser_1_Timer);
 	Timer_Inilize(Timer3, &Pulser_2_Timer);
-
 	//  	//用户自定义定时器		
-	//			if (!(Error_Code = Timer_Inilize(Timer4, &USER_Timer)))//==0
-	//			{
-	//				//PrintString1("USER_Timer initializing succeed \r\n");
-	//			}
-	//			else if (Error_Code) //==1
-	//			{
-	//				//PrintString1("USER_Timer initializing failed \r\n");
-	//			}
-	//			else
-	//			{
-	//				//PrintString1("USER_Timer initializing failed \r\n");
-	//			}
+//	if (!(Error_Code = Timer_Inilize(Timer4, &USER_Timer)))//==0
+//	{
+//		//PrintString1("USER_Timer initializing succeed \r\n");
+//	}
+//	else if (Error_Code) //==1
+//	{
+//		//PrintString1("USER_Timer initializing failed \r\n");
+//	}
+//	else
+//	{
+//		//PrintString1("USER_Timer initializing failed \r\n");
+//	}
 
 	//  //脉冲发生器1的定时器
 	//	if (!(Error_Code = Timer_Inilize(Timer1, &TIM_InitStructure)))//==0
@@ -181,6 +182,9 @@ void setTimeout(u8 whichTimer, u16 time)
 		case Timer1:
 		{
 			timer1_struct.Timeout = time;
+			//	Timer1_state = EXPIRED;
+
+	//	PrintString1("set timeout\r\n");
 		};
 		case Timer2:
 		{
@@ -394,6 +398,9 @@ void restartTimer(u8 whichTimer)
 		{
 			Timer4_Run();
 			Timer1_state = ACTIVE;
+			//		Timer1_state = EXPIRED;
+			//		PrintString1("timer 1 is expired\r\n");
+
 		};
 		break;
 		case Timer2:
@@ -462,7 +469,24 @@ u8 getDays(void)
 	return days;
 }
 
+
 //========================！！！以下私有函数，不需要了解也不要改动以下任何程序！！！=================//
+/********************* Timer4中断函数************************/
+static void timer4_int(void) interrupt TIMER4_VECTOR
+{
+
+
+	if ((++Timer1_temp) >= timer1_struct.Timeout)
+	{
+
+		Timer4_Stop();
+
+		Timer1_temp = 0;
+		Timer1_state = EXPIRED;
+	}
+
+}
+
 /********************* Timer1中断函数************************/
 //static void Timer1_ISR(void) interrupt TIMER1_VECTOR
 //{
@@ -489,17 +513,6 @@ u8 getDays(void)
 
 //}
 
-/********************* Timer3中断函数************************/
-//static void timer3_int(void) interrupt TIMER3_VECTOR
-//{
-//	if ((++Timer2_temp) >= timer2_struct.Timeout)
-//	{
-//		Timer3_Stop();
-//		Timer2_temp = 0;
-//		Timer2_state = EXPIRED;
-//	}
-
-//}
 /********************* Timer4中断函数************************/
 //问题遗留：
 //问题解决，是sprintf函数的使用不当导致的输出错误，实际数值并没有错误

@@ -45,7 +45,7 @@
             <InvalidFlash>1</InvalidFlash>
           </TargetStatus>
           <OutputDirectory>.\</OutputDirectory>
-          <OutputName>ProgramFrameworkOfEDA</OutputName>
+          <OutputName>电子大赛程序框架</OutputName>
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
           <CreateHexFile>1</CreateHexFile>
@@ -368,7 +368,7 @@
               <RVCTZI>0</RVCTZI>
               <RVCTOtherData>0</RVCTOtherData>
               <ModuleSelection>0</ModuleSelection>
-              <IncludeInBuild>2</IncludeInBuild>
+              <IncludeInBuild>0</IncludeInBuild>
               <AlwaysBuild>2</AlwaysBuild>
               <GenerateAssemblyFile>2</GenerateAssemblyFile>
               <AssembleAssemblyFile>2</AssembleAssemblyFile>
@@ -424,7 +424,7 @@
               <RVCTZI>0</RVCTZI>
               <RVCTOtherData>0</RVCTOtherData>
               <ModuleSelection>0</ModuleSelection>
-              <IncludeInBuild>2</IncludeInBuild>
+              <IncludeInBuild>1</IncludeInBuild>
               <AlwaysBuild>2</AlwaysBuild>
               <GenerateAssemblyFile>2</GenerateAssemblyFile>
               <AssembleAssemblyFile>2</AssembleAssemblyFile>
@@ -487,7 +487,7 @@
               <RVCTZI>0</RVCTZI>
               <RVCTOtherData>0</RVCTOtherData>
               <ModuleSelection>0</ModuleSelection>
-              <IncludeInBuild>2</IncludeInBuild>
+              <IncludeInBuild>1</IncludeInBuild>
               <AlwaysBuild>2</AlwaysBuild>
               <GenerateAssemblyFile>2</GenerateAssemblyFile>
               <AssembleAssemblyFile>2</AssembleAssemblyFile>
@@ -555,7 +555,7 @@
               <RVCTZI>0</RVCTZI>
               <RVCTOtherData>0</RVCTOtherData>
               <ModuleSelection>0</ModuleSelection>
-              <IncludeInBuild>2</IncludeInBuild>
+              <IncludeInBuild>1</IncludeInBuild>
               <AlwaysBuild>2</AlwaysBuild>
               <GenerateAssemblyFile>2</GenerateAssemblyFile>
               <AssembleAssemblyFile>2</AssembleAssemblyFile>
@@ -621,6 +621,59 @@
         </Group>
         <Group>
           <GroupName>OS</GroupName>
+          <GroupOption>
+            <CommonProperty>
+              <UseCPPCompiler>0</UseCPPCompiler>
+              <RVCTCodeConst>0</RVCTCodeConst>
+              <RVCTZI>0</RVCTZI>
+              <RVCTOtherData>0</RVCTOtherData>
+              <ModuleSelection>0</ModuleSelection>
+              <IncludeInBuild>1</IncludeInBuild>
+              <AlwaysBuild>2</AlwaysBuild>
+              <GenerateAssemblyFile>2</GenerateAssemblyFile>
+              <AssembleAssemblyFile>2</AssembleAssemblyFile>
+              <PublicsOnly>2</PublicsOnly>
+              <StopOnExitCode>11</StopOnExitCode>
+              <CustomArgument></CustomArgument>
+              <IncludeLibraryModules></IncludeLibraryModules>
+              <ComprImg>1</ComprImg>
+              <BankNo>65535</BankNo>
+            </CommonProperty>
+            <Group51>
+              <C51>
+                <RegisterColoring>2</RegisterColoring>
+                <VariablesInOrder>2</VariablesInOrder>
+                <IntegerPromotion>2</IntegerPromotion>
+                <uAregs>2</uAregs>
+                <UseInterruptVector>2</UseInterruptVector>
+                <Fuzzy>8</Fuzzy>
+                <Optimize>10</Optimize>
+                <WarningLevel>3</WarningLevel>
+                <SizeSpeed>2</SizeSpeed>
+                <ObjectExtend>2</ObjectExtend>
+                <ACallAJmp>2</ACallAJmp>
+                <InterruptVectorAddress>0</InterruptVectorAddress>
+                <VariousControls>
+                  <MiscControls></MiscControls>
+                  <Define></Define>
+                  <Undefine></Undefine>
+                  <IncludePath></IncludePath>
+                </VariousControls>
+              </C51>
+              <Ax51>
+                <UseMpl>2</UseMpl>
+                <UseStandard>2</UseStandard>
+                <UseCase>2</UseCase>
+                <UseMod51>2</UseMod51>
+                <VariousControls>
+                  <MiscControls></MiscControls>
+                  <Define></Define>
+                  <Undefine></Undefine>
+                  <IncludePath></IncludePath>
+                </VariousControls>
+              </Ax51>
+            </Group51>
+          </GroupOption>
           <Files>
             <File>
               <FileName>Conf_tny.A51</FileName>
@@ -638,7 +691,7 @@
               <RVCTZI>0</RVCTZI>
               <RVCTOtherData>0</RVCTOtherData>
               <ModuleSelection>0</ModuleSelection>
-              <IncludeInBuild>2</IncludeInBuild>
+              <IncludeInBuild>0</IncludeInBuild>
               <AlwaysBuild>2</AlwaysBuild>
               <GenerateAssemblyFile>2</GenerateAssemblyFile>
               <AssembleAssemblyFile>2</AssembleAssemblyFile>
@@ -694,7 +747,7 @@
               <RVCTZI>0</RVCTZI>
               <RVCTOtherData>0</RVCTOtherData>
               <ModuleSelection>0</ModuleSelection>
-              <IncludeInBuild>2</IncludeInBuild>
+              <IncludeInBuild>1</IncludeInBuild>
               <AlwaysBuild>2</AlwaysBuild>
               <GenerateAssemblyFile>2</GenerateAssemblyFile>
               <AssembleAssemblyFile>2</AssembleAssemblyFile>
@@ -787,7 +840,7 @@
               <RVCTZI>0</RVCTZI>
               <RVCTOtherData>0</RVCTOtherData>
               <ModuleSelection>0</ModuleSelection>
-              <IncludeInBuild>2</IncludeInBuild>
+              <IncludeInBuild>1</IncludeInBuild>
               <AlwaysBuild>2</AlwaysBuild>
               <GenerateAssemblyFile>2</GenerateAssemblyFile>
               <AssembleAssemblyFile>2</AssembleAssemblyFile>
@@ -885,7 +938,7 @@
               <RVCTZI>0</RVCTZI>
               <RVCTOtherData>0</RVCTOtherData>
               <ModuleSelection>0</ModuleSelection>
-              <IncludeInBuild>2</IncludeInBuild>
+              <IncludeInBuild>1</IncludeInBuild>
               <AlwaysBuild>2</AlwaysBuild>
               <GenerateAssemblyFile>2</GenerateAssemblyFile>
               <AssembleAssemblyFile>2</AssembleAssemblyFile>
@@ -936,6 +989,47 @@
               <FileName>ADC.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\HARDWARE\COMMON_HARDWARE\BSP\ADC\ADC.c</FilePath>
+              <FileOption>
+                <CommonProperty>
+                  <UseCPPCompiler>2</UseCPPCompiler>
+                  <RVCTCodeConst>0</RVCTCodeConst>
+                  <RVCTZI>0</RVCTZI>
+                  <RVCTOtherData>0</RVCTOtherData>
+                  <ModuleSelection>0</ModuleSelection>
+                  <IncludeInBuild>1</IncludeInBuild>
+                  <AlwaysBuild>2</AlwaysBuild>
+                  <GenerateAssemblyFile>2</GenerateAssemblyFile>
+                  <AssembleAssemblyFile>2</AssembleAssemblyFile>
+                  <PublicsOnly>2</PublicsOnly>
+                  <StopOnExitCode>11</StopOnExitCode>
+                  <CustomArgument></CustomArgument>
+                  <IncludeLibraryModules></IncludeLibraryModules>
+                  <ComprImg>1</ComprImg>
+                  <BankNo>65535</BankNo>
+                </CommonProperty>
+                <File51>
+                  <C51>
+                    <RegisterColoring>2</RegisterColoring>
+                    <VariablesInOrder>2</VariablesInOrder>
+                    <IntegerPromotion>2</IntegerPromotion>
+                    <uAregs>2</uAregs>
+                    <UseInterruptVector>2</UseInterruptVector>
+                    <Fuzzy>8</Fuzzy>
+                    <Optimize>10</Optimize>
+                    <WarningLevel>3</WarningLevel>
+                    <SizeSpeed>2</SizeSpeed>
+                    <ObjectExtend>2</ObjectExtend>
+                    <ACallAJmp>2</ACallAJmp>
+                    <InterruptVectorAddress>0</InterruptVectorAddress>
+                    <VariousControls>
+                      <MiscControls></MiscControls>
+                      <Define></Define>
+                      <Undefine></Undefine>
+                      <IncludePath></IncludePath>
+                    </VariousControls>
+                  </C51>
+                </File51>
+              </FileOption>
             </File>
             <File>
               <FileName>delay.c</FileName>
@@ -946,46 +1040,415 @@
               <FileName>stc15_eeprom.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\HARDWARE\COMMON_HARDWARE\BSP\eeprom\stc15_eeprom.c</FilePath>
+              <FileOption>
+                <CommonProperty>
+                  <UseCPPCompiler>2</UseCPPCompiler>
+                  <RVCTCodeConst>0</RVCTCodeConst>
+                  <RVCTZI>0</RVCTZI>
+                  <RVCTOtherData>0</RVCTOtherData>
+                  <ModuleSelection>0</ModuleSelection>
+                  <IncludeInBuild>1</IncludeInBuild>
+                  <AlwaysBuild>2</AlwaysBuild>
+                  <GenerateAssemblyFile>2</GenerateAssemblyFile>
+                  <AssembleAssemblyFile>2</AssembleAssemblyFile>
+                  <PublicsOnly>2</PublicsOnly>
+                  <StopOnExitCode>11</StopOnExitCode>
+                  <CustomArgument></CustomArgument>
+                  <IncludeLibraryModules></IncludeLibraryModules>
+                  <ComprImg>1</ComprImg>
+                  <BankNo>65535</BankNo>
+                </CommonProperty>
+                <File51>
+                  <C51>
+                    <RegisterColoring>2</RegisterColoring>
+                    <VariablesInOrder>2</VariablesInOrder>
+                    <IntegerPromotion>2</IntegerPromotion>
+                    <uAregs>2</uAregs>
+                    <UseInterruptVector>2</UseInterruptVector>
+                    <Fuzzy>8</Fuzzy>
+                    <Optimize>10</Optimize>
+                    <WarningLevel>3</WarningLevel>
+                    <SizeSpeed>2</SizeSpeed>
+                    <ObjectExtend>2</ObjectExtend>
+                    <ACallAJmp>2</ACallAJmp>
+                    <InterruptVectorAddress>0</InterruptVectorAddress>
+                    <VariousControls>
+                      <MiscControls></MiscControls>
+                      <Define></Define>
+                      <Undefine></Undefine>
+                      <IncludePath></IncludePath>
+                    </VariousControls>
+                  </C51>
+                </File51>
+              </FileOption>
             </File>
             <File>
               <FileName>stc15_exti.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\HARDWARE\COMMON_HARDWARE\BSP\EXTI\stc15_exti.c</FilePath>
+              <FileOption>
+                <CommonProperty>
+                  <UseCPPCompiler>2</UseCPPCompiler>
+                  <RVCTCodeConst>0</RVCTCodeConst>
+                  <RVCTZI>0</RVCTZI>
+                  <RVCTOtherData>0</RVCTOtherData>
+                  <ModuleSelection>0</ModuleSelection>
+                  <IncludeInBuild>1</IncludeInBuild>
+                  <AlwaysBuild>2</AlwaysBuild>
+                  <GenerateAssemblyFile>2</GenerateAssemblyFile>
+                  <AssembleAssemblyFile>2</AssembleAssemblyFile>
+                  <PublicsOnly>2</PublicsOnly>
+                  <StopOnExitCode>11</StopOnExitCode>
+                  <CustomArgument></CustomArgument>
+                  <IncludeLibraryModules></IncludeLibraryModules>
+                  <ComprImg>1</ComprImg>
+                  <BankNo>65535</BankNo>
+                </CommonProperty>
+                <File51>
+                  <C51>
+                    <RegisterColoring>2</RegisterColoring>
+                    <VariablesInOrder>2</VariablesInOrder>
+                    <IntegerPromotion>2</IntegerPromotion>
+                    <uAregs>2</uAregs>
+                    <UseInterruptVector>2</UseInterruptVector>
+                    <Fuzzy>8</Fuzzy>
+                    <Optimize>10</Optimize>
+                    <WarningLevel>3</WarningLevel>
+                    <SizeSpeed>2</SizeSpeed>
+                    <ObjectExtend>2</ObjectExtend>
+                    <ACallAJmp>2</ACallAJmp>
+                    <InterruptVectorAddress>0</InterruptVectorAddress>
+                    <VariousControls>
+                      <MiscControls></MiscControls>
+                      <Define></Define>
+                      <Undefine></Undefine>
+                      <IncludePath></IncludePath>
+                    </VariousControls>
+                  </C51>
+                </File51>
+              </FileOption>
             </File>
             <File>
               <FileName>GPIO.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\HARDWARE\COMMON_HARDWARE\BSP\GPIO\GPIO.c</FilePath>
+              <FileOption>
+                <CommonProperty>
+                  <UseCPPCompiler>2</UseCPPCompiler>
+                  <RVCTCodeConst>0</RVCTCodeConst>
+                  <RVCTZI>0</RVCTZI>
+                  <RVCTOtherData>0</RVCTOtherData>
+                  <ModuleSelection>0</ModuleSelection>
+                  <IncludeInBuild>1</IncludeInBuild>
+                  <AlwaysBuild>2</AlwaysBuild>
+                  <GenerateAssemblyFile>2</GenerateAssemblyFile>
+                  <AssembleAssemblyFile>2</AssembleAssemblyFile>
+                  <PublicsOnly>2</PublicsOnly>
+                  <StopOnExitCode>11</StopOnExitCode>
+                  <CustomArgument></CustomArgument>
+                  <IncludeLibraryModules></IncludeLibraryModules>
+                  <ComprImg>1</ComprImg>
+                  <BankNo>65535</BankNo>
+                </CommonProperty>
+                <File51>
+                  <C51>
+                    <RegisterColoring>2</RegisterColoring>
+                    <VariablesInOrder>2</VariablesInOrder>
+                    <IntegerPromotion>2</IntegerPromotion>
+                    <uAregs>2</uAregs>
+                    <UseInterruptVector>2</UseInterruptVector>
+                    <Fuzzy>8</Fuzzy>
+                    <Optimize>10</Optimize>
+                    <WarningLevel>3</WarningLevel>
+                    <SizeSpeed>2</SizeSpeed>
+                    <ObjectExtend>2</ObjectExtend>
+                    <ACallAJmp>2</ACallAJmp>
+                    <InterruptVectorAddress>0</InterruptVectorAddress>
+                    <VariousControls>
+                      <MiscControls></MiscControls>
+                      <Define></Define>
+                      <Undefine></Undefine>
+                      <IncludePath></IncludePath>
+                    </VariousControls>
+                  </C51>
+                </File51>
+              </FileOption>
             </File>
             <File>
               <FileName>stc15_iic.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\HARDWARE\COMMON_HARDWARE\BSP\IIC\stc15_iic.c</FilePath>
+              <FileOption>
+                <CommonProperty>
+                  <UseCPPCompiler>2</UseCPPCompiler>
+                  <RVCTCodeConst>0</RVCTCodeConst>
+                  <RVCTZI>0</RVCTZI>
+                  <RVCTOtherData>0</RVCTOtherData>
+                  <ModuleSelection>0</ModuleSelection>
+                  <IncludeInBuild>1</IncludeInBuild>
+                  <AlwaysBuild>2</AlwaysBuild>
+                  <GenerateAssemblyFile>2</GenerateAssemblyFile>
+                  <AssembleAssemblyFile>2</AssembleAssemblyFile>
+                  <PublicsOnly>2</PublicsOnly>
+                  <StopOnExitCode>11</StopOnExitCode>
+                  <CustomArgument></CustomArgument>
+                  <IncludeLibraryModules></IncludeLibraryModules>
+                  <ComprImg>1</ComprImg>
+                  <BankNo>65535</BankNo>
+                </CommonProperty>
+                <File51>
+                  <C51>
+                    <RegisterColoring>2</RegisterColoring>
+                    <VariablesInOrder>2</VariablesInOrder>
+                    <IntegerPromotion>2</IntegerPromotion>
+                    <uAregs>2</uAregs>
+                    <UseInterruptVector>2</UseInterruptVector>
+                    <Fuzzy>8</Fuzzy>
+                    <Optimize>10</Optimize>
+                    <WarningLevel>3</WarningLevel>
+                    <SizeSpeed>2</SizeSpeed>
+                    <ObjectExtend>2</ObjectExtend>
+                    <ACallAJmp>2</ACallAJmp>
+                    <InterruptVectorAddress>0</InterruptVectorAddress>
+                    <VariousControls>
+                      <MiscControls></MiscControls>
+                      <Define></Define>
+                      <Undefine></Undefine>
+                      <IncludePath></IncludePath>
+                    </VariousControls>
+                  </C51>
+                </File51>
+              </FileOption>
             </File>
             <File>
               <FileName>PCA.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\HARDWARE\COMMON_HARDWARE\BSP\PCA\PCA.c</FilePath>
+              <FileOption>
+                <CommonProperty>
+                  <UseCPPCompiler>2</UseCPPCompiler>
+                  <RVCTCodeConst>0</RVCTCodeConst>
+                  <RVCTZI>0</RVCTZI>
+                  <RVCTOtherData>0</RVCTOtherData>
+                  <ModuleSelection>0</ModuleSelection>
+                  <IncludeInBuild>1</IncludeInBuild>
+                  <AlwaysBuild>2</AlwaysBuild>
+                  <GenerateAssemblyFile>2</GenerateAssemblyFile>
+                  <AssembleAssemblyFile>2</AssembleAssemblyFile>
+                  <PublicsOnly>2</PublicsOnly>
+                  <StopOnExitCode>11</StopOnExitCode>
+                  <CustomArgument></CustomArgument>
+                  <IncludeLibraryModules></IncludeLibraryModules>
+                  <ComprImg>1</ComprImg>
+                  <BankNo>65535</BankNo>
+                </CommonProperty>
+                <File51>
+                  <C51>
+                    <RegisterColoring>2</RegisterColoring>
+                    <VariablesInOrder>2</VariablesInOrder>
+                    <IntegerPromotion>2</IntegerPromotion>
+                    <uAregs>2</uAregs>
+                    <UseInterruptVector>2</UseInterruptVector>
+                    <Fuzzy>8</Fuzzy>
+                    <Optimize>10</Optimize>
+                    <WarningLevel>3</WarningLevel>
+                    <SizeSpeed>2</SizeSpeed>
+                    <ObjectExtend>2</ObjectExtend>
+                    <ACallAJmp>2</ACallAJmp>
+                    <InterruptVectorAddress>0</InterruptVectorAddress>
+                    <VariousControls>
+                      <MiscControls></MiscControls>
+                      <Define></Define>
+                      <Undefine></Undefine>
+                      <IncludePath></IncludePath>
+                    </VariousControls>
+                  </C51>
+                </File51>
+              </FileOption>
             </File>
             <File>
               <FileName>stc15_pwm.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\HARDWARE\COMMON_HARDWARE\BSP\PWM\stc15_pwm.c</FilePath>
+              <FileOption>
+                <CommonProperty>
+                  <UseCPPCompiler>2</UseCPPCompiler>
+                  <RVCTCodeConst>0</RVCTCodeConst>
+                  <RVCTZI>0</RVCTZI>
+                  <RVCTOtherData>0</RVCTOtherData>
+                  <ModuleSelection>0</ModuleSelection>
+                  <IncludeInBuild>1</IncludeInBuild>
+                  <AlwaysBuild>2</AlwaysBuild>
+                  <GenerateAssemblyFile>2</GenerateAssemblyFile>
+                  <AssembleAssemblyFile>2</AssembleAssemblyFile>
+                  <PublicsOnly>2</PublicsOnly>
+                  <StopOnExitCode>11</StopOnExitCode>
+                  <CustomArgument></CustomArgument>
+                  <IncludeLibraryModules></IncludeLibraryModules>
+                  <ComprImg>1</ComprImg>
+                  <BankNo>65535</BankNo>
+                </CommonProperty>
+                <File51>
+                  <C51>
+                    <RegisterColoring>2</RegisterColoring>
+                    <VariablesInOrder>2</VariablesInOrder>
+                    <IntegerPromotion>2</IntegerPromotion>
+                    <uAregs>2</uAregs>
+                    <UseInterruptVector>2</UseInterruptVector>
+                    <Fuzzy>8</Fuzzy>
+                    <Optimize>10</Optimize>
+                    <WarningLevel>3</WarningLevel>
+                    <SizeSpeed>2</SizeSpeed>
+                    <ObjectExtend>2</ObjectExtend>
+                    <ACallAJmp>2</ACallAJmp>
+                    <InterruptVectorAddress>0</InterruptVectorAddress>
+                    <VariousControls>
+                      <MiscControls></MiscControls>
+                      <Define></Define>
+                      <Undefine></Undefine>
+                      <IncludePath></IncludePath>
+                    </VariousControls>
+                  </C51>
+                </File51>
+              </FileOption>
             </File>
             <File>
               <FileName>stc15_spi.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\HARDWARE\COMMON_HARDWARE\BSP\SPI\stc15_spi.c</FilePath>
+              <FileOption>
+                <CommonProperty>
+                  <UseCPPCompiler>2</UseCPPCompiler>
+                  <RVCTCodeConst>0</RVCTCodeConst>
+                  <RVCTZI>0</RVCTZI>
+                  <RVCTOtherData>0</RVCTOtherData>
+                  <ModuleSelection>0</ModuleSelection>
+                  <IncludeInBuild>1</IncludeInBuild>
+                  <AlwaysBuild>2</AlwaysBuild>
+                  <GenerateAssemblyFile>2</GenerateAssemblyFile>
+                  <AssembleAssemblyFile>2</AssembleAssemblyFile>
+                  <PublicsOnly>2</PublicsOnly>
+                  <StopOnExitCode>11</StopOnExitCode>
+                  <CustomArgument></CustomArgument>
+                  <IncludeLibraryModules></IncludeLibraryModules>
+                  <ComprImg>1</ComprImg>
+                  <BankNo>65535</BankNo>
+                </CommonProperty>
+                <File51>
+                  <C51>
+                    <RegisterColoring>2</RegisterColoring>
+                    <VariablesInOrder>2</VariablesInOrder>
+                    <IntegerPromotion>2</IntegerPromotion>
+                    <uAregs>2</uAregs>
+                    <UseInterruptVector>2</UseInterruptVector>
+                    <Fuzzy>8</Fuzzy>
+                    <Optimize>10</Optimize>
+                    <WarningLevel>3</WarningLevel>
+                    <SizeSpeed>2</SizeSpeed>
+                    <ObjectExtend>2</ObjectExtend>
+                    <ACallAJmp>2</ACallAJmp>
+                    <InterruptVectorAddress>0</InterruptVectorAddress>
+                    <VariousControls>
+                      <MiscControls></MiscControls>
+                      <Define></Define>
+                      <Undefine></Undefine>
+                      <IncludePath></IncludePath>
+                    </VariousControls>
+                  </C51>
+                </File51>
+              </FileOption>
             </File>
             <File>
               <FileName>timer.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\HARDWARE\COMMON_HARDWARE\BSP\timer\timer.c</FilePath>
+              <FileOption>
+                <CommonProperty>
+                  <UseCPPCompiler>2</UseCPPCompiler>
+                  <RVCTCodeConst>0</RVCTCodeConst>
+                  <RVCTZI>0</RVCTZI>
+                  <RVCTOtherData>0</RVCTOtherData>
+                  <ModuleSelection>0</ModuleSelection>
+                  <IncludeInBuild>1</IncludeInBuild>
+                  <AlwaysBuild>2</AlwaysBuild>
+                  <GenerateAssemblyFile>2</GenerateAssemblyFile>
+                  <AssembleAssemblyFile>2</AssembleAssemblyFile>
+                  <PublicsOnly>2</PublicsOnly>
+                  <StopOnExitCode>11</StopOnExitCode>
+                  <CustomArgument></CustomArgument>
+                  <IncludeLibraryModules></IncludeLibraryModules>
+                  <ComprImg>1</ComprImg>
+                  <BankNo>65535</BankNo>
+                </CommonProperty>
+                <File51>
+                  <C51>
+                    <RegisterColoring>2</RegisterColoring>
+                    <VariablesInOrder>2</VariablesInOrder>
+                    <IntegerPromotion>2</IntegerPromotion>
+                    <uAregs>2</uAregs>
+                    <UseInterruptVector>2</UseInterruptVector>
+                    <Fuzzy>8</Fuzzy>
+                    <Optimize>10</Optimize>
+                    <WarningLevel>3</WarningLevel>
+                    <SizeSpeed>2</SizeSpeed>
+                    <ObjectExtend>2</ObjectExtend>
+                    <ACallAJmp>2</ACallAJmp>
+                    <InterruptVectorAddress>0</InterruptVectorAddress>
+                    <VariousControls>
+                      <MiscControls></MiscControls>
+                      <Define></Define>
+                      <Undefine></Undefine>
+                      <IncludePath></IncludePath>
+                    </VariousControls>
+                  </C51>
+                </File51>
+              </FileOption>
             </File>
             <File>
               <FileName>USART1.C</FileName>
               <FileType>1</FileType>
               <FilePath>..\HARDWARE\COMMON_HARDWARE\BSP\USART1\USART1.C</FilePath>
+              <FileOption>
+                <CommonProperty>
+                  <UseCPPCompiler>2</UseCPPCompiler>
+                  <RVCTCodeConst>0</RVCTCodeConst>
+                  <RVCTZI>0</RVCTZI>
+                  <RVCTOtherData>0</RVCTOtherData>
+                  <ModuleSelection>0</ModuleSelection>
+                  <IncludeInBuild>1</IncludeInBuild>
+                  <AlwaysBuild>2</AlwaysBuild>
+                  <GenerateAssemblyFile>2</GenerateAssemblyFile>
+                  <AssembleAssemblyFile>2</AssembleAssemblyFile>
+                  <PublicsOnly>2</PublicsOnly>
+                  <StopOnExitCode>11</StopOnExitCode>
+                  <CustomArgument></CustomArgument>
+                  <IncludeLibraryModules></IncludeLibraryModules>
+                  <ComprImg>1</ComprImg>
+                  <BankNo>65535</BankNo>
+                </CommonProperty>
+                <File51>
+                  <C51>
+                    <RegisterColoring>2</RegisterColoring>
+                    <VariablesInOrder>2</VariablesInOrder>
+                    <IntegerPromotion>2</IntegerPromotion>
+                    <uAregs>2</uAregs>
+                    <UseInterruptVector>2</UseInterruptVector>
+                    <Fuzzy>8</Fuzzy>
+                    <Optimize>10</Optimize>
+                    <WarningLevel>3</WarningLevel>
+                    <SizeSpeed>2</SizeSpeed>
+                    <ObjectExtend>2</ObjectExtend>
+                    <ACallAJmp>2</ACallAJmp>
+                    <InterruptVectorAddress>0</InterruptVectorAddress>
+                    <VariousControls>
+                      <MiscControls></MiscControls>
+                      <Define></Define>
+                      <Undefine></Undefine>
+                      <IncludePath></IncludePath>
+                    </VariousControls>
+                  </C51>
+                </File51>
+              </FileOption>
             </File>
           </Files>
         </Group>

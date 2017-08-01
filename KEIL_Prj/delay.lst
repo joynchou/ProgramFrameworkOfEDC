@@ -1,4 +1,4 @@
-C51 COMPILER V8.05a   DELAY                                                                07/30/2017 21:35:58 PAGE 1   
+C51 COMPILER V8.05a   DELAY                                                                08/01/2017 17:24:32 PAGE 1   
 
 
 C51 COMPILER V8.05a, COMPILATION OF MODULE DELAY
@@ -62,7 +62,7 @@ MODULE INFORMATION:   STATIC OVERLAYABLE
    CODE SIZE        =     62    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
-C51 COMPILER V8.05a   DELAY                                                                07/30/2017 21:35:58 PAGE 2   
+C51 COMPILER V8.05a   DELAY                                                                08/01/2017 17:24:32 PAGE 2   
 
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----

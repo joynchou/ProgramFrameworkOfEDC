@@ -1,4 +1,4 @@
-C51 COMPILER V8.05a   ABSTASK                                                              07/30/2017 21:35:55 PAGE 1   
+C51 COMPILER V8.05a   ABSTASK                                                              08/01/2017 17:24:27 PAGE 1   
 
 
 C51 COMPILER V8.05a, COMPILATION OF MODULE ABSTASK
@@ -14,14 +14,39 @@ line level    source
    4          { 
    5   1        setup();
    6   1        blink(4);
-   7   1        
-   8   1        os_delete_task(0);
-   9   1        
-  10   1      }
+   7   1        os_create_task(1);
+   8   1        os_create_task(2);
+   9   1        os_delete_task(0);
+  10   1        
+  11   1      }
+  12          void printAngleData(void) _task_ 1
+  13          {
+  14   1        for (;;)
+  15   1        {
+  16   2          DataScope_Get_Channel_Data(getJY901Angle(JY901_1,X), 1);
+  17   2          DataScope_Get_Channel_Data(getJY901Angle(JY901_1,Y), 2);
+  18   2          DataScope_Get_Channel_Data(getJY901Angle(JY901_1,Z), 3);
+  19   2      
+  20   2          sendScopeData(3);
+  21   2          os_wait(K_TMO, 30, 0);
+  22   2        }
+  23   1      }
+  24          void dataUpdate(void) _task_ 2
+  25          {
+  26   1         for(;;)
+  27   1        {
+  28   2          LCD_printNum_I(0,0, (int)getJY901Angle(JY901_1, X),4);
+  29   2          LCD_printNum_I(0, 1, (int)getJY901Angle(JY901_1, Y),4);
+  30   2          LCD_printNum_I(0, 2, (int)getJY901Angle(JY901_1, Z),4);
+  31   2          os_wait(K_TMO, 30, 0);
+  32   2      
+  33   2        }
+  34   1        
+  35   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =     13    ----
+   CODE SIZE        =    178    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----

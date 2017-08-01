@@ -1,5 +1,5 @@
 //#include <string.h>
-//#include <stdio.h>
+#include <stdio.h>
 //#include <stdlib.h>
 
 #include "MPU9250_SBUF.H"
@@ -105,6 +105,8 @@ void InitJY901(u8 JY901_N)
 	MPU9250[JY901_N].ModularStart = STOP;
 	MPU9250[JY901_N].ModularSwitch = OFF;
 	MPU9250[JY901_N].CalcuEnd = NO;
+	setUART1Interrupt(&CopeSerialData,JY901_N);
+
 }
 
 //************************************
@@ -206,11 +208,11 @@ float getJY901Palstance(u8 JY901_N,u8 axis)
 //************************************
 float getJY901Angle(u8 JY901_N,u8 axis)
 {
-	if(MPU9250[JY901_N].CalcuEnd == YES)
+//	if(MPU9250[JY901_N].CalcuEnd == YES)
 	{
 		return (float)MPU9250[JY901_N].stcAngle.Angle[axis]/32768*180;
 	}
-	return 0;
+	//return 0;
 }
 
 //************************************
@@ -242,7 +244,7 @@ void CharToLong(char Dest[],char Source[])
 
 void CopeSerialData(u8 JY901_N)//This function need added in abstask.c to buliding a task if you want use JY901 modular
 {
-	//u8 str_0[15],str_1[15],str_2[15];
+	u8 str_0[15],str_1[15],str_2[15];
 	static unsigned char ucRxBuffer[12];//数据接收缓冲
 	static unsigned char ucRxCnt = 0;	
 	if(MPU9250[JY901_N].ModularStart)
@@ -358,8 +360,8 @@ void CopeSerialData(u8 JY901_N)//This function need added in abstask.c to bulidi
 			ucRxCnt  		= 0;
 			COM1.RX_Cnt = 0;
 			MPU9250[JY901_N].CalcuEnd = YES;
-//							sprintf(str_0,"x is %f\r\n",getJY901Angle(JY901_1,X));
-//				PrintString1(str_0);
+						//	sprintf(str_0,"x is %f\r\n",getJY901Angle(JY901_1,X));
+       			//	PrintString1(str_0);
 //							sprintf(str_1,"y is %f\r\n",getJY901Angle(JY901_1,Y));
 //				PrintString1(str_1);
 //							sprintf(str_2,"z is %f\r\n",getJY901Angle(JY901_1,Z));

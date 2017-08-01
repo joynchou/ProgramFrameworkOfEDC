@@ -1,4 +1,4 @@
-C51 COMPILER V8.05a   STC15_EXTI                                                           07/30/2017 21:35:59 PAGE 1   
+C51 COMPILER V8.05a   STC15_EXTI                                                           08/01/2017 17:24:33 PAGE 1   
 
 
 C51 COMPILER V8.05a, COMPILATION OF MODULE STC15_EXTI
@@ -62,7 +62,7 @@ line level    source
   52          //========================================================================
   53          // 函数: u8 Ext_Inilize(u8 EXT, EXTI_InitTypeDef *INTx)
   54          // 描述: 外部中断初始化程序.
-C51 COMPILER V8.05a   STC15_EXTI                                                           07/30/2017 21:35:59 PAGE 2   
+C51 COMPILER V8.05a   STC15_EXTI                                                           08/01/2017 17:24:33 PAGE 2   
 
   55          // 参数: INTx: 结构参数,请参考Exti.h里的定义.
   56          // 返回: 成功返回0, 空操作返回1,错误返回2.
@@ -126,7 +126,7 @@ MODULE INFORMATION:   STATIC OVERLAYABLE
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----
    IDATA SIZE       =   ----    ----
-C51 COMPILER V8.05a   STC15_EXTI                                                           07/30/2017 21:35:59 PAGE 3   
+C51 COMPILER V8.05a   STC15_EXTI                                                           08/01/2017 17:24:33 PAGE 3   
 
    BIT SIZE         =   ----    ----
 END OF MODULE INFORMATION.

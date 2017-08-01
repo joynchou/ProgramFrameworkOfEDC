@@ -1,4 +1,4 @@
-C51 COMPILER V8.05a   SETUP                                                                07/30/2017 21:35:56 PAGE 1   
+C51 COMPILER V8.05a   SETUP                                                                08/01/2017 18:07:56 PAGE 1   
 
 
 C51 COMPILER V8.05a, COMPILATION OF MODULE SETUP
@@ -48,28 +48,50 @@ line level    source
   38   1      }
   39          void test(void)//器件测试
   40          {    
-  41   1      
-  42   1      }
-  43          void setup(void)
-  44          {
-  45   1        UART1_init(115200L);
-  46   1        timerInit();
-  47   1        Board_LED_Init();
-  48   1        LCD5510_Init();
-  49   1        LCD_prints(0,0,"lcd5110 is ok!");
-  50   1      //  Button_config();
-  51   1      //  ADC_config(ADC_P10, ADC_540T);
-  52   1      //  test();
-  53   1      
-  54   1      }
-C51 COMPILER V8.05a   SETUP                                                                07/30/2017 21:35:56 PAGE 2   
+  41   1              setTimeout(Timer1,1000); //设置定时器定时长度 ,5秒
+  42   1              restartTimer(Timer1);
+  43   1      
+  44   1              while(1)
+  45   1              {
+  46   2                if(!isActiveTimer(Timer1))   //如果达到定时时间
+  47   2                {
+  48   3                   stopTimer(Timer1);//达到定时时间后一定要关闭定时器，否则会无法重复使用定时器
+  49   3                   PrintString1("123\n");
+  50   3                  //定时时间到，你的代码写在这
+  51   3                }
+  52   2                else//如果未达到定时时间或定时器未启动
+  53   2                {
+  54   3      
+C51 COMPILER V8.05a   SETUP                                                                08/01/2017 18:07:56 PAGE 2   
 
-  55          
+  55   3                  PrintString1("345\n");
+  56   3      
+  57   3                 delay_ms(50);
+  58   3                }
+  59   2              }
+  60   1      }
+  61          void setup(void)
+  62          {
+  63   1        UART1_init(9600);
+  64   1        timerInit();
+  65   1        Board_LED_Init();
+  66   1        LCD5510_Init();
+  67   1      //  LCD_printNum_I(0,0,1000,4);
+  68   1        //LCD_prints(0,0,"lcd5110 is ok!");
+  69   1        InitJY901(JY901_1);
+  70   1        EnableJY901(JY901_1);
+  71   1        openJY901SbufMode(JY901_1);
+  72   1      //  Button_config();
+  73   1      //  ADC_config(ADC_P10, ADC_540T);
+  74   1        test();
+  75   1      
+  76   1      }
+  77          
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =     86    ----
-   CONSTANT SIZE    =     47    ----
+   CODE SIZE        =    144    ----
+   CONSTANT SIZE    =     42    ----
    XDATA SIZE       =   ----      13
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----

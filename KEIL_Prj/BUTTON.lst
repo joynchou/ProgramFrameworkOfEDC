@@ -1,4 +1,4 @@
-C51 COMPILER V8.05a   BUTTON                                                               07/30/2017 21:35:56 PAGE 1   
+C51 COMPILER V8.05a   BUTTON                                                               08/01/2017 17:24:28 PAGE 1   
 
 
 C51 COMPILER V8.05a, COMPILATION OF MODULE BUTTON
@@ -62,7 +62,7 @@ line level    source
   50          static bit BUTTON2_bit=0;
   51          static bit BUTTON3_bit=0;
   52          static bit BUTTON4_bit=0;
-C51 COMPILER V8.05a   BUTTON                                                               07/30/2017 21:35:56 PAGE 2   
+C51 COMPILER V8.05a   BUTTON                                                               08/01/2017 17:24:28 PAGE 2   
 
   53          /*************************************************
   54          * º¯ÊýÃû³Æ: bit getButtonState(u8 BUTTON_data)
@@ -126,7 +126,7 @@ line level    source
  112   2          }
  113   1          else
  114   1          {
-C51 COMPILER V8.05a   BUTTON                                                               07/30/2017 21:35:56 PAGE 3   
+C51 COMPILER V8.05a   BUTTON                                                               08/01/2017 17:24:28 PAGE 3   
 
  115   2              BUTTON2_bit=0;
  116   2          }

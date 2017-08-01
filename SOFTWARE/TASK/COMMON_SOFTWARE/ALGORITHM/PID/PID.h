@@ -70,8 +70,8 @@ void PID_config(u8 PID_N, float kp, float ki, float kd);//pidÀ„∑®≥ı ºªØ∫Ø ˝£¨≤Œ 
  
 void openPID(u8 PID_N);
 void closePID(u8 PID_N);
-bit PID(u8 PID_N);
-bit Incremental_PID(u8 PID_N);//‘ˆ¡ø ΩPIDÀ„∑®
+void IncClassPID(u8 PID_N,u8 PID_MODE);//‘ˆ¡ø¿‡PIDÀ„∑®
+void PosClassPID(u8 PID_N,u8 PID_MODE);//Œª÷√¿‡PIDÀ„∑®
 void setParameterInferiorLimit(u8 PID_N, float value);
 void setParameterUpperLimit(u8 PID_N, float value);
 void setActualParameter(u8 PID_N, float value);
@@ -79,6 +79,7 @@ void setKi(u8 PID_N, float value);
 void setKp(u8 PID_N, float value);
 void setKd(u8 PID_N, float value);
 void setParameter(u8 PID_N, float value);
+void setMaxError(u8 PID_N,float err_max);
 float getParameter(u8 PID_N);
 float getErr(u8 PID_N);
 float getErrLast(u8 PID_N);

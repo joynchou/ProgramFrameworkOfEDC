@@ -16,22 +16,15 @@
 #define BUTTON
 #ifdef BUTTON
 ////extern  struct PID pid;
-///*************************************************
-//* 函数名称: void Button_config()
-//* 描述: 片上按键io初始化函数
-//* 其他说明: 初始化 P23,24,25,26为按键
-//*************************************************/
-//void Button_config(void)
-//{
-//    GPIO_InitTypeDef    GPIO_InitStructure;     //结构定义
-//    GPIO_InitStructure.Pin  = BUTTON1_GPIO_PIN | BUTTON2_GPIO_PIN | BUTTON3_GPIO_PIN|BUTTON4_GPIO_PIN;      //指定要初始化的IO, GPIO_Pin_0 ~ GPIO_Pin_7, 或操作
-//    GPIO_InitStructure.Mode = GPIO_PullUp;       //指定IO的输入或输出方式,GPIO_PullUp,GPIO_HighZ,GPIO_OUT_OD,GPIO_OUT_PP
-//    GPIO_Inilize(GPIO_P2,&GPIO_InitStructure);  //初始化
-//    P23=1;
-//    P24=1;
-//    P25=1;
-//    P26=1;
-//}
+/*************************************************
+* 函数名称: void Button_config()
+* 描述: 片上按键io初始化函数
+* 其他说明: 初始化 P23,24,25,26为按键
+*************************************************/
+void Button_config(void)
+{
+    Init_TM1638();
+}
 ///*************************************************
 //* 函数名称:static bit digitalRead(pin)//读取按键状态函数,按下按键返回1，没按下返回0
 //* 描述: 带防抖的引脚电平读取函数

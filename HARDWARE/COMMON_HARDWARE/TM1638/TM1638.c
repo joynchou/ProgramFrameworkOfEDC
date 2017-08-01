@@ -1,4 +1,4 @@
-/************************************************************
+/***********************************************************
 * 组织名称：
 * 文件名称: TM1638.c
 * 作者:  夏志强
@@ -102,7 +102,7 @@ unsigned char getButtonNum(void)
 	unsigned char c[4],i,key_value=0;
 	TM1638_STB=0;
 	setTM1638Write(0x42);
-	delay_ms(100);
+	delay_ms(1);
 	for(i=0;i<4;i++)
 		c[i]=getTM1638Read();
 	TM1638_STB=1;					//4个字节数据合成一个字节
@@ -123,7 +123,7 @@ unsigned char getButtonNum(void)
 	else if(c[3]==0x02) key_value=15;
 	else if(c[3]==0x20) key_value=16;
 	else return 0;
-	delay_ms(100);
+	delay_ms(1);
 	return (key_value);
 }
 

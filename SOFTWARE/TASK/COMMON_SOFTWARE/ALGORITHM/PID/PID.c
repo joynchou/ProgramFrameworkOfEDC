@@ -10,11 +10,8 @@
 *
 * <作者> <时间> <版本 > <描述>
 ***********************************************************/
- #include <math.h>
-
-#include "PID.h"
-#include "PID.h"
 #include <math.h>
+#include "PID.h"
 #define POSITION 					 0// 位置式PID
 #define INCREMENTAL				 1//增量式PID
 #define INTEGRAL_SEPARATE  2//积分分离法PID
@@ -67,6 +64,7 @@ void PID_config(u8 PID_N, float kp, float ki, float kd)//pid算法初始化函数，参数
 	g_pid_n_info[PID_N].Ki_temp = g_pid_n_info[PID_N].Ki;
 	g_pid_n_info[PID_N].Kd_temp = g_pid_n_info[PID_N].Kd;
 }
+
 //************************************
 // Method:    openPID
 // FullName:  openPID
@@ -80,6 +78,7 @@ void openPID(u8 PID_N)
 	g_pid_n_info[PID_N].state = ON;
 	//add the code here
 }
+
 //************************************
 // Method:    closePID
 // FullName:  closePID
@@ -117,8 +116,6 @@ bit Position_PID(u8 PID_N)
 	}
 	return 0;
 }
-
-
 
 //************************************
 // Method:    Integral_Separa_PID
@@ -447,6 +444,7 @@ float getErrLast(u8 PID_N)
 {
 	return  g_pid_n_info[PID_N].err_last;
 }
+
 //************************************
 // Method:    getKp
 // FullName:  getKp

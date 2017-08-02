@@ -37,26 +37,9 @@ void    UART1_init(unsigned long BandRate)
   PrintString1("STC15w4k58s4's UART1 is open \r\n");   //串口测试
 }
 void test(void)//器件测试
-{    
-				setTimeout(Timer1,1000); //设置定时器定时长度 ,5秒
-				restartTimer(Timer1);
-
-				while(1)
-				{
-					if(!isActiveTimer(Timer1))   //如果达到定时时间
-					{
-						 stopTimer(Timer1);//达到定时时间后一定要关闭定时器，否则会无法重复使用定时器
-						 PrintString1("123\n");
-						//定时时间到，你的代码写在这
-					}
-					else//如果未达到定时时间或定时器未启动
-					{
-
-						PrintString1("345\n");
-
-           delay_ms(50);
-					}
-				}
+{   
+	ADS1115_Config();
+	//getADS1115ConvsionData()
 }
 void setup(void)
 {

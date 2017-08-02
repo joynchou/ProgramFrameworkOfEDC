@@ -1,4 +1,4 @@
-C51 COMPILER V8.05a   MODE                                                                 08/01/2017 17:24:27 PAGE 1   
+C51 COMPILER V8.05a   MODE                                                                 08/02/2017 18:22:36 PAGE 1   
 
 
 C51 COMPILER V8.05a, COMPILATION OF MODULE MODE
@@ -38,7 +38,7 @@ line level    source
 MODULE INFORMATION:   STATIC OVERLAYABLE
    CODE SIZE        =      5    ----
    CONSTANT SIZE    =   ----    ----
-   XDATA SIZE       =   ----    ----
+   XDATA SIZE       =     16    ----
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----
    IDATA SIZE       =   ----    ----

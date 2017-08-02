@@ -10,5 +10,6 @@
 #include "MPU9250/MPU9250_SBUF.H"
 #include "RELAY/RELAY.H"
 #include "TM1638/TM1638.h"
+#include "ADS1115/ADS1115.H"
 
 #endif

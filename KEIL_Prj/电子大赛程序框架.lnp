@@ -20,6 +20,7 @@
 ".\MPU9250_SBUF.obj",
 ".\RELAY.obj",
 ".\TM1638.obj",
+".\ADS1115.obj",
 ".\ADC.obj",
 ".\delay.obj",
 ".\stc15_eeprom.obj",

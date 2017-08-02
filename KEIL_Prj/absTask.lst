@@ -1,4 +1,4 @@
-C51 COMPILER V8.05a   ABSTASK                                                              08/01/2017 17:24:27 PAGE 1   
+C51 COMPILER V8.05a   ABSTASK                                                              08/02/2017 18:22:36 PAGE 1   
 
 
 C51 COMPILER V8.05a, COMPILATION OF MODULE ABSTASK
@@ -14,8 +14,8 @@ line level    source
    4          { 
    5   1        setup();
    6   1        blink(4);
-   7   1        os_create_task(1);
-   8   1        os_create_task(2);
+   7   1        //os_create_task(1);
+   8   1        os_create_task(3);
    9   1        os_delete_task(0);
   10   1        
   11   1      }
@@ -43,14 +43,27 @@ line level    source
   33   2        }
   34   1        
   35   1      }
+  36          void printADS1115(void) _task_ 3
+  37          {
+  38   1         for(;;)
+  39   1        {
+  40   2          DataScope_Get_Channel_Data(getADS1115ConvsionData(), 1);
+  41   2              sendScopeData(1);
+  42   2          os_wait(K_TMO, 30, 0);
+  43   2      
+  44   2        }
+  45   1        
+  46   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    178    ----
+   CODE SIZE        =    210    ----
    CONSTANT SIZE    =   ----    ----
-   XDATA SIZE       =   ----    ----
+   XDATA SIZE       =     16    ----
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----
+C51 COMPILER V8.05a   ABSTASK                                                              08/02/2017 18:22:36 PAGE 2   
+
    IDATA SIZE       =   ----    ----
    BIT SIZE         =   ----    ----
 END OF MODULE INFORMATION.

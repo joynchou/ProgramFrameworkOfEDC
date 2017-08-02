@@ -1,4 +1,4 @@
-C51 COMPILER V8.05a   BUTTON                                                               08/01/2017 17:24:28 PAGE 1   
+C51 COMPILER V8.05a   BUTTON                                                               08/02/2017 18:22:37 PAGE 1   
 
 
 C51 COMPILER V8.05a, COMPILATION OF MODULE BUTTON
@@ -25,7 +25,7 @@ line level    source
   15          
   16          #define BUTTON
   17          #ifdef BUTTON
-  18          //extern  struct PID pid;
+  18          ////extern  struct PID pid;
   19          /*************************************************
   20          * 函数名称: void Button_config()
   21          * 描述: 片上按键io初始化函数
@@ -33,145 +33,84 @@ line level    source
   23          *************************************************/
   24          void Button_config(void)
   25          {
-  26   1          GPIO_InitTypeDef    GPIO_InitStructure;     //结构定义
-  27   1          GPIO_InitStructure.Pin  = BUTTON1_GPIO_PIN | BUTTON2_GPIO_PIN | BUTTON3_GPIO_PIN|BUTTON4_GPIO_PIN;    
-             -  //指定要初始化的IO, GPIO_Pin_0 ~ GPIO_Pin_7, 或操作
-  28   1          GPIO_InitStructure.Mode = GPIO_PullUp;       //指定IO的输入或输出方式,GPIO_PullUp,GPIO_HighZ,GPIO_OUT_
-             -OD,GPIO_OUT_PP
-  29   1          GPIO_Inilize(GPIO_P2,&GPIO_InitStructure);  //初始化
-  30   1          P23=1;
-  31   1          P24=1;
-  32   1          P25=1;
-  33   1          P26=1;
-  34   1      }
-  35          /*************************************************
-  36          * 函数名称:static bit digitalRead(pin)//读取按键状态函数,按下按键返回1，没按下返回0
-  37          * 描述: 带防抖的引脚电平读取函数
-  38          * 输入: 需要读取的pin* 输出:
-  39          * 返回值: 引脚电平，按下返回1，未按下返回0
-  40          * 其他说明: 内部函数，外部无须调用
-  41          *************************************************/
-  42          static bit digitalRead(pin)//读取按键状态函数,按下按键返回1，没按下返回0
-  43          {
-  44   1          if(!pin)
-  45   1          {
-  46   2              return !pin;
-  47   2          }
-  48   1      }
-  49          static bit BUTTON1_bit=0;
-  50          static bit BUTTON2_bit=0;
-  51          static bit BUTTON3_bit=0;
-  52          static bit BUTTON4_bit=0;
-C51 COMPILER V8.05a   BUTTON                                                               08/01/2017 17:24:28 PAGE 2   
+  26   1          Init_TM1638();
+  27   1      }
+  28          ///*************************************************
+  29          //* 函数名称:static bit digitalRead(pin)//读取按键状态函数,按下按键返回1，没按下返回0
+  30          //* 描述: 带防抖的引脚电平读取函数
+  31          //* 输入: 需要读取的pin* 输出:
+  32          //* 返回值: 引脚电平，按下返回1，未按下返回0
+  33          //* 其他说明: 内部函数，外部无须调用
+  34          //*************************************************/
+  35          ///*static bit digitalRead(pin)//读取按键状态函数,按下按键返回1，没按下返回0
+  36          //{
+  37          //    if(!pin)
+  38          //    {
+  39          //        return !pin;
+  40          //    }
+  41          //}
+  42          //static bit BUTTON1_bit=0;
+  43          //static bit BUTTON2_bit=0;
+  44          //static bit BUTTON3_bit=0;
+  45          //static bit BUTTON4_bit=0;*/
+  46          /*************************************************
+  47          * 函数名称: unsigned char getButtonState(u8 BUTTON_data)
+  48          * 描述: 按键状态读取
+  49          * 输入: 按键引脚宏
+  50          * 返回值: 按键状态，按下返回1，未按下返回0
+  51          * 其他说明: 此函数为外界接口函数
+  52          *************************************************/
+  53          u8 getButtonState(u8 BUTTON_data)
+  54          {
+C51 COMPILER V8.05a   BUTTON                                                               08/02/2017 18:22:37 PAGE 2   
 
-  53          /*************************************************
-  54          * 函数名称: bit getButtonState(u8 BUTTON_data)
-  55          * 描述: 按键状态读取
-  56          * 输入: 按键引脚宏
-  57          * 返回值: 按键状态，按下返回1，未按下返回0
-  58          * 其他说明: 此函数为外界接口函数
-  59          *************************************************/
-  60          bit getButtonState(u8 BUTTON_data)
-  61          {
-  62   1          switch(BUTTON_data)
-  63   1          {
-  64   2          case BUTTON1_GPIO_PIN:
-  65   2              return   BUTTON1_bit;
-  66   2              break;
-  67   2          case BUTTON2_GPIO_PIN:
-  68   2              return   BUTTON2_bit;
-  69   2              break;
-  70   2          case BUTTON3_GPIO_PIN:
-  71   2              return   BUTTON3_bit;
-  72   2              break;
-  73   2          case BUTTON4_GPIO_PIN:
-  74   2              return   BUTTON4_bit;
-  75   2              break;
-  76   2          }
-  77   1      }
-  78          /*************************************************
-  79          * 函数名称: void  buttonScan(void )//按键扫描函数
-  80          * 描述: 按键检测程序
-  81          * 输入: 无
-  82          * 输出: 无
-  83          * 返回值: 无
-  84          * 其他说明: 此按键检测程序没有使用到定时器，
-  85          *           将在后续的工程中改进此函数
-  86          *************************************************/
-  87          void  buttonScan(void )//按键扫描函数
-  88          {
-  89   1          if(digitalRead(BUTTON1))
-  90   1          {
-  91   2              if(digitalRead(BUTTON1))
-  92   2              {
-  93   3      #ifdef BUTTON_DEBUG
-                          PrintString1("BUTTON1 is on\n");
-              #endif
-  96   3                  BUTTON1_bit=1;
-  97   3              }
-  98   2          }
-  99   1          else
- 100   1          {
- 101   2              BUTTON1_bit=0;
- 102   2          }
- 103   1          if(digitalRead(BUTTON2))
- 104   1          {
- 105   2              if(!BUTTON2_bit)
- 106   2              {
- 107   3      #ifdef BUTTON_DEBUG
-                          PrintString1("BUTTON2 is on\n");
-              #endif
- 110   3                  BUTTON2_bit=1;
- 111   3              }
- 112   2          }
- 113   1          else
- 114   1          {
-C51 COMPILER V8.05a   BUTTON                                                               08/01/2017 17:24:28 PAGE 3   
-
- 115   2              BUTTON2_bit=0;
- 116   2          }
- 117   1          if(digitalRead(BUTTON3))
- 118   1          {
- 119   2              if(!BUTTON3_bit)
- 120   2              {
- 121   3      #ifdef BUTTON_DEBUG
-                          PrintString1("BUTTON3 is on\n");
-              #endif
- 124   3                  BUTTON3_bit=1;
- 125   3                 
- 126   3              }
- 127   2          }
- 128   1          else
- 129   1          {
- 130   2              BUTTON3_bit=0;
- 131   2          }
- 132   1          if(digitalRead(BUTTON4))
- 133   1          {
- 134   2              if(!BUTTON4_bit)
- 135   2              {
- 136   3      #ifdef BUTTON_DEBUG
-                          PrintString1("BUTTON4 is on\n");
-              #endif
- 139   3                  BUTTON4_bit=1;
- 140   3                 
- 141   3              }
- 142   2          }
- 143   1          else
- 144   1          {
- 145   2              BUTTON4_bit=0;
- 146   2          }
- 147   1      }
- 148          #endif
+  55   1         return g_Button[BUTTON_data];
+  56   1      }
+  57          /*************************************************
+  58          * 函数名称: void  buttonScan(void )//按键扫描函数
+  59          * 描述: 按键检测程序
+  60          * 输入: 无
+  61          * 输出: 无
+  62          * 返回值: 无
+  63          * 其他说明: 此按键检测程序没有使用到定时器，
+  64          *           将在后续的工程中改进此函数
+  65          *************************************************/
+  66          void  buttonScan(void )//按键扫描函数
+  67          {
+  68   1        static unsigned char wait;
+  69   1        u8 i,num;
+  70   1        if(!getButtonNum())
+  71   1        {
+  72   2          num = getButtonNum();
+  73   2          if(num)
+  74   2          {
+  75   3            g_Button[num] = 1;  
+  76   3            wait = 0;
+  77   3          }
+  78   2          else
+  79   2          {
+  80   3            if(wait == 1000)
+  81   3            {
+  82   4              for(i = 0;i < 16;i++)
+  83   4              {
+  84   5                g_Button[i] = 0;
+  85   5              }
+  86   4            }
+  87   3          }
+  88   2          wait++;
+  89   2        }
+  90   1      }
+  91          #endif
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    157    ----
+   CODE SIZE        =     77    ----
    CONSTANT SIZE    =   ----    ----
-   XDATA SIZE       =   ----       2
+   XDATA SIZE       =     17    ----
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----
    IDATA SIZE       =   ----    ----
-   BIT SIZE         =      4    ----
+   BIT SIZE         =   ----    ----
 END OF MODULE INFORMATION.
 
 

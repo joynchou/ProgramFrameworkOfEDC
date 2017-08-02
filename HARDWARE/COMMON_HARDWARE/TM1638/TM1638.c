@@ -6,10 +6,11 @@
 * 日期:
 * 描述: 按键初始化及相关函数
 * 主要函数及其功能 : 
-
-* 历史修改记录: // 历史修改记录
+*
+* 历史修改记录:
+* 1.0修改了getButtonNum中的延迟时长，从100ms改为500us
+* 1.1优化了此驱动按键扫描getButtonNum程序，使之更加快速反应
 * <作者> <时间> <版本 > <描述>
-* 夏志强
 ***********************************************************/
 #include "TM1638.H"
 
@@ -69,6 +70,7 @@ unsigned char getTM1638Read(void)					//读数据函数
 		TM1638_CLK=1;
 		delay_us(1);
 	}
+	delay_us(1);
 	return temp;
 }		
 
@@ -99,10 +101,10 @@ void setTM1638COM(unsigned char cmd)		//发送命令字
  **********************************************/
 unsigned char getButtonNum(void)
 {
-	unsigned char c[4],i,key_value=0;
+	unsigned char c[4] = {0},i,key_value=0;
 	TM1638_STB=0;
 	setTM1638Write(0x42);
-	delay_ms(1);
+	delay_us(500);
 	for(i=0;i<4;i++)
 		c[i]=getTM1638Read();
 	TM1638_STB=1;					//4个字节数据合成一个字节
@@ -123,7 +125,7 @@ unsigned char getButtonNum(void)
 	else if(c[3]==0x02) key_value=15;
 	else if(c[3]==0x20) key_value=16;
 	else return 0;
-	delay_ms(1);
+//	delay_ms(1);
 	return (key_value);
 }
 

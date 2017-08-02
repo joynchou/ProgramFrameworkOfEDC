@@ -15,45 +15,35 @@
 
 #define BUTTON
 #ifdef BUTTON
-////extern  struct PID pid;
+static u8 g_Button[BUTTON_NUM] = {0};
 /*************************************************
 * 函数名称: void Button_config()
-* 描述: 片上按键io初始化函数
-* 其他说明: 初始化 P23,24,25,26为按键
+* 描述: 用于初始单片机的I/O口引脚
+* 其他说明: 用于初始单片机的I/O口引脚
 *************************************************/
 void Button_config(void)
 {
-    Init_TM1638();
+	GPIO_InitTypeDef    GPIO_InitStructure;     //结构定义
+	GPIO_InitStructure.Mode = GPIO_PullUp;  
+	GPIO_InitStructure.Pin = GPIO_Pin_2|GPIO_Pin_1|GPIO_Pin_0;    //指定要初始化的IO, GPIO_Pin_0 ~ GPIO_Pin_7, 或操作
+	GPIO_Inilize(GPIO_P1, &GPIO_InitStructure);  //初始化  
 }
-///*************************************************
-//* 函数名称:static bit digitalRead(pin)//读取按键状态函数,按下按键返回1，没按下返回0
-//* 描述: 带防抖的引脚电平读取函数
-//* 输入: 需要读取的pin* 输出:
-//* 返回值: 引脚电平，按下返回1，未按下返回0
-//* 其他说明: 内部函数，外部无须调用
-//*************************************************/
-///*static bit digitalRead(pin)//读取按键状态函数,按下按键返回1，没按下返回0
-//{
-//    if(!pin)
-//    {
-//        return !pin;
-//    }
-//}
-//static bit BUTTON1_bit=0;
-//static bit BUTTON2_bit=0;
-//static bit BUTTON3_bit=0;
-//static bit BUTTON4_bit=0;*/
-/*************************************************
+
+/************************************************
 * 函数名称: unsigned char getButtonState(u8 BUTTON_data)
 * 描述: 按键状态读取
 * 输入: 按键引脚宏
-* 返回值: 按键状态，按下返回1，未按下返回0
+* 返回值: 按键状态，按下返回1，未按下返回0，一直按着按键则按键只显示单次点击
 * 其他说明: 此函数为外界接口函数
 *************************************************/
 u8 getButtonState(u8 BUTTON_data)
 {
-   return g_Button[BUTTON_data];
+	u8 ButtonState;
+	ButtonState = g_Button[BUTTON_data];
+	g_Button[BUTTON_data] = 0;
+  return ButtonState;
 }
+
 /*************************************************
 * 函数名称: void  buttonScan(void )//按键扫描函数
 * 描述: 按键检测程序
@@ -65,27 +55,19 @@ u8 getButtonState(u8 BUTTON_data)
 *************************************************/
 void  buttonScan(void )//按键扫描函数
 {
-	static unsigned char wait;
 	u8 i,num;
-	if(!getButtonNum())
+	num = getButtonNum();
+	if(num > 0)
 	{
-		num = getButtonNum();
-		if(num)
-		{
-			g_Button[num] = 1;	
-			wait = 0;
+		g_Button[num - 1] = 1;
+		if(getButtonNum() != 0)
+		{		
+			while(getButtonNum() != 0);
 		}
 		else
 		{
-			if(wait == 1000)
-			{
-				for(i = 0;i < 16;i++)
-				{
-					g_Button[i] = 0;
-				}
-			}
+			g_Button[num - 1] = 0;
 		}
-		wait++;
 	}
 }
 #endif

@@ -18,9 +18,8 @@
 #define BUTTON14 13
 #define BUTTON15 14
 #define BUTTON16 15
-static u8 g_Button[BUTTON_NUM];
 /*********对外参数和接口函数***********/
 extern void  buttonScan(void );
-//extern void Button_config(void);
+extern void Button_config(void);
 extern u8 getButtonState(u8 BUTTON_data); //读取按键状态函数,按下按键返回1，没按下返回0
 #endif

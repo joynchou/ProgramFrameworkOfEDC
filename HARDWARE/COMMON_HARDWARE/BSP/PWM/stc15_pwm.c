@@ -550,6 +550,35 @@ void PWM_Inilize(u8 PWM_N, PWM_InitTypeDef *PWMx)
 		PWMCR &= (~(1 << 7));
 	}
 }
+
+void PWM_Init(u8 GPIO_Px,u8 GPIO_Pin_N,u8 PWM_N,u8 PWM_DIV)
+{
+	GPIO_InitTypeDef    GPIO_InitStructure;     //结构定义
+	PWM_InitTypeDef  PWM_InitStructure;
+	GPIO_InitStructure.Mode = GPIO_PullUp;
+	GPIO_InitStructure.Pin = GPIO_Pin_N;    //PWM2
+	GPIO_Inilize(GPIO_Px, &GPIO_InitStructure);  //初始化
+	PWM_UNLOCK;
+	PWM_InitStructure.PWM_GOTO_ADC = DISABLE;
+	PWM_InitStructure.PWM_V_INIT = PWM_LOW;
+	PWM_InitStructure.PWM_0ISR_EN = DISABLE;
+	PWM_InitStructure.PWM_OUT_EN = ENABLE;
+	PWM_InitStructure.PWM_UNUSUAL_EN = DISABLE;
+	PWM_InitStructure.PWM_UNUSUAL_OUT = DISABLE;
+	PWM_InitStructure.PWM_UNUSUAL_ISR_EN = DISABLE;
+	PWM_InitStructure.PWM_UNUSUAL_CMP0_EN = DISABLE;
+	PWM_InitStructure.PWM_UNUSUAL_P24_EN = DISABLE;
+	PWM_InitStructure.PWM_CLOCK = PWM_Clock_NT;
+	PWM_InitStructure.PWM_CLOCK_DIV = PWM_DIV;
+	PWM_InitStructure.PWM_SELECTx_IO = PWM_SELECT_N;
+	PWM_InitStructure.PWM_ISRx_EN = DISABLE;
+	PWM_InitStructure.PWM_T1x_EN = DISABLE;
+	PWM_InitStructure.PWM_T2x_EN = DISABLE;
+	PWM_InitStructure.PWM_EN = DISABLE;
+	PWM_Inilize(PWM_N,&PWM_InitStructure);
+	PWM_LOCK;
+}
+
 //////////////！以下为私有函数，禁止改动！//////////////////////
 //
 //************************************

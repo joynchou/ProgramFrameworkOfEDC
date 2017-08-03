@@ -1,4 +1,4 @@
-C51 COMPILER V8.05a   USART1                                                               08/01/2017 17:24:34 PAGE 1   
+C51 COMPILER V8.05a   USART1                                                               08/02/2017 19:00:47 PAGE 1   
 
 
 C51 COMPILER V8.05a, COMPILATION OF MODULE USART1
@@ -62,7 +62,7 @@ line level    source
   52   2          if((COMx->UART_Mode == UART_9bit_BRTx) ||(COMx->UART_Mode == UART_8bit_BRTx)) //可变波特率
   53   2          {
   54   3            j = (MAIN_Fosc / 4) / COMx->UART_BaudRate;  //按1T计算
-C51 COMPILER V8.05a   USART1                                                               08/01/2017 17:24:34 PAGE 2   
+C51 COMPILER V8.05a   USART1                                                               08/02/2017 19:00:47 PAGE 2   
 
   55   3            if(j >= 65536UL)  return 2; //错误
   56   3            j = 65536UL - j;
@@ -126,7 +126,7 @@ line level    source
  114   2          for(i=0; i<COM_TX2_Lenth; i++)  TX2_Buffer[i] = 0;
  115   2          for(i=0; i<COM_RX2_Lenth; i++)  RX2_Buffer[i] = 0;
  116   2      
-C51 COMPILER V8.05a   USART1                                                               08/01/2017 17:24:34 PAGE 3   
+C51 COMPILER V8.05a   USART1                                                               08/02/2017 19:00:47 PAGE 3   
 
  117   2          if((COMx->UART_Mode == UART_9bit_BRTx) ||(COMx->UART_Mode == UART_8bit_BRTx)) //可变波特率
  118   2          {
@@ -190,7 +190,7 @@ line level    source
  176   4              IE2  &= ~(1<<5);  //禁止中断
  177   4              T4T3M |=  (1<<1); //1T
  178   4              T4T3M &= ~(1<<2); //定时
-C51 COMPILER V8.05a   USART1                                                               08/01/2017 17:24:34 PAGE 4   
+C51 COMPILER V8.05a   USART1                                                               08/02/2017 19:00:47 PAGE 4   
 
  179   4              T4T3M &= ~1;    //不输出时钟
  180   4              TH3 = (u8)(j >> 8);
@@ -254,7 +254,7 @@ line level    source
  238   4            }
  239   3            else  return 2;
  240   3          }
-C51 COMPILER V8.05a   USART1                                                               08/01/2017 17:24:34 PAGE 5   
+C51 COMPILER V8.05a   USART1                                                               08/02/2017 19:00:47 PAGE 5   
 
  241   2          else  return 2; //模式错误
  242   2          if(COMx->UART_Interrupt == ENABLE)  IE2   |=  (1<<4); //允许中断
@@ -318,7 +318,7 @@ line level    source
  300   2          SET_TI4();      //触发发送中断
  301   2        }
  302   1      }
-C51 COMPILER V8.05a   USART1                                                               08/01/2017 17:24:34 PAGE 6   
+C51 COMPILER V8.05a   USART1                                                               08/02/2017 19:00:47 PAGE 6   
 
  303          
  304          void PrintString1(u8 *puts)
@@ -382,7 +382,7 @@ line level    source
  362   2          CLR_RI2();
  363   2          if(COM2.B_RX_OK == 0)
  364   2          {
-C51 COMPILER V8.05a   USART1                                                               08/01/2017 17:24:34 PAGE 7   
+C51 COMPILER V8.05a   USART1                                                               08/02/2017 19:00:47 PAGE 7   
 
  365   3            if(COM2.RX_Cnt >= COM_RX2_Lenth)  COM2.RX_Cnt = 0;
  366   3            RX2_Buffer[COM2.RX_Cnt++] = S2BUF;
@@ -446,7 +446,7 @@ line level    source
  424   3          }
  425   2        }
  426   1      
-C51 COMPILER V8.05a   USART1                                                               08/01/2017 17:24:34 PAGE 8   
+C51 COMPILER V8.05a   USART1                                                               08/02/2017 19:00:47 PAGE 8   
 
  427   1        if(TI4)
  428   1        {

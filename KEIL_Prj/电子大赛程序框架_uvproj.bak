@@ -942,6 +942,11 @@
               <FileType>5</FileType>
               <FilePath>..\HARDWARE\COMMON_HARDWARE\Readme.txt</FilePath>
             </File>
+            <File>
+              <FileName>ADS1115.C</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\HARDWARE\COMMON_HARDWARE\ADS1115\ADS1115.C</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

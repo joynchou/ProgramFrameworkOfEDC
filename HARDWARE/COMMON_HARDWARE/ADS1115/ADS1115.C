@@ -45,16 +45,8 @@ static u16 readConversionRegister()
 	resultH = OutputOneByte();
  	IIC_Ack();
 	resultL = OutputOneByte();
- 	//IIC_Ack();
-	//IIC_Nack();
-
 	IIC_Stop();
-	result = (((u16)resultH)<<8 ) | resultL;//高八位右移8与上底八位组成16位result
-//	sprintf(str,"H %d\r\n",resultH);
-//	PrintString1(str);
-//		sprintf(str,"L %d\r\n",resultL);
-//	PrintString1(str);
-
+	result = (((u16)resultH)<<8 ) | resultL;
 	return result;
 }
 
@@ -71,9 +63,6 @@ u16 getADS1115ConvsionData(u8 channl)
 {
 	u16 Data;
 	writeConfigRegister();
-	//delay_ms(15);
 	changeRegister();
-	//delay_ms(15);
-	//Data =;
 	return  readConversionRegister();
 }

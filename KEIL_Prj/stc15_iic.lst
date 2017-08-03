@@ -1,4 +1,4 @@
-C51 COMPILER V8.05a   STC15_IIC                                                            08/02/2017 18:22:39 PAGE 1   
+C51 COMPILER V8.05a   STC15_IIC                                                            08/02/2017 19:00:47 PAGE 1   
 
 
 C51 COMPILER V8.05a, COMPILATION OF MODULE STC15_IIC
@@ -62,7 +62,7 @@ line level    source
   52          // 出口参数：无
   53          /* ***************************************************** */
   54          void IIC_Stop(void)
-C51 COMPILER V8.05a   STC15_IIC                                                            08/02/2017 18:22:39 PAGE 2   
+C51 COMPILER V8.05a   STC15_IIC                                                            08/02/2017 19:00:47 PAGE 2   
 
   55          {
   56   1          SDA = 0;
@@ -126,7 +126,7 @@ line level    source
  114   1          Delay5US();
  115   1          SCL = 0;
  116   1      }
-C51 COMPILER V8.05a   STC15_IIC                                                            08/02/2017 18:22:39 PAGE 3   
+C51 COMPILER V8.05a   STC15_IIC                                                            08/02/2017 19:00:47 PAGE 3   
 
  117          /* ***************************************************** */
  118          // 函数名称：OutputOneByte()
@@ -190,7 +190,7 @@ line level    source
  176   1          {
  177   2              SCL = 0;
  178   2              Delay5US();
-C51 COMPILER V8.05a   STC15_IIC                                                            08/02/2017 18:22:39 PAGE 4   
+C51 COMPILER V8.05a   STC15_IIC                                                            08/02/2017 19:00:47 PAGE 4   
 
  179   2              SDA = (uByteVal & 0x80) >> 7;
  180   2              Delay5US();
@@ -254,7 +254,7 @@ line level    source
  238   2              *p++ = OutputOneByte();
  239   2              if(iCount != (uiLenVal - 1))
  240   2              {
-C51 COMPILER V8.05a   STC15_IIC                                                            08/02/2017 18:22:39 PAGE 5   
+C51 COMPILER V8.05a   STC15_IIC                                                            08/02/2017 19:00:47 PAGE 5   
 
  241   3                  IIC_Ack();
  242   3              }

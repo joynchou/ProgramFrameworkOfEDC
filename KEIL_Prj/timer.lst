@@ -1,4 +1,4 @@
-C51 COMPILER V8.05a   TIMER                                                                08/02/2017 11:51:05 PAGE 1   
+C51 COMPILER V8.05a   TIMER                                                                08/02/2017 19:00:47 PAGE 1   
 
 
 C51 COMPILER V8.05a, COMPILATION OF MODULE TIMER
@@ -62,7 +62,7 @@ line level    source
   52          #include  "timer.h"
   53          #include "../USART1/USART1.h"
   54          enum
-C51 COMPILER V8.05a   TIMER                                                                08/02/2017 11:51:05 PAGE 2   
+C51 COMPILER V8.05a   TIMER                                                                08/02/2017 19:00:47 PAGE 2   
 
   55          {
   56            STOPPED, EXPIRED, ACTIVE
@@ -126,7 +126,7 @@ line level    source
              -16Bit,TIM_8BitAutoReload                                                                                                                                            //TIM_16BitAutoReloadNoMa
              -sk
  112   1        Pulser_2_Timer.TIM_Polity = PolityHigh;     //指定中断优先级, PolityHigh,PolityLow
-C51 COMPILER V8.05a   TIMER                                                                08/02/2017 11:51:05 PAGE 3   
+C51 COMPILER V8.05a   TIMER                                                                08/02/2017 19:00:47 PAGE 3   
 
  113   1        Pulser_2_Timer.TIM_Interrupt = ENABLE;        //中断是否允许,   ENABLE或DISABLE
  114   1        Pulser_2_Timer.TIM_ClkSource = TIM_CLOCK_12T; //指定时钟源,     TIM_CLOCK_1T,TIM_CLOCK_12T,TIM_CLOCK_Ext
@@ -190,7 +190,7 @@ line level    source
  172          // Parameter: u8 whichTimer：哪一个定时器
  173          // Parameter: u16 time：需要定时的时间，单位ms
  174          //************************************
-C51 COMPILER V8.05a   TIMER                                                                08/02/2017 11:51:05 PAGE 4   
+C51 COMPILER V8.05a   TIMER                                                                08/02/2017 19:00:47 PAGE 4   
 
  175          void setTimeout(u8 whichTimer, u16 time)
  176          {
@@ -254,7 +254,7 @@ line level    source
  234          // Parameter: u16 Hz：频率
  235          //************************************
  236          void setTimerHertz(u8 whichTimer, u16 Hz)
-C51 COMPILER V8.05a   TIMER                                                                08/02/2017 11:51:05 PAGE 5   
+C51 COMPILER V8.05a   TIMER                                                                08/02/2017 19:00:47 PAGE 5   
 
  237          {
  238   1        switch (whichTimer)
@@ -318,7 +318,7 @@ line level    source
  296   2        {
  297   3          //    Timer3_Stop();//此处就是timer3，不是timer2，timer2跳过了，因为留给串口使用了    
  298   3          //    Timer2_state = STOPPED;
-C51 COMPILER V8.05a   TIMER                                                                08/02/2017 11:51:05 PAGE 6   
+C51 COMPILER V8.05a   TIMER                                                                08/02/2017 19:00:47 PAGE 6   
 
  299   3      
  300   3        };
@@ -382,7 +382,7 @@ line level    source
  358          //************************************
  359          // Method:    isStopped
  360          // FullName:  isStopped
-C51 COMPILER V8.05a   TIMER                                                                08/02/2017 11:51:05 PAGE 7   
+C51 COMPILER V8.05a   TIMER                                                                08/02/2017 19:00:47 PAGE 7   
 
  361          // Access:    public 
  362          // Returns:   bit
@@ -446,7 +446,7 @@ line level    source
  420          //
  421          //************************************
  422          // Method:    onRestartTimer
-C51 COMPILER V8.05a   TIMER                                                                08/02/2017 11:51:05 PAGE 8   
+C51 COMPILER V8.05a   TIMER                                                                08/02/2017 19:00:47 PAGE 8   
 
  423          // FullName:  onRestartTimer
  424          // Access:    public 
@@ -510,7 +510,7 @@ line level    source
  482   2          Timer4_Stop();
  483   2      
  484   2          Timer1_temp = 0;
-C51 COMPILER V8.05a   TIMER                                                                08/02/2017 11:51:05 PAGE 9   
+C51 COMPILER V8.05a   TIMER                                                                08/02/2017 19:00:47 PAGE 9   
 
  485   2          Timer1_state = EXPIRED;
  486   2        }
@@ -574,7 +574,7 @@ line level    source
  544          //          }
  545          //        }
  546          
-C51 COMPILER V8.05a   TIMER                                                                08/02/2017 11:51:05 PAGE 10  
+C51 COMPILER V8.05a   TIMER                                                                08/02/2017 19:00:47 PAGE 10  
 
  547          //      }
  548          //    }
@@ -638,7 +638,7 @@ line level    source
  605   2          else                    TMOD &= ~0x40;  //定时
  606   2          if (TIMx->TIM_ClkOut == ENABLE) INT_CLKO |= 0x02; //输出时钟
  607   2          else              INT_CLKO &= ~0x02;  //不输出时钟
-C51 COMPILER V8.05a   TIMER                                                                08/02/2017 11:51:05 PAGE 11  
+C51 COMPILER V8.05a   TIMER                                                                08/02/2017 19:00:47 PAGE 11  
 
  608   2      
  609   2          TH1 = (u8)(TIMx->TIM_Value >> 8);
@@ -702,7 +702,7 @@ line level    source
  667   1        return 2; //错误
  668   1      }
  669          
-C51 COMPILER V8.05a   TIMER                                                                08/02/2017 11:51:05 PAGE 12  
+C51 COMPILER V8.05a   TIMER                                                                08/02/2017 19:00:47 PAGE 12  
 
  670          
 

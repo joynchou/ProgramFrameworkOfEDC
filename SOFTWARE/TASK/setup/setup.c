@@ -38,8 +38,7 @@ void    UART1_init(unsigned long BandRate)
 }
 void test(void)//Æ÷¼þ²âÊÔ
 {   
-	ADS1115_Config();
-	//getADS1115ConvsionData()
+	
 }
 void setup(void)
 {
@@ -47,13 +46,13 @@ void setup(void)
 	timerInit();
 	Board_LED_Init();
 	LCD5510_Init();
-//	LCD_printNum_I(0,0,1000,4);
-	//LCD_prints(0,0,"lcd5110 is ok!");
+	Button_config();
 	InitJY901(JY901_1);
 	EnableJY901(JY901_1);
 	openJY901SbufMode(JY901_1);
-//	Button_config();
-//	ADC_config(ADC_P10, ADC_540T);
+	ADC_config(ADC_P10, ADC_540T);
+	ADS1115_Config();
+
   test();
 
 }

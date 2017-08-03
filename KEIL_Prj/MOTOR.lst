@@ -1,4 +1,4 @@
-C51 COMPILER V8.05a   MOTOR                                                                08/02/2017 18:22:37 PAGE 1   
+C51 COMPILER V8.05a   MOTOR                                                                08/03/2017 10:04:15 PAGE 1   
 
 
 C51 COMPILER V8.05a, COMPILATION OF MODULE MOTOR
@@ -62,7 +62,7 @@ line level    source
   52   1      }
   53          void open_DC_Motor(u8 motor)
   54          {
-C51 COMPILER V8.05a   MOTOR                                                                08/02/2017 18:22:37 PAGE 2   
+C51 COMPILER V8.05a   MOTOR                                                                08/03/2017 10:04:15 PAGE 2   
 
   55   1        open_PWM_N(motor + 4);
   56   1        g_DC_Motor[motor].state = ON;
@@ -126,7 +126,7 @@ line level    source
  114   1        PWM_Inilize(PWM_4, &PWM_InitStructure);
  115   1        PWM_Inilize(PWM_5, &PWM_InitStructure);
  116   1      
-C51 COMPILER V8.05a   MOTOR                                                                08/02/2017 18:22:37 PAGE 3   
+C51 COMPILER V8.05a   MOTOR                                                                08/03/2017 10:04:15 PAGE 3   
 
  117   1        PWM_LOCK;
  118   1      

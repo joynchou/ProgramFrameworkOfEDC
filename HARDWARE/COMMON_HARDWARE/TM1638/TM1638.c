@@ -231,7 +231,6 @@ void Init_TM1638(void)
  **********************************************/
 void TM1638LedDisplay(unsigned char ddata0,unsigned char ddata1,unsigned char ddata2,unsigned char ddata3,
                unsigned char ddata4,unsigned char ddata5,unsigned char ddata6,unsigned char ddata7)
-
 {
 	unsigned char  writedata0,writedata1,writedata2,writedata3,writedata4,writedata5,writedata6,writedata7;
 	unsigned char  data0,data1,data2,data3,data4,data5,data6,data7;

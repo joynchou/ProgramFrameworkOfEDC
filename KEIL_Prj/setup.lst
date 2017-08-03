@@ -1,4 +1,4 @@
-C51 COMPILER V8.05a   SETUP                                                                08/02/2017 18:22:36 PAGE 1   
+C51 COMPILER V8.05a   SETUP                                                                08/03/2017 10:04:14 PAGE 1   
 
 
 C51 COMPILER V8.05a, COMPILATION OF MODULE SETUP
@@ -48,34 +48,33 @@ line level    source
   38   1      }
   39          void test(void)//Æ÷¼þ²âÊÔ
   40          {   
-  41   1        ADS1115_Config();
-  42   1        //getADS1115ConvsionData()
-  43   1      }
-  44          void setup(void)
-  45          {
-  46   1        UART1_init(9600);
-  47   1        timerInit();
-  48   1        Board_LED_Init();
-  49   1        LCD5510_Init();
-  50   1      //  LCD_printNum_I(0,0,1000,4);
-  51   1        //LCD_prints(0,0,"lcd5110 is ok!");
-  52   1        InitJY901(JY901_1);
-  53   1        EnableJY901(JY901_1);
-  54   1        openJY901SbufMode(JY901_1);
-C51 COMPILER V8.05a   SETUP                                                                08/02/2017 18:22:36 PAGE 2   
+  41   1        
+  42   1      }
+  43          void setup(void)
+  44          {
+  45   1        UART1_init(9600);
+  46   1        timerInit();
+  47   1        Board_LED_Init();
+  48   1        LCD5510_Init();
+  49   1        Button_config();
+  50   1        InitJY901(JY901_1);
+  51   1        EnableJY901(JY901_1);
+  52   1        openJY901SbufMode(JY901_1);
+  53   1        ADC_config(ADC_P10, ADC_540T);
+  54   1        ADS1115_Config();
+C51 COMPILER V8.05a   SETUP                                                                08/03/2017 10:04:14 PAGE 2   
 
-  55   1      //  Button_config();
-  56   1      //  ADC_config(ADC_P10, ADC_540T);
-  57   1        test();
-  58   1      
-  59   1      }
-  60          
+  55   1      
+  56   1        test();
+  57   1      
+  58   1      }
+  59          
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =     94    ----
+   CODE SIZE        =    105    ----
    CONSTANT SIZE    =     32    ----
-   XDATA SIZE       =     16      13
+   XDATA SIZE       =   ----      13
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----
    IDATA SIZE       =   ----    ----

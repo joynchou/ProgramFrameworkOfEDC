@@ -1,4 +1,4 @@
-C51 COMPILER V8.05a   BUTTON                                                               08/02/2017 18:22:37 PAGE 1   
+C51 COMPILER V8.05a   BUTTON                                                               08/03/2017 10:04:15 PAGE 1   
 
 
 C51 COMPILER V8.05a, COMPILATION OF MODULE BUTTON
@@ -25,88 +25,71 @@ line level    source
   15          
   16          #define BUTTON
   17          #ifdef BUTTON
-  18          ////extern  struct PID pid;
+  18          static u8 g_Button[BUTTON_NUM] = {0};
   19          /*************************************************
   20          * 函数名称: void Button_config()
-  21          * 描述: 片上按键io初始化函数
-  22          * 其他说明: 初始化 P23,24,25,26为按键
+  21          * 描述: 用于初始单片机的I/O口引脚
+  22          * 其他说明: 用于初始单片机的I/O口引脚
   23          *************************************************/
   24          void Button_config(void)
   25          {
-  26   1          Init_TM1638();
-  27   1      }
-  28          ///*************************************************
-  29          //* 函数名称:static bit digitalRead(pin)//读取按键状态函数,按下按键返回1，没按下返回0
-  30          //* 描述: 带防抖的引脚电平读取函数
-  31          //* 输入: 需要读取的pin* 输出:
-  32          //* 返回值: 引脚电平，按下返回1，未按下返回0
-  33          //* 其他说明: 内部函数，外部无须调用
-  34          //*************************************************/
-  35          ///*static bit digitalRead(pin)//读取按键状态函数,按下按键返回1，没按下返回0
-  36          //{
-  37          //    if(!pin)
-  38          //    {
-  39          //        return !pin;
-  40          //    }
-  41          //}
-  42          //static bit BUTTON1_bit=0;
-  43          //static bit BUTTON2_bit=0;
-  44          //static bit BUTTON3_bit=0;
-  45          //static bit BUTTON4_bit=0;*/
-  46          /*************************************************
-  47          * 函数名称: unsigned char getButtonState(u8 BUTTON_data)
-  48          * 描述: 按键状态读取
-  49          * 输入: 按键引脚宏
-  50          * 返回值: 按键状态，按下返回1，未按下返回0
-  51          * 其他说明: 此函数为外界接口函数
-  52          *************************************************/
-  53          u8 getButtonState(u8 BUTTON_data)
-  54          {
-C51 COMPILER V8.05a   BUTTON                                                               08/02/2017 18:22:37 PAGE 2   
+  26   1        GPIO_InitTypeDef    GPIO_InitStructure;     //结构定义
+  27   1        GPIO_InitStructure.Mode = GPIO_PullUp;  
+  28   1        GPIO_InitStructure.Pin = GPIO_Pin_2|GPIO_Pin_1|GPIO_Pin_0;    //指定要初始化的IO, GPIO_Pin_0 ~ GPIO_Pin_7
+             -, 或操作
+  29   1        GPIO_Inilize(GPIO_P1, &GPIO_InitStructure);  //初始化  
+  30   1      }
+  31          
+  32          /************************************************
+  33          * 函数名称: unsigned char getButtonState(u8 BUTTON_data)
+  34          * 描述: 按键状态读取
+  35          * 输入: 按键引脚宏
+  36          * 返回值: 按键状态，按下返回1，未按下返回0，一直按着按键则按键只显示单次点击
+  37          * 其他说明: 此函数为外界接口函数
+  38          *************************************************/
+  39          u8 getButtonState(u8 BUTTON_data)
+  40          {
+  41   1        u8 ButtonState;
+  42   1        ButtonState = g_Button[BUTTON_data];
+  43   1        g_Button[BUTTON_data] = 0;
+  44   1        return ButtonState;
+  45   1      }
+  46          
+  47          /*************************************************
+  48          * 函数名称: void  buttonScan(void )//按键扫描函数
+  49          * 描述: 按键检测程序
+  50          * 输入: 无
+  51          * 输出: 无
+  52          * 返回值: 无
+  53          * 其他说明: 此按键检测程序没有使用到定时器，
+C51 COMPILER V8.05a   BUTTON                                                               08/03/2017 10:04:15 PAGE 2   
 
-  55   1         return g_Button[BUTTON_data];
-  56   1      }
-  57          /*************************************************
-  58          * 函数名称: void  buttonScan(void )//按键扫描函数
-  59          * 描述: 按键检测程序
-  60          * 输入: 无
-  61          * 输出: 无
-  62          * 返回值: 无
-  63          * 其他说明: 此按键检测程序没有使用到定时器，
-  64          *           将在后续的工程中改进此函数
-  65          *************************************************/
-  66          void  buttonScan(void )//按键扫描函数
-  67          {
-  68   1        static unsigned char wait;
-  69   1        u8 i,num;
-  70   1        if(!getButtonNum())
-  71   1        {
-  72   2          num = getButtonNum();
-  73   2          if(num)
-  74   2          {
-  75   3            g_Button[num] = 1;  
-  76   3            wait = 0;
-  77   3          }
-  78   2          else
-  79   2          {
-  80   3            if(wait == 1000)
-  81   3            {
-  82   4              for(i = 0;i < 16;i++)
-  83   4              {
-  84   5                g_Button[i] = 0;
-  85   5              }
-  86   4            }
-  87   3          }
-  88   2          wait++;
-  89   2        }
-  90   1      }
-  91          #endif
+  54          *           将在后续的工程中改进此函数
+  55          *************************************************/
+  56          void  buttonScan(void )//按键扫描函数
+  57          {
+  58   1        u8 i,num;
+  59   1        num = getButtonNum();
+  60   1        if(num > 0)
+  61   1        {
+  62   2          g_Button[num - 1] = 1;
+  63   2          if(getButtonNum() != 0)
+  64   2          {   
+  65   3            while(getButtonNum() != 0);
+  66   3          }
+  67   2          else
+  68   2          {
+  69   3            g_Button[num - 1] = 0;
+  70   3          }
+  71   2        }
+  72   1      }
+  73          #endif
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =     77    ----
+   CODE SIZE        =    103    ----
    CONSTANT SIZE    =   ----    ----
-   XDATA SIZE       =     17    ----
+   XDATA SIZE       =     16       4
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----
    IDATA SIZE       =   ----    ----

@@ -51,7 +51,7 @@ whichAngle:
 
 float getAngle(bit whichAngle)
 {
-    u16 angleData[10];
+  u16 angleData[10];
 	u8  angleDataloopTemp1=0;
     static float presentAngle, lastAngle;  //此函数还可以返回上一次的角度值，不需要读取时间 ，是静态的数据，因为需要保存
     if (whichAngle)  //返回当前结果
@@ -61,7 +61,7 @@ float getAngle(bit whichAngle)
 			{
 				angleData[angleDataloopTemp1] =  Get_ADC10bitResult(ADC_CH0);
 			}
-	    // presentAngle= filter(angleData,10,1024,0);
+	    presentAngle= filter(angleData,10,1024,0);
         
         lastAngle = presentAngle;
         return presentAngle;

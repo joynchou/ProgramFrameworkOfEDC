@@ -37,19 +37,23 @@ void    UART1_init(unsigned long BandRate)
   PrintString1("STC15w4k58s4's UART1 is open \r\n");   //´®¿Ú²âÊÔ
 }
 void test(void)//Æ÷¼þ²âÊÔ
-{    
-
+{   
+	
 }
 void setup(void)
 {
-	UART1_init(115200L);
-  timerInit();
+	UART1_init(9600);
+	timerInit();
 	Board_LED_Init();
 	LCD5510_Init();
-	LCD_prints(0,0,"lcd5110 is ok!");
-//	Button_config();
-//	ADC_config(ADC_P10, ADC_540T);
-//  test();
+	Button_config();
+	InitJY901(JY901_1);
+	EnableJY901(JY901_1);
+	openJY901SbufMode(JY901_1);
+	ADC_config(ADC_P10, ADC_540T);
+	ADS1115_Config();
+
+  test();
 
 }
 

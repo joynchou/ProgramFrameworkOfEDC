@@ -99,7 +99,7 @@ void PrintString1(u8 *puts);
 void PrintString2(u8 *puts);
 void PrintString3(u8 *puts);
 void PrintString4(u8 *puts);
-
+void setUART1Interrupt(void (*function)(u8 ),u8 tmp); //设置当串口中断到达时需要在中断内执行的函数，传入函数
 //void COMx_write2buff(COMx_Define *COMx, u8 dat);	//写入发送缓冲，指针+1
 //void PrintString(COMx_Define *COMx, u8 *puts);
 

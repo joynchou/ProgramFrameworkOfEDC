@@ -1,4 +1,4 @@
-C51 COMPILER V8.05a   STC15_PWM                                                            07/30/2017 21:35:59 PAGE 1   
+C51 COMPILER V8.05a   STC15_PWM                                                            08/02/2017 19:00:47 PAGE 1   
 
 
 C51 COMPILER V8.05a, COMPILATION OF MODULE STC15_PWM
@@ -62,7 +62,7 @@ line level    source
   52          {
   53   1        PWM_N_INFO[PWM_N].period = Hz;
   54   1        PWM_UNLOCK;
-C51 COMPILER V8.05a   STC15_PWM                                                            07/30/2017 21:35:59 PAGE 2   
+C51 COMPILER V8.05a   STC15_PWM                                                            08/02/2017 19:00:47 PAGE 2   
 
   55   1        PWM_ALL_NO;
   56   1        PWM_SET_PERIOD((u16)(MAIN_Fosc / (Hz*PWM_N_INFO[PWM_N].DIV)));
@@ -126,7 +126,7 @@ line level    source
  113          *************************************************/
  114          float get_PWM_N_duty(u8 PWM_N)
  115          {
-C51 COMPILER V8.05a   STC15_PWM                                                            07/30/2017 21:35:59 PAGE 3   
+C51 COMPILER V8.05a   STC15_PWM                                                            08/02/2017 19:00:47 PAGE 3   
 
  116   1        return  PWM_N_INFO[PWM_N].duty;
  117   1      }
@@ -190,7 +190,7 @@ line level    source
  175          // FullName:  open_PWM_N
  176          // Access:    public 
  177          // Returns:   void
-C51 COMPILER V8.05a   STC15_PWM                                                            07/30/2017 21:35:59 PAGE 4   
+C51 COMPILER V8.05a   STC15_PWM                                                            08/02/2017 19:00:47 PAGE 4   
 
  178          // Qualifier:
  179          // Parameter: u8 PWM_N
@@ -254,7 +254,7 @@ line level    source
  237   1      
  238   1        P_SW2 |= 0X80;
  239   1        if (ENABLE == PWMx->PWM_GOTO_ADC)            //ENABLE=计数器归零时 触发ADC
-C51 COMPILER V8.05a   STC15_PWM                                                            07/30/2017 21:35:59 PAGE 5   
+C51 COMPILER V8.05a   STC15_PWM                                                            08/02/2017 19:00:47 PAGE 5   
 
  240   1        {
  241   2          PWMCFG |= (1 << 7); //并的意思就是不会改变其他位的值
@@ -318,7 +318,7 @@ line level    source
  296   1        {
  297   2          PWMFDCR = (1 << 2);
  298   2        }
-C51 COMPILER V8.05a   STC15_PWM                                                            07/30/2017 21:35:59 PAGE 6   
+C51 COMPILER V8.05a   STC15_PWM                                                            08/02/2017 19:00:47 PAGE 6   
 
  299   1        else
  300   1        {
@@ -382,7 +382,7 @@ line level    source
  356   4            PWM2CR &= (~(1 << 0));
  357   4          }
  358   3        }
-C51 COMPILER V8.05a   STC15_PWM                                                            07/30/2017 21:35:59 PAGE 7   
+C51 COMPILER V8.05a   STC15_PWM                                                            08/02/2017 19:00:47 PAGE 7   
 
  359   2        break;
  360   2        case PWM_3:
@@ -446,7 +446,7 @@ line level    source
  416   4            PWM4CR |= (1 << 1);
  417   4          }
  418   3          else
-C51 COMPILER V8.05a   STC15_PWM                                                            07/30/2017 21:35:59 PAGE 8   
+C51 COMPILER V8.05a   STC15_PWM                                                            08/02/2017 19:00:47 PAGE 8   
 
  419   3          {
  420   4            PWM4CR &= (~(1 << 1));
@@ -510,7 +510,7 @@ line level    source
  476   4            PWM6CR |= (1 << 3);
  477   4          }
  478   3          if (ENABLE == PWMx->PWM_ISRx_EN)             //ENABLE=使能PWMx中断 使能第一翻转或第二翻转中断
-C51 COMPILER V8.05a   STC15_PWM                                                            07/30/2017 21:35:59 PAGE 9   
+C51 COMPILER V8.05a   STC15_PWM                                                            08/02/2017 19:00:47 PAGE 9   
 
  479   3          {
  480   4            PWM6CR |= (1 << 2);
@@ -574,7 +574,7 @@ line level    source
  537   4          }
  538   3        }
  539   2        break;
-C51 COMPILER V8.05a   STC15_PWM                                                            07/30/2017 21:35:59 PAGE 10  
+C51 COMPILER V8.05a   STC15_PWM                                                            08/02/2017 19:00:47 PAGE 10  
 
  540   2        default:
  541   2          //      return 1;
@@ -638,7 +638,7 @@ line level    source
  598   2          return 0;
  599   2          break;
  600   2        case PWM_3:
-C51 COMPILER V8.05a   STC15_PWM                                                            07/30/2017 21:35:59 PAGE 11  
+C51 COMPILER V8.05a   STC15_PWM                                                            08/02/2017 19:00:47 PAGE 11  
 
  601   2          PWM3T1L = (u8)(period1);
  602   2          PWM3T1H = (u8)(period1 >> 8);

@@ -150,17 +150,6 @@ void Init_TM1638(void)
 	TM1638_STB=1;
 }
 
-/**********************************************
- *函数：Inti_Str_Motor(float,float,float,unsigned int)
- *描述：对舵机进行初始化
- *输入：
- *1.pl为最低可接收的脉冲宽度，单位为ms                  
- *2.ph为最高可接收的脉冲宽度，单位为ms                 
- *3.n为脉冲分级
- *输出：无
- *返回值：void
- *其他说明：
- **********************************************/
 //unsigned char ButtonNum(void)
 //{		
 //   	unsigned char key_value;
@@ -242,7 +231,6 @@ void Init_TM1638(void)
  **********************************************/
 void TM1638LedDisplay(unsigned char ddata0,unsigned char ddata1,unsigned char ddata2,unsigned char ddata3,
                unsigned char ddata4,unsigned char ddata5,unsigned char ddata6,unsigned char ddata7)
-
 {
 	unsigned char  writedata0,writedata1,writedata2,writedata3,writedata4,writedata5,writedata6,writedata7;
 	unsigned char  data0,data1,data2,data3,data4,data5,data6,data7;

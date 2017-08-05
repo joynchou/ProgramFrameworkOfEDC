@@ -13,6 +13,8 @@
 ***********************************************************/
 #include "USART1.h"
 COMx_Define	COM1,COM2,COM3,COM4;
+void (*interruptFunction)(u8); //指向函数的指针变量
+u8 functionTmp;
 u8	xdata TX1_Buffer[COM_TX1_Lenth];	//发送缓冲
 u8 	xdata RX1_Buffer[COM_RX1_Lenth];	//接收缓冲
 u8	xdata TX2_Buffer[COM_TX2_Lenth];	//发送缓冲
@@ -21,7 +23,11 @@ u8	xdata TX3_Buffer[COM_TX3_Lenth];	//发送缓冲
 u8 	xdata RX3_Buffer[COM_RX3_Lenth];	//接收缓冲
 u8	xdata TX4_Buffer[COM_TX4_Lenth];	//发送缓冲
 u8 	xdata RX4_Buffer[COM_RX4_Lenth];	//接收缓冲
-
+void setUART1Interrupt(void (*function)(u8),u8 tmp) //设置当串口中断到达时需要在中断内执行的函数，传入函数
+{
+	 interruptFunction=function; //将指针地址复制
+	 functionTmp=tmp;
+}
 u8 USART_Configuration(u8 UARTx, COMx_InitDefine *COMx)
 {
 	u8	i;
@@ -332,6 +338,7 @@ void UART1_int (void) interrupt UART1_VECTOR
 			if(COM1.RX_Cnt >= COM_RX1_Lenth)	COM1.RX_Cnt = 0;
 			RX1_Buffer[COM1.RX_Cnt++] = SBUF;
 			COM1.RX_TimeOut = TimeOutSet1;
+			(*interruptFunction)(functionTmp);
 		}
 	}
 

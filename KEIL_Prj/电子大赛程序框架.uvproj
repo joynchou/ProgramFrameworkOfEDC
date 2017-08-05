@@ -45,7 +45,7 @@
             <InvalidFlash>1</InvalidFlash>
           </TargetStatus>
           <OutputDirectory>.\</OutputDirectory>
-          <OutputName>ProgramFrameworkOfEDA</OutputName>
+          <OutputName>电子大赛程序框架</OutputName>
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
           <CreateHexFile>1</CreateHexFile>
@@ -368,7 +368,7 @@
               <RVCTZI>0</RVCTZI>
               <RVCTOtherData>0</RVCTOtherData>
               <ModuleSelection>0</ModuleSelection>
-              <IncludeInBuild>2</IncludeInBuild>
+              <IncludeInBuild>0</IncludeInBuild>
               <AlwaysBuild>2</AlwaysBuild>
               <GenerateAssemblyFile>2</GenerateAssemblyFile>
               <AssembleAssemblyFile>2</AssembleAssemblyFile>
@@ -424,7 +424,7 @@
               <RVCTZI>0</RVCTZI>
               <RVCTOtherData>0</RVCTOtherData>
               <ModuleSelection>0</ModuleSelection>
-              <IncludeInBuild>2</IncludeInBuild>
+              <IncludeInBuild>1</IncludeInBuild>
               <AlwaysBuild>2</AlwaysBuild>
               <GenerateAssemblyFile>2</GenerateAssemblyFile>
               <AssembleAssemblyFile>2</AssembleAssemblyFile>
@@ -487,7 +487,7 @@
               <RVCTZI>0</RVCTZI>
               <RVCTOtherData>0</RVCTOtherData>
               <ModuleSelection>0</ModuleSelection>
-              <IncludeInBuild>2</IncludeInBuild>
+              <IncludeInBuild>1</IncludeInBuild>
               <AlwaysBuild>2</AlwaysBuild>
               <GenerateAssemblyFile>2</GenerateAssemblyFile>
               <AssembleAssemblyFile>2</AssembleAssemblyFile>
@@ -555,7 +555,7 @@
               <RVCTZI>0</RVCTZI>
               <RVCTOtherData>0</RVCTOtherData>
               <ModuleSelection>0</ModuleSelection>
-              <IncludeInBuild>2</IncludeInBuild>
+              <IncludeInBuild>1</IncludeInBuild>
               <AlwaysBuild>2</AlwaysBuild>
               <GenerateAssemblyFile>2</GenerateAssemblyFile>
               <AssembleAssemblyFile>2</AssembleAssemblyFile>
@@ -617,10 +617,68 @@
               <FileType>1</FileType>
               <FilePath>..\SOFTWARE\TASK\COMMON_SOFTWARE\DATA_SCOPE\DataScope_DP.c</FilePath>
             </File>
+            <File>
+              <FileName>Readme.txt</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\SOFTWARE\Readme.txt</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
           <GroupName>OS</GroupName>
+          <GroupOption>
+            <CommonProperty>
+              <UseCPPCompiler>0</UseCPPCompiler>
+              <RVCTCodeConst>0</RVCTCodeConst>
+              <RVCTZI>0</RVCTZI>
+              <RVCTOtherData>0</RVCTOtherData>
+              <ModuleSelection>0</ModuleSelection>
+              <IncludeInBuild>1</IncludeInBuild>
+              <AlwaysBuild>2</AlwaysBuild>
+              <GenerateAssemblyFile>2</GenerateAssemblyFile>
+              <AssembleAssemblyFile>2</AssembleAssemblyFile>
+              <PublicsOnly>2</PublicsOnly>
+              <StopOnExitCode>11</StopOnExitCode>
+              <CustomArgument></CustomArgument>
+              <IncludeLibraryModules></IncludeLibraryModules>
+              <ComprImg>1</ComprImg>
+              <BankNo>65535</BankNo>
+            </CommonProperty>
+            <Group51>
+              <C51>
+                <RegisterColoring>2</RegisterColoring>
+                <VariablesInOrder>2</VariablesInOrder>
+                <IntegerPromotion>2</IntegerPromotion>
+                <uAregs>2</uAregs>
+                <UseInterruptVector>2</UseInterruptVector>
+                <Fuzzy>8</Fuzzy>
+                <Optimize>10</Optimize>
+                <WarningLevel>3</WarningLevel>
+                <SizeSpeed>2</SizeSpeed>
+                <ObjectExtend>2</ObjectExtend>
+                <ACallAJmp>2</ACallAJmp>
+                <InterruptVectorAddress>0</InterruptVectorAddress>
+                <VariousControls>
+                  <MiscControls></MiscControls>
+                  <Define></Define>
+                  <Undefine></Undefine>
+                  <IncludePath></IncludePath>
+                </VariousControls>
+              </C51>
+              <Ax51>
+                <UseMpl>2</UseMpl>
+                <UseStandard>2</UseStandard>
+                <UseCase>2</UseCase>
+                <UseMod51>2</UseMod51>
+                <VariousControls>
+                  <MiscControls></MiscControls>
+                  <Define></Define>
+                  <Undefine></Undefine>
+                  <IncludePath></IncludePath>
+                </VariousControls>
+              </Ax51>
+            </Group51>
+          </GroupOption>
           <Files>
             <File>
               <FileName>Conf_tny.A51</FileName>
@@ -638,7 +696,7 @@
               <RVCTZI>0</RVCTZI>
               <RVCTOtherData>0</RVCTOtherData>
               <ModuleSelection>0</ModuleSelection>
-              <IncludeInBuild>2</IncludeInBuild>
+              <IncludeInBuild>0</IncludeInBuild>
               <AlwaysBuild>2</AlwaysBuild>
               <GenerateAssemblyFile>2</GenerateAssemblyFile>
               <AssembleAssemblyFile>2</AssembleAssemblyFile>
@@ -694,7 +752,7 @@
               <RVCTZI>0</RVCTZI>
               <RVCTOtherData>0</RVCTOtherData>
               <ModuleSelection>0</ModuleSelection>
-              <IncludeInBuild>2</IncludeInBuild>
+              <IncludeInBuild>1</IncludeInBuild>
               <AlwaysBuild>2</AlwaysBuild>
               <GenerateAssemblyFile>2</GenerateAssemblyFile>
               <AssembleAssemblyFile>2</AssembleAssemblyFile>
@@ -776,6 +834,11 @@
               <FileType>1</FileType>
               <FilePath>..\HARDWARE\SENSOR\ANGLE\ANGLE.C</FilePath>
             </File>
+            <File>
+              <FileName>Readme.txt.txt</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\HARDWARE\Readme.txt.txt</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -787,7 +850,7 @@
               <RVCTZI>0</RVCTZI>
               <RVCTOtherData>0</RVCTOtherData>
               <ModuleSelection>0</ModuleSelection>
-              <IncludeInBuild>2</IncludeInBuild>
+              <IncludeInBuild>1</IncludeInBuild>
               <AlwaysBuild>2</AlwaysBuild>
               <GenerateAssemblyFile>2</GenerateAssemblyFile>
               <AssembleAssemblyFile>2</AssembleAssemblyFile>
@@ -850,11 +913,6 @@
               <FilePath>..\HARDWARE\COMMON_HARDWARE\L298N\MT_1_L298N.c</FilePath>
             </File>
             <File>
-              <FileName>MPU6050.C</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\HARDWARE\COMMON_HARDWARE\MPU6050\MPU6050.C</FilePath>
-            </File>
-            <File>
               <FileName>MPU9250.C</FileName>
               <FileType>1</FileType>
               <FilePath>..\HARDWARE\COMMON_HARDWARE\MPU9250\MPU9250.C</FilePath>
@@ -874,6 +932,16 @@
               <FileType>1</FileType>
               <FilePath>..\HARDWARE\COMMON_HARDWARE\TM1638\TM1638.c</FilePath>
             </File>
+            <File>
+              <FileName>Readme.txt</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\HARDWARE\COMMON_HARDWARE\Readme.txt</FilePath>
+            </File>
+            <File>
+              <FileName>ADS1115.C</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\HARDWARE\COMMON_HARDWARE\ADS1115\ADS1115.C</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -885,7 +953,7 @@
               <RVCTZI>0</RVCTZI>
               <RVCTOtherData>0</RVCTOtherData>
               <ModuleSelection>0</ModuleSelection>
-              <IncludeInBuild>2</IncludeInBuild>
+              <IncludeInBuild>1</IncludeInBuild>
               <AlwaysBuild>2</AlwaysBuild>
               <GenerateAssemblyFile>2</GenerateAssemblyFile>
               <AssembleAssemblyFile>2</AssembleAssemblyFile>
@@ -986,6 +1054,11 @@
               <FileName>USART1.C</FileName>
               <FileType>1</FileType>
               <FilePath>..\HARDWARE\COMMON_HARDWARE\BSP\USART1\USART1.C</FilePath>
+            </File>
+            <File>
+              <FileName>Readme.txt</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\HARDWARE\COMMON_HARDWARE\BSP\Readme.txt</FilePath>
             </File>
           </Files>
         </Group>

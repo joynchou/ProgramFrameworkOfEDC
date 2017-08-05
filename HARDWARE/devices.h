@@ -10,5 +10,6 @@
 #include "MOTOR/SERVO/SERVO.H"
 #include "MOTOR/STEP_MOTOR/STEP_MOTOR.H"
 #include "SENSOR/ANGLE/ANGLE.h"
+#include "WIRELESS/NRF24L01/NRF24L01.H"
 
 #endif

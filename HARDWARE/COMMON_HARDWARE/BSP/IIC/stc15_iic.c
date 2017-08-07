@@ -1,11 +1,12 @@
+
 /************************************************************
-* ÎÄ¼þÃû³Æ: µç×Ó´óÈü³ÌÐò¿ò¼Ü\HARDWARE\COMMON_HARDWARE\BSP\IIC\STC15_IIC.C
-* ×÷Õß:
-* °æ±¾:
-* ÈÕÆÚ:     2017/08/03
-* ÃèÊö:iicµÄÈí¼þÇý¶¯³ÌÐò
-* ÀúÊ·ÐÞ¸Ä¼ÇÂ¼:
-* <×÷Õß> <Ê±¼ä> <°æ±¾ > <ÃèÊö>
+* æ–‡ä»¶åç§°: ç”µå­å¤§èµ›ç¨‹åºæ¡†æž¶\HARDWARE\COMMON_HARDWARE\BSP\IIC\STC15_IIC.C
+* ä½œè€…:
+* ç‰ˆæœ¬:
+* æ—¥æœŸ:     2017/08/03
+* æè¿°:iicçš„è½¯ä»¶é©±åŠ¨ç¨‹åº
+* åŽ†å²ä¿®æ”¹è®°å½•:
+* <ä½œè€…> <æ—¶é—´> <ç‰ˆæœ¬ > <æè¿°>
 *
 ***********************************************************/
 
@@ -13,10 +14,10 @@
 #include <stdio.h>
 #include "../USART1/USART1.h"
 /* ***************************************************** */
-// º¯ÊýÃû³Æ£ºDelay5US()
-// º¯Êý¹¦ÄÜ£º5Î¢ÃëÑÓÊ±,Èç¹û×Ô¼ºµÄÖ÷ÆµÓÐ±ä£¬Çë×ÔÐÐÐÞ¸Ä
-// Èë¿Ú²ÎÊý£ºÎÞ
-// ³ö¿Ú²ÎÊý£ºÎÞ
+// å‡½æ•°åç§°ï¼šDelay5US()
+// å‡½æ•°åŠŸèƒ½ï¼š5å¾®ç§’å»¶æ—¶,å¦‚æžœè‡ªå·±çš„ä¸»é¢‘æœ‰å˜ï¼Œè¯·è‡ªè¡Œä¿®æ”¹
+// å…¥å£å‚æ•°ï¼šæ— 
+// å‡ºå£å‚æ•°ï¼šæ— 
 /* ***************************************************** */
 void Delay5US(void)     //@24MHz
 {
@@ -29,10 +30,10 @@ void Delay5US(void)     //@24MHz
 	while (--i);
 }
 /* ***************************************************** */
-// º¯ÊýÃû³Æ£ºIIC_Start()
-// º¯Êý¹¦ÄÜ£ºIICÆð¶¯
-// Èë¿Ú²ÎÊý£ºÎÞ
-// ³ö¿Ú²ÎÊý£ºÎÞ
+// å‡½æ•°åç§°ï¼šIIC_Start()
+// å‡½æ•°åŠŸèƒ½ï¼šIICèµ·åŠ¨
+// å…¥å£å‚æ•°ï¼šæ— 
+// å‡ºå£å‚æ•°ï¼šæ— 
 /* ***************************************************** */
 void IIC_Start(void)
 {
@@ -44,10 +45,10 @@ void IIC_Start(void)
 	Delay5US();
 }
 /* ***************************************************** */
-// º¯ÊýÃû³Æ£ºIIC_Stop()
-// º¯Êý¹¦ÄÜ£ºIICÍ£Ö¹
-// Èë¿Ú²ÎÊý£ºÎÞ
-// ³ö¿Ú²ÎÊý£ºÎÞ
+// å‡½æ•°åç§°ï¼šIIC_Stop()
+// å‡½æ•°åŠŸèƒ½ï¼šIICåœæ­¢
+// å…¥å£å‚æ•°ï¼šæ— 
+// å‡ºå£å‚æ•°ï¼šæ— 
 /* ***************************************************** */
 void IIC_Stop(void)
 {
@@ -58,27 +59,27 @@ void IIC_Stop(void)
 	SDA = 1;
 }
 /* ***************************************************** */
-// º¯ÊýÃû³Æ£ºIIC_Ack()
-// º¯Êý¹¦ÄÜ£ºIICÓ¦´ð
-// Èë¿Ú²ÎÊý£ºÎÞ
-// ³ö¿Ú²ÎÊý£ºÎÞ
+// å‡½æ•°åç§°ï¼šIIC_Ack()
+// å‡½æ•°åŠŸèƒ½ï¼šIICåº”ç­”
+// å…¥å£å‚æ•°ï¼šæ— 
+// å‡ºå£å‚æ•°ï¼šæ— 
 /* ***************************************************** */
 void IIC_Ack(void)
 {
-	SCL = 0;                // Îª²úÉúÂö³å×¼±¸
-	SDA = 0;                // ²úÉúÓ¦´ðÐÅºÅ
-	Delay5US();             // ÑÓÊ±Äã¶®µÃ
+	SCL = 0;                // ä¸ºäº§ç”Ÿè„‰å†²å‡†å¤‡
+	SDA = 0;                // äº§ç”Ÿåº”ç­”ä¿¡å·
+	Delay5US();             // å»¶æ—¶ä½ æ‡‚å¾—
 	SCL = 1;
 	Delay5US();
 	SCL = 0;
-	Delay5US();     // ²úÉú¸ßÂö³å
-	SDA = 1;                // ÊÍ·Å×ÜÏß
+	Delay5US();     // äº§ç”Ÿé«˜è„‰å†²
+	SDA = 1;                // é‡Šæ”¾æ€»çº¿
 }
 /* ***************************************************** */
-// º¯ÊýÃû³Æ£ºIIC_RdAck()
-// º¯Êý¹¦ÄÜ£º¶ÁIICÓ¦´ð
-// Èë¿Ú²ÎÊý£ºÎÞ
-// ³ö¿Ú²ÎÊý£ºÊÇ·ñÓ¦´ðÕæÖµ
+// å‡½æ•°åç§°ï¼šIIC_RdAck()
+// å‡½æ•°åŠŸèƒ½ï¼šè¯»IICåº”ç­”
+// å…¥å£å‚æ•°ï¼šæ— 
+// å‡ºå£å‚æ•°ï¼šæ˜¯å¦åº”ç­”çœŸå€¼
 /* ***************************************************** */
 BOOL IIC_RdAck(void)
 {
@@ -95,13 +96,13 @@ BOOL IIC_RdAck(void)
 		AckFlag = SDA;
 	}
 	SCL = 0;
-	return AckFlag;     // Ó¦´ð·µ»Ø£º0;²»Ó¦´ð·µ»Ø£º1
+	return AckFlag;     // åº”ç­”è¿”å›žï¼š0;ä¸åº”ç­”è¿”å›žï¼š1
 }
 /* ***************************************************** */
-// º¯ÊýÃû³Æ£ºIIC_Nack()
-// º¯Êý¹¦ÄÜ£ºIIC²»Ó¦´ð
-// Èë¿Ú²ÎÊý£ºÎÞ
-// ³ö¿Ú²ÎÊý£ºÎÞ
+// å‡½æ•°åç§°ï¼šIIC_Nack()
+// å‡½æ•°åŠŸèƒ½ï¼šIICä¸åº”ç­”
+// å…¥å£å‚æ•°ï¼šæ— 
+// å‡ºå£å‚æ•°ï¼šæ— 
 /* ***************************************************** */
 void IIC_Nack(void)
 {
@@ -113,10 +114,10 @@ void IIC_Nack(void)
 	SCL = 0;
 }
 /* ***************************************************** */
-// º¯ÊýÃû³Æ£ºOutputOneByte()
-// º¯Êý¹¦ÄÜ£º´ÓIICÆ÷¼þÖÐ¶Á³öÒ»¸ö×Ö½Ú
-// Èë¿Ú²ÎÊý£ºÎÞ
-// ³ö¿Ú²ÎÊý£º¶Á³öµÄÒ»¸ö×Ö½Ú£¨uByteVal£©
+// å‡½æ•°åç§°ï¼šOutputOneByte()
+// å‡½æ•°åŠŸèƒ½ï¼šä»ŽIICå™¨ä»¶ä¸­è¯»å‡ºä¸€ä¸ªå­—èŠ‚
+// å…¥å£å‚æ•°ï¼šæ— 
+// å‡ºå£å‚æ•°ï¼šè¯»å‡ºçš„ä¸€ä¸ªå­—èŠ‚ï¼ˆuByteValï¼‰
 /* ***************************************************** */
 u8 OutputOneByte(void)
 {
@@ -139,33 +140,33 @@ u8 OutputOneByte(void)
 	//    return(uByteVal);
 	u8 str[8];
 	unsigned char i;
-	unsigned char Data = 0;       //¶¨ÒåÒ»¸ö»º³å¼Ä´æÆ÷¡£
-	for (i = 0; i < 8; i++)//ÓÐ8Î»Êý¾Ý
+	unsigned char Data = 0;       //å®šä¹‰ä¸€ä¸ªç¼“å†²å¯„å­˜å™¨ã€‚
+	for (i = 0; i < 8; i++)//æœ‰8ä½æ•°æ®
 	{
-		SCL = 1;//À­¸ßÊ±ÖÓÏß£¬Îª¶ÁÈ¡ÏÂÒ»Î»Êý¾Ý×ö×¼±¸¡£
+		SCL = 1;//æ‹‰é«˜æ—¶é’Ÿçº¿ï¼Œä¸ºè¯»å–ä¸‹ä¸€ä½æ•°æ®åšå‡†å¤‡ã€‚
 		Delay5US();
-		Data = Data << 1;//½«»º³å×Ö½ÚµÄÊý¾Ý×óÒÆÒ»Î»£¬×¼±¸¶ÁÈ¡Êý¾Ý¡£
+		Data = Data << 1;//å°†ç¼“å†²å­—èŠ‚çš„æ•°æ®å·¦ç§»ä¸€ä½ï¼Œå‡†å¤‡è¯»å–æ•°æ®ã€‚
 		Delay5US();
-		if (SDA == 1)//Èç¹ûÊý¾ÝÏßÎª¸ßÆ½µçÆ½¡£
+		if (SDA == 1)//å¦‚æžœæ•°æ®çº¿ä¸ºé«˜å¹³ç”µå¹³ã€‚
 		{
-			Data = Data | 0x1;//Ôò¸ø»º³å×Ö½ÚµÄ×îµÍÎ»Ð´1¡£
+			Data = Data | 0x1;//åˆ™ç»™ç¼“å†²å­—èŠ‚çš„æœ€ä½Žä½å†™1ã€‚
 		}
 		else
 		{
 			Data = Data | 0x0;//
 		}
 
-		SCL = 0;//À­µÍÊ±ÖÓÏß£¬Îª¶ÁÈ¡ÏÂÒ»Î»Êý¾Ý×ö×¼±¸¡£
+		SCL = 0;//æ‹‰ä½Žæ—¶é’Ÿçº¿ï¼Œä¸ºè¯»å–ä¸‹ä¸€ä½æ•°æ®åšå‡†å¤‡ã€‚
 		Delay5US();
 	}
 
-	return Data;//·µ»Ø¶ÁÈ¡µÄÒ»¸ö×Ö½ÚÊý¾Ý¡£
+	return Data;//è¿”å›žè¯»å–çš„ä¸€ä¸ªå­—èŠ‚æ•°æ®ã€‚
 }
 /* ***************************************************** */
-// º¯ÊýÃû³Æ£ºInputOneByte()
-// º¯Êý¹¦ÄÜ£ºÏòIICÆ÷¼þÐ´ÈëÒ»¸ö×Ö½Ú
-// Èë¿Ú²ÎÊý£º´ýÐ´ÈëµÄÒ»¸ö×Ö½Ú£¨uByteVal£©
-// ³ö¿Ú²ÎÊý£ºÎÞ
+// å‡½æ•°åç§°ï¼šInputOneByte()
+// å‡½æ•°åŠŸèƒ½ï¼šå‘IICå™¨ä»¶å†™å…¥ä¸€ä¸ªå­—èŠ‚
+// å…¥å£å‚æ•°ï¼šå¾…å†™å…¥çš„ä¸€ä¸ªå­—èŠ‚ï¼ˆuByteValï¼‰
+// å‡ºå£å‚æ•°ï¼šæ— 
 /* ***************************************************** */
 void InputOneByte(u8 uByteVal)
 {
@@ -183,32 +184,32 @@ void InputOneByte(u8 uByteVal)
 	SCL = 0;
 }
 /* ***************************************************** */
-// º¯ÊýÃû³Æ£ºIIC_WrDevAddAndDatAdd()
-// º¯Êý¹¦ÄÜ£ºÏòIICÆ÷¼þÐ´ÈëÆ÷¼þºÍÊý¾ÝµØÖ·
-// Èë¿Ú²ÎÊý£ºÆ÷¼þµØÖ·£¨uDevAdd£©£¬Êý¾ÝµØÖ·£¨uDatAdd£©
-// ³ö¿Ú²ÎÊý£ºÐ´ÈëÊÇ·ñ³É¹¦ÕæÖµ
+// å‡½æ•°åç§°ï¼šIIC_WrDevAddAndDatAdd()
+// å‡½æ•°åŠŸèƒ½ï¼šå‘IICå™¨ä»¶å†™å…¥å™¨ä»¶å’Œæ•°æ®åœ°å€
+// å…¥å£å‚æ•°ï¼šå™¨ä»¶åœ°å€ï¼ˆuDevAddï¼‰ï¼Œæ•°æ®åœ°å€ï¼ˆuDatAddï¼‰
+// å‡ºå£å‚æ•°ï¼šå†™å…¥æ˜¯å¦æˆåŠŸçœŸå€¼
 /* ***************************************************** */
 BOOL IIC_WrDevAddAndDatAdd(u8 uDevAdd, u8 uDatAdd)
 {
-	IIC_Start();            // ·¢ËÍ¿ªÊ¼ÐÅºÅ
-	InputOneByte(uDevAdd);  // ÊäÈëÆ÷¼þµØÖ·
-	IIC_RdAck();            // ¶ÁÓ¦´ðÐÅºÅ
-	InputOneByte(uDatAdd);  // ÊäÈëÊý¾ÝµØÖ·
-	IIC_RdAck();            // ¶ÁÓ¦´ðÐÅºÅ
+	IIC_Start();            // å‘é€å¼€å§‹ä¿¡å·
+	InputOneByte(uDevAdd);  // è¾“å…¥å™¨ä»¶åœ°å€
+	IIC_RdAck();            // è¯»åº”ç­”ä¿¡å·
+	InputOneByte(uDatAdd);  // è¾“å…¥æ•°æ®åœ°å€
+	IIC_RdAck();            // è¯»åº”ç­”ä¿¡å·
 	return TRUE;
 }
 /* ***************************************************** */
-// º¯ÊýÃû³Æ£ºIIC_WrDatToAdd()
-// º¯Êý¹¦ÄÜ£ºÏòIICÆ÷¼þÐ´Êý¾Ý
-// Èë¿Ú²ÎÊý£ºÆ÷¼þID(uDevID)¡¢Êý¾Ý´æ´¢ÆðÊ¼µØÖ·(uStaAddVal)
-//           ´ý´æÊý¾Ý(*p)¡¢Á¬Ðø´æ´¢Êý¾ÝµÄ¸öÊý(uiLenVal)
-// ³ö¿Ú²ÎÊý£ºÎÞ
+// å‡½æ•°åç§°ï¼šIIC_WrDatToAdd()
+// å‡½æ•°åŠŸèƒ½ï¼šå‘IICå™¨ä»¶å†™æ•°æ®
+// å…¥å£å‚æ•°ï¼šå™¨ä»¶ID(uDevID)ã€æ•°æ®å­˜å‚¨èµ·å§‹åœ°å€(uStaAddVal)
+//           å¾…å­˜æ•°æ®(*p)ã€è¿žç»­å­˜å‚¨æ•°æ®çš„ä¸ªæ•°(uiLenVal)
+// å‡ºå£å‚æ•°ï¼šæ— 
 /* ***************************************************** */
 void IIC_WrDatToAdd(u8 uDevID, u8 uStaAddVal, u8 *p, u8 ucLenVal)
 {
 	u8 iCount;
 	IIC_WrDevAddAndDatAdd(uDevID | IIC_WRITE, uStaAddVal);
-	// IIC_WRITE ÎªÐ´ÃüÁîºó×º·û
+	// IIC_WRITE ä¸ºå†™å‘½ä»¤åŽç¼€ç¬¦
 	for (iCount = 0; iCount < ucLenVal; iCount++)
 	{
 		InputOneByte(*p++);
@@ -217,11 +218,11 @@ void IIC_WrDatToAdd(u8 uDevID, u8 uStaAddVal, u8 *p, u8 ucLenVal)
 	IIC_Stop();
 }
 /* ***************************************************** */
-// º¯ÊýÃû³Æ£ºIIC_RdDatFromAdd()
-// º¯Êý¹¦ÄÜ£ºÏòIICÆ÷¼þ¶ÁÊý¾Ý
-// Èë¿Ú²ÎÊý£ºÆ÷¼þID(uDevID)¡¢Êý¾Ý´æ´¢µØÖ·(uStaAddVal)
-//           ´ý´æÊý¾Ý(*p)¡¢Á¬Ðø´æ´¢Êý¾ÝµÄ¸öÊý(uiLenVal)
-// ³ö¿Ú²ÎÊý£ºÎÞ
+// å‡½æ•°åç§°ï¼šIIC_RdDatFromAdd()
+// å‡½æ•°åŠŸèƒ½ï¼šå‘IICå™¨ä»¶è¯»æ•°æ®
+// å…¥å£å‚æ•°ï¼šå™¨ä»¶ID(uDevID)ã€æ•°æ®å­˜å‚¨åœ°å€(uStaAddVal)
+//           å¾…å­˜æ•°æ®(*p)ã€è¿žç»­å­˜å‚¨æ•°æ®çš„ä¸ªæ•°(uiLenVal)
+// å‡ºå£å‚æ•°ï¼šæ— 
 /* ***************************************************** */
 void IIC_RdDatFromAdd(u8 uDevID, u8 uStaAddVal, u8 *p, u8 uiLenVal)
 {
@@ -229,7 +230,7 @@ void IIC_RdDatFromAdd(u8 uDevID, u8 uStaAddVal, u8 *p, u8 uiLenVal)
 	IIC_WrDevAddAndDatAdd(uDevID | IIC_WRITE, uStaAddVal);
 	IIC_Start();
 	InputOneByte(uDevID | IIC_READ);
-	// IIC_READ ÎªÐ´ÃüÁîºó×º·û
+	// IIC_READ ä¸ºå†™å‘½ä»¤åŽç¼€ç¬¦
 	IIC_RdAck();
 	for (iCount = 0; iCount < uiLenVal; iCount++)
 	{
@@ -242,3 +243,4 @@ void IIC_RdDatFromAdd(u8 uDevID, u8 uStaAddVal, u8 *p, u8 uiLenVal)
 	IIC_Nack();
 	IIC_Stop();
 }
+

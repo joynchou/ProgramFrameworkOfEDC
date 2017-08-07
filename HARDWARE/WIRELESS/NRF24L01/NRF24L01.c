@@ -42,7 +42,7 @@ u8 const RX_ADDRESS[RX_ADR_WIDTH] = {0x34,0x43,0x10,0x10,0x01};	//接收地址
 #define RX_PW_P5        0x16  // 接收频道0接收数据长度
 #define FIFO_STATUS     0x17  // FIFO栈入栈出状态寄存器设置
 //************************************************************************************
-
+/*
 void NRF24L01_TX_Init(void)
 {
  	CE=0;    // chip enable
@@ -76,6 +76,87 @@ void NRF24L01_RX_Init(void)
 	delay_us(20);
 }
 
+void NRF24L01_Half_duplex(void)
+{
+	 	CE=0;    // chip enable
+ 	CSN=1;   // Spi  disable 
+ 	SCK=0;   // 
+	SPI_Write_Buf(WRITE_REG + TX_ADDR, TX_ADDRESS, TX_ADR_WIDTH);    // 写本地地址	
+	SPI_Write_Buf(WRITE_REG + RX_ADDR_P0, RX_ADDRESS, RX_ADR_WIDTH); // 写接收端地址
+	SPI_RW_Reg(WRITE_REG + EN_AA, 0x01);      //  频道0自动	ACK应答允许	
+	SPI_RW_Reg(WRITE_REG + EN_RXADDR, 0x01);  //  允许接收地址只有频道0，如果需要多频道可以参考Page21
+//	SPI_RW_Reg(WRITE_REG + SETUP_RETR,0x1a);//设置重发次  
+	SPI_RW_Reg(WRITE_REG + RF_CH, 0);	//   设置信道工作为2.4GHZ，收发必须一致数
+	SPI_RW_Reg(WRITE_REG + RF_SETUP, 0x07);   		//设置发射速率为1MB/S，发射功率为最大值+7dB，由于有X2401L功放，实际+21dbm输出
+	SPI_RW_Reg(WRITE_REG + RX_PW_P0, RX_PLOAD_WIDTH); //设置接收数据长度，本次设置为32字节
+}*/
+
+void NRF24L01_Init(u8 mode)
+{
+	if(mode == RX_MODE)
+	{
+		CE=0;    // chip enable
+		CSN=1;   // Spi  disable 
+		SCK=0;   // 
+	//	SPI_Write_Buf(WRITE_REG + TX_ADDR, TX_ADDRESS, TX_ADR_WIDTH);    // 写本地地址	
+		SPI_Write_Buf(WRITE_REG + RX_ADDR_P0, RX_ADDRESS, RX_ADR_WIDTH); // 写接收端地址
+		SPI_RW_Reg(WRITE_REG + EN_AA, 0x01);      //  频道0自动	ACK应答允许	
+		SPI_RW_Reg(WRITE_REG + EN_RXADDR, 0x01);  //  允许接收地址只有频道0，如果需要多频道可以参考Page21  
+		SPI_RW_Reg(WRITE_REG + RF_CH, 0);        //   设置信道工作为2.4GHZ，收发必须一致
+		SPI_RW_Reg(WRITE_REG + RX_PW_P0, RX_PLOAD_WIDTH); //设置接收数据长度，本次设置为32字节
+		SPI_RW_Reg(WRITE_REG + RF_SETUP, 0x07);   		//设置发射速率为1MB/S，发射功率为最大值+7dB，由于有X2401L功放，实际+21dbm输出 
+		SPI_RW_Reg(WRITE_REG + CONFIG, 0x0f); //IRQ收发完成中断响应，16位CRC	，主接收
+		delay_us(20);
+	}
+	else if(mode == TX_MODE)
+	{
+		CE=0;    // chip enable
+		CSN=1;   // Spi  disable 
+		SCK=0;   // 
+		SPI_Write_Buf(WRITE_REG + TX_ADDR, TX_ADDRESS, TX_ADR_WIDTH);    // 写本地地址	
+		SPI_Write_Buf(WRITE_REG + RX_ADDR_P0, RX_ADDRESS, RX_ADR_WIDTH); // 写接收端地址
+		SPI_RW_Reg(WRITE_REG + EN_AA, 0x01);      //  频道0自动	ACK应答允许	
+		SPI_RW_Reg(WRITE_REG + EN_RXADDR, 0x01);  //  允许接收地址只有频道0，如果需要多频道可以参考Page21
+	//	SPI_RW_Reg(WRITE_REG + SETUP_RETR,0x1a);//设置重发次  
+		SPI_RW_Reg(WRITE_REG + RF_CH, 0);	//   设置信道工作为2.4GHZ，收发必须一致数
+		SPI_RW_Reg(WRITE_REG + RF_SETUP, 0x07);   		//设置发射速率为1MB/S，发射功率为最大值+7dB，由于有X2401L功放，实际+21dbm输出
+		SPI_RW_Reg(WRITE_REG + RX_PW_P0, RX_PLOAD_WIDTH); //设置接收数据长度，本次设置为32字节
+		SPI_RW_Reg(WRITE_REG + CONFIG, 0x0e); //IRQ收发完成中断响应，16位CRC	，主发送
+		delay_us(20);
+	}else if(mode == HALF_DUPLEX)
+	{
+		CE=0;    // chip enable
+		CSN=1;   // Spi  disable 
+		SCK=0;   // 
+		SPI_Write_Buf(WRITE_REG + TX_ADDR, TX_ADDRESS, TX_ADR_WIDTH);    // 写本地地址	
+		SPI_Write_Buf(WRITE_REG + RX_ADDR_P0, RX_ADDRESS, RX_ADR_WIDTH); // 写接收端地址
+		SPI_RW_Reg(WRITE_REG + EN_AA, 0x01);      //  频道0自动	ACK应答允许	
+		SPI_RW_Reg(WRITE_REG + EN_RXADDR, 0x01);  //  允许接收地址只有频道0，如果需要多频道可以参考Page21
+	//	SPI_RW_Reg(WRITE_REG + SETUP_RETR,0x1a);//设置重发次  
+		SPI_RW_Reg(WRITE_REG + RF_CH, 0);	//   设置信道工作为2.4GHZ，收发必须一致数
+		SPI_RW_Reg(WRITE_REG + RF_SETUP, 0x07);   		//设置发射速率为1MB/S，发射功率为最大值+7dB，由于有X2401L功放，实际+21dbm输出
+		SPI_RW_Reg(WRITE_REG + RX_PW_P0, RX_PLOAD_WIDTH); //设置接收数据长度，本次设置为32字节
+	}
+}
+
+void ChoiceHalfDuplexMode(u8 mode)
+{
+	delay_us(500);
+	if(mode == RX_MODE)
+	{
+		CE = 0;
+		SPI_RW_Reg(WRITE_REG + CONFIG, 0x0f);
+		CE = 1;
+		delay_us(20);
+	}
+	else if(mode == TX_MODE)
+	{
+		CE = 0;
+		SPI_RW_Reg(WRITE_REG + CONFIG, 0x0e);
+		CE = 1;
+		delay_us(20);
+	}
+}
 /******************************************************************************************************/
 /*函数：unsigned char nRF24L01_RxPacket(unsigned char* rx_buf)
 /*功能：数据读取后放如rx_buf接收缓冲区中

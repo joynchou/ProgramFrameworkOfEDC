@@ -4,7 +4,6 @@
 ".\FILTER.obj",
 ".\PID.obj",
 ".\DataScope_DP.obj",
-".\Conf_tny.obj",
 ".\BUTTON.obj",
 ".\LCD5510_V2.obj",
 ".\LED.obj",
@@ -12,14 +11,18 @@
 ".\SERVO.obj",
 ".\STEP_MOTOR.obj",
 ".\ANGLE.obj",
-".\74HC595.obj",
+".\phSensor.obj",
+".\liquidometer.obj",
+".\speaker.obj",
 ".\fixedPulser.obj",
 ".\MT_1_L298N.obj",
-".\MPU9250.obj",
 ".\MPU9250_SBUF.obj",
 ".\RELAY.obj",
 ".\TM1638.obj",
 ".\ADS1115.obj",
+".\74HC595.obj",
+".\hc_sr04.obj",
+".\NRF24L01.obj",
 ".\ADC.obj",
 ".\delay.obj",
 ".\stc15_eeprom.obj",
@@ -30,6 +33,7 @@
 ".\stc15_pwm.obj",
 ".\stc15_spi.obj",
 ".\timer.obj",
-".\USART1.obj" 
+".\USART1.obj",
+".\Conf_tny.obj" 
 TO "电子大赛程序框架" Rtx51Tiny 
 RAMSIZE(256) 

@@ -19,11 +19,11 @@
 #include	"stc15_exti.h"
 
 
-/********************* INT0中断函数 *************************/
-void Ext_INT0 (void) interrupt INT0_VECTOR		//进中断时已经清除标志
-{
-	;
-}
+///********************* INT0中断函数 *************************/
+//void Ext_INT0 (void) interrupt INT0_VECTOR		//进中断时已经清除标志
+//{
+//	;
+//}
 
 /********************* INT1中断函数 *************************/
 void Ext_INT1 (void) interrupt INT1_VECTOR		//进中断时已经清除标志

@@ -1,4 +1,4 @@
-C51 COMPILER V8.05a   ABSTASK                                                              08/03/2017 10:04:14 PAGE 1   
+C51 COMPILER V8.05a   ABSTASK                                                              08/07/2017 18:56:53 PAGE 1   
 
 
 C51 COMPILER V8.05a, COMPILATION OF MODULE ABSTASK
@@ -11,59 +11,197 @@ line level    source
    1          #include <stdlib.h>
    2          #include "TASK/task.h"
    3          void taskStart() _task_ 0
-   4          { 
+   4          {
    5   1        setup();
    6   1        blink(4);
-   7   1        //os_create_task(1);
-   8   1        os_create_task(3);
+   7   1        os_create_task(12);
+   8   1      
    9   1        os_delete_task(0);
-  10   1        
+  10   1      
   11   1      }
   12          void printAngleData(void) _task_ 1
   13          {
   14   1        for (;;)
   15   1        {
-  16   2          DataScope_Get_Channel_Data(getJY901Angle(JY901_1,X), 1);
-  17   2          DataScope_Get_Channel_Data(getJY901Angle(JY901_1,Y), 2);
-  18   2          DataScope_Get_Channel_Data(getJY901Angle(JY901_1,Z), 3);
-  19   2      
-  20   2          sendScopeData(3);
-  21   2          os_wait(K_TMO, 30, 0);
-  22   2        }
-  23   1      }
-  24          void dataUpdate(void) _task_ 2
-  25          {
-  26   1         for(;;)
-  27   1        {
-  28   2          LCD_printNum_I(0,0, (int)getJY901Angle(JY901_1, X),4);
-  29   2          LCD_printNum_I(0, 1, (int)getJY901Angle(JY901_1, Y),4);
-  30   2          LCD_printNum_I(0, 2, (int)getJY901Angle(JY901_1, Z),4);
-  31   2          os_wait(K_TMO, 30, 0);
-  32   2      
-  33   2        }
-  34   1        
-  35   1      }
-  36          void printADS1115(void) _task_ 3
-  37          {
-  38   1         for(;;)
-  39   1        {
-  40   2          DataScope_Get_Channel_Data(getADS1115ConvsionData(), 1);
-  41   2              sendScopeData(1);
-  42   2          os_wait(K_TMO, 30, 0);
-  43   2      
-  44   2        }
-  45   1        
-  46   1      }
+  16   2          DataScope_Get_Channel_Data(getJY901Angle(JY901_1, X), 1);
+  17   2          DataScope_Get_Channel_Data(getJY901Angle(JY901_1, Y), 2);
+  18   2          DataScope_Get_Channel_Data(getJY901Angle(JY901_1, Z), 3);
+  19   2          sendScopeData(3);
+  20   2          os_wait(K_TMO, 30, 0);
+  21   2        }
+  22   1      }
+  23          void dataUpdate(void) _task_ 2
+  24          {
+  25   1        for (;;)
+  26   1        {
+  27   2          LCD_printNum_I(0, 0, (int)getJY901Angle(JY901_1, X), 4);
+  28   2          LCD_printNum_I(0, 1, (int)getJY901Angle(JY901_1, Y), 4);
+  29   2          LCD_printNum_I(0, 2, (int)getJY901Angle(JY901_1, Z), 4);
+  30   2          os_wait(K_TMO, 30, 0);
+  31   2      
+  32   2        }
+  33   1      
+  34   1      }
+  35          void printADS1115(void) _task_ 3
+  36          {
+  37   1        for (;;)
+  38   1        {
+  39   2          DataScope_Get_Channel_Data(getADS1115ConvsionData(CHANNEL_1), 1);
+  40   2          DataScope_Get_Channel_Data(getADS1115ConvsionData(CHANNEL_2), 2);
+  41   2          DataScope_Get_Channel_Data(getADS1115ConvsionData(CHANNEL_3), 3);
+  42   2          DataScope_Get_Channel_Data(getADS1115ConvsionData(CHANNEL_4), 4);
+  43   2          sendScopeData(4);
+  44   2          os_wait(K_TMO, 30, 0);
+  45   2      
+  46   2        }
+  47   1      
+  48   1      }
+  49          void Buzz(void) _task_ 8
+  50          {
+  51   1        for (;;)
+  52   1        {
+  53   2      
+  54   2          if (getButtonState(BUTTON3))
+C51 COMPILER V8.05a   ABSTASK                                                              08/07/2017 18:56:53 PAGE 2   
+
+  55   2          {
+  56   3            buzz(2000, 200);
+  57   3      
+  58   3          }
+  59   2          if (getButtonState(BUTTON4))
+  60   2          {
+  61   3            buzzSucceed();
+  62   3          }
+  63   2          if (getButtonState(BUTTON5))
+  64   2          {
+  65   3            buzzFailed();
+  66   3          }
+  67   2          os_wait(K_TMO, 10, 0);
+  68   2        }
+  69   1      
+  70   1      }
+  71          void aButtonScan(void) _task_ 4
+  72          {
+  73   1        for (;;)
+  74   1        {
+  75   2          buttonScan();
+  76   2      
+  77   2      
+  78   2          os_wait(K_TMO, 5, 0);
+  79   2      
+  80   2        }
+  81   1      
+  82   1      }
+  83          void printfButton(void) _task_ 7
+  84          {
+  85   1        for (;;)
+  86   1        {
+  87   2          if (getButtonState(BUTTON1))
+  88   2          {
+  89   3            LCD_printsl(0, 1, "button 1");
+  90   3            os_wait(K_TMO, 200, 0);
+  91   3            LCD_clr_scr();
+  92   3      
+  93   3          }
+  94   2          if (getButtonState(BUTTON2))
+  95   2          {
+  96   3            LCD_printsl(0, 1, "button 2 ");
+  97   3            os_wait(K_TMO, 200, 0);
+  98   3            LCD_clr_scr();
+  99   3      
+ 100   3          }
+ 101   2          os_wait(K_TMO, 5, 0);
+ 102   2        }
+ 103   1      }
+ 104          void printDistance(void) _task_ 5
+ 105          {
+ 106   1        for (;;)
+ 107   1        {
+ 108   2          DataScope_Get_Channel_Data(getdistance(HC_SR04_1), 1);
+ 109   2      
+ 110   2          sendScopeData(1);
+ 111   2          os_wait(K_TMO, 30, 0);
+ 112   2        }
+ 113   1      }
+ 114          void distanceUpdata(void) _task_ 6
+ 115          {
+ 116   1        float time = 0;
+C51 COMPILER V8.05a   ABSTASK                                                              08/07/2017 18:56:53 PAGE 3   
+
+ 117   1        float distance = 0;
+ 118   1      #define TIME 30
+ 119   1        u8 i = 0;
+ 120   1        float Data[TIME + 1];
+ 121   1        for (;;)
+ 122   1        {
+ 123   2          //  for (i = 0; i < TIME; i++)
+ 124   2          {
+ 125   3            updateDistance(HC_SR04_1);
+ 126   3            os_wait(K_TMO, 4, 0);
+ 127   3            //    Data[i] = getTimerValue(HC_SR04_1);
+ 128   3          }
+ 129   2          //Data[TIME] = filter(Data, TIME, 65535.0, 0);
+ 130   2          Data[TIME] = KalmanFilter((double)getTimerValue(HC_SR04_1), 0.00001f, 3.0f, 1);
+ 131   2          time = Data[TIME] * 4.166667e-6;//公式，time的单位为ms，在24mzh下
+ 132   2      
+ 133   2          distance = (time * 340.0f) / 2;
+ 134   2      
+ 135   2          setDistance(HC_SR04_1, distance);
+ 136   2      
+ 137   2      
+ 138   2        }
+ 139   1      }
+ 140          void Distance(void)  _task_ 12
+ 141          {
+ 142   1        float value;
+ 143   1        float actValue;
+ 144   1        float Data[21];
+ 145   1        u8 i = 0;
+ 146   1        for (;;)
+ 147   1        {
+ 148   2          for (i = 0; i < 20; i++)
+ 149   2          {
+ 150   3            updateDistance(HC_SR04_1);
+ 151   3            os_wait(K_TMO, 4, 0);
+ 152   3            actValue = (float)getTimerValue(HC_SR04_1);//原始数据
+ 153   3            value = limitingFilter(actValue, 6000);
+ 154   3            value = shudderingFilter(value, 120);
+ 155   3            value = movingAverageFilter(value);
+ 156   3            Data[i] = value;
+ 157   3          }
+ 158   2          Data[20] = filter(Data, 20, 65535, 0);
+ 159   2            DataScope_Get_Channel_Data(actValue, 1);
+ 160   2            DataScope_Get_Channel_Data(Data[20], 2);
+ 161   2            DataScope_Get_Channel_Data(actValue* 4.166667e-6* 340.0f / 2, 3);
+ 162   2            DataScope_Get_Channel_Data(Data[20] * 4.166667e-6* 340.0f / 2, 4);
+ 163   2            sendScopeData(4);
+ 164   2          
+ 165   2          os_wait(K_TMO, 30, 0);
+ 166   2      
+ 167   2        }
+ 168   1      }
+ 169          void ButtonSound(void) _task_ 10
+ 170          {
+ 171   1        for (;;)
+ 172   1        {
+ 173   2          if (getButtonNum())
+ 174   2          {
+ 175   3            buzzWait();
+ 176   3          }
+ 177   2          os_wait(K_TMO, 5, 0);
+ 178   2        }
+C51 COMPILER V8.05a   ABSTASK                                                              08/07/2017 18:56:53 PAGE 4   
+
+ 179   1      
+ 180   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    210    ----
-   CONSTANT SIZE    =   ----    ----
-   XDATA SIZE       =   ----    ----
+   CODE SIZE        =   1049    ----
+   CONSTANT SIZE    =     19    ----
+   XDATA SIZE       =   ----     226
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----
-C51 COMPILER V8.05a   ABSTASK                                                              08/03/2017 10:04:14 PAGE 2   
-
    IDATA SIZE       =   ----    ----
    BIT SIZE         =   ----    ----
 END OF MODULE INFORMATION.

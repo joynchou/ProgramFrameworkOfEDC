@@ -61,7 +61,7 @@ float getAngle(bit whichAngle)
 			{
 				angleData[angleDataloopTemp1] =  Get_ADC10bitResult(ADC_CH0);
 			}
-	    presentAngle= filter(angleData,10,1024,0);
+	    presentAngle= filter(angleData,10,1024,0);//½«ÖµÂË²¨
         
         lastAngle = presentAngle;
         return presentAngle;

@@ -1,4 +1,4 @@
-#ifndef _COMMON_HD_H_
+ #ifndef _COMMON_HD_H_
 #define _COMMON_HD_H_
 
 #include "BSP/BSP.H"
@@ -9,10 +9,11 @@
 #include "MPU9250/MPU9250.H"
 #include "MPU9250/MPU9250_SBUF.H"
 #include "RELAY/RELAY.H"
-
 #include "TM1638/TM1638.h"
 #include "ADS1115/ADS1115.H"
+#include "DS1302/DS1302.H"
+#include "hc_sr04/hc_sr04.h"
 #include "../SOFTWARE/TASK/COMMON_SOFTWARE/ALGORITHM/DIGITAL_FILTER/FILTER/FILTER.H"
 
-
 #endif
+ 

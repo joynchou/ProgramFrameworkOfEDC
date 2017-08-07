@@ -1,3 +1,4 @@
+
 /************************************************************
 * 组织名称： 电子大赛小组
 * 文件名称: STC15_PWM.C
@@ -54,6 +55,8 @@ void set_PWM_period(u8 PWM_N, u16 Hz)
 	PWM_UNLOCK;
 	PWM_ALL_NO;
 	PWM_SET_PERIOD((u16)(MAIN_Fosc / (Hz*PWM_N_INFO[PWM_N].DIV)));
+	//PWM_SET_PERIOD(5);
+
 	PWM_LOCK;
 
 
@@ -97,6 +100,8 @@ void set_PWM_duty(u8 PWM_N, float duty)
 	PWM_N_INFO[PWM_N].duty = duty;//存储占空比值
 	PWM_UNLOCK;
 	PWM_SET_T12_PERIOD(PWM_N, 10, (u16)(duty *	(MAIN_Fosc / (PWM_N_INFO[PWM_N].period*PWM_N_INFO[PWM_N].DIV))));
+	//PWM_SET_T12_PERIOD(PWM_N, 1,3 );
+
 	PWM_LOCK;
 }
 /*************************************************
@@ -142,7 +147,7 @@ u8 getPWM_DIV(u8 PWM_N)
 // FullName:  open_PWM_ALL
 // Access:    public 
 // Returns:   void
-// Qualifier: 打开所有通道pwm
+// Qualifier:
 // Parameter: void
 //************************************
 void open_PWM_ALL(void)
@@ -156,7 +161,7 @@ void open_PWM_ALL(void)
 // FullName:  close_PWM_ALL
 // Access:    public 
 // Returns:   void
-// Qualifier: 关闭所有通道的PWM
+// Qualifier:
 // Parameter: void
 //************************************
 void close_PWM_ALL(void)
@@ -171,7 +176,7 @@ void close_PWM_ALL(void)
 // FullName:  open_PWM_N
 // Access:    public 
 // Returns:   void
-// Qualifier: 打开pwm_n
+// Qualifier:
 // Parameter: u8 PWM_N
 //************************************
 void open_PWM_N(u8 PWM_N)
@@ -189,7 +194,7 @@ void open_PWM_N(u8 PWM_N)
 // FullName:  close_PWM_N
 // Access:    public 
 // Returns:   void
-// Qualifier: 关闭pwm_n
+// Qualifier:
 // Parameter: u8 PWM_N
 //************************************
 void close_PWM_N(u8 PWM_N)
@@ -205,7 +210,7 @@ void close_PWM_N(u8 PWM_N)
 // FullName:  get_PWM_N_state
 // Access:    public 
 // Returns:   bit
-// Qualifier: 读取PWM_n的状态
+// Qualifier:
 // Parameter: u8 PWM_N
 //************************************
 bit get_PWM_N_state(u8 PWM_N)
@@ -216,7 +221,7 @@ bit get_PWM_N_state(u8 PWM_N)
 
 //========================================================================
 //u8    PWM_Inilize(PWM_InitTypeDef *PWM)
-// 描述:PWM初始化程序，给其他模块需要使用pwm的模块使用
+// 描述:PWM初始化程序
 // 参数:u8 PWM_N:PWM路数标号(2~7) PWM: 结构参数,请参考pwm.h里的定义.
 // 返回: 成功返回0, 错误返回1
 //========================================================================
@@ -546,6 +551,35 @@ void PWM_Inilize(u8 PWM_N, PWM_InitTypeDef *PWMx)
 		PWMCR &= (~(1 << 7));
 	}
 }
+
+void PWM_Init(u8 GPIO_Px,u8 GPIO_Pin_N,u8 PWM_N,u8 PWM_DIV)
+{
+	GPIO_InitTypeDef    GPIO_InitStructure;     //结构定义
+	PWM_InitTypeDef  PWM_InitStructure;
+	GPIO_InitStructure.Mode = GPIO_PullUp;
+	GPIO_InitStructure.Pin = GPIO_Pin_N;    //PWM2
+	GPIO_Inilize(GPIO_Px, &GPIO_InitStructure);  //初始化
+	PWM_UNLOCK;
+	PWM_InitStructure.PWM_GOTO_ADC = DISABLE;
+	PWM_InitStructure.PWM_V_INIT = PWM_LOW;
+	PWM_InitStructure.PWM_0ISR_EN = DISABLE;
+	PWM_InitStructure.PWM_OUT_EN = ENABLE;
+	PWM_InitStructure.PWM_UNUSUAL_EN = DISABLE;
+	PWM_InitStructure.PWM_UNUSUAL_OUT = DISABLE;
+	PWM_InitStructure.PWM_UNUSUAL_ISR_EN = DISABLE;
+	PWM_InitStructure.PWM_UNUSUAL_CMP0_EN = DISABLE;
+	PWM_InitStructure.PWM_UNUSUAL_P24_EN = DISABLE;
+	PWM_InitStructure.PWM_CLOCK = PWM_Clock_NT;
+	PWM_InitStructure.PWM_CLOCK_DIV = PWM_DIV;
+	PWM_InitStructure.PWM_SELECTx_IO = PWM_SELECT_N;
+	PWM_InitStructure.PWM_ISRx_EN = DISABLE;
+	PWM_InitStructure.PWM_T1x_EN = DISABLE;
+	PWM_InitStructure.PWM_T2x_EN = DISABLE;
+	PWM_InitStructure.PWM_EN = DISABLE;
+	PWM_Inilize(PWM_N,&PWM_InitStructure);
+	PWM_LOCK;
+}
+
 //////////////！以下为私有函数，禁止改动！//////////////////////
 //
 //************************************
@@ -633,3 +667,4 @@ static u8 PWM_SET_T12_PERIOD(u8 PWM_N, u16 period1, u16 period2)
 		break;
 	}
 }
+ 

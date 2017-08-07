@@ -58,7 +58,6 @@ unsigned char getTM1638Read(void);
 void Init_TM1638(void);
 unsigned char ButtonNum(void);
 void CloseTM1638Display(void);
-void TM1638LedDisplay(unsigned char data0,unsigned char data1,unsigned char data2,unsigned char data3,
-               unsigned char data4,unsigned char data5,unsigned char data6,unsigned char data7);
+void TM1638LedDisplay(long int value);
 
 #endif

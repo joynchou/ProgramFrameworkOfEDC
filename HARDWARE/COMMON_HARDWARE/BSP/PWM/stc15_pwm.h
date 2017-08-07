@@ -11,6 +11,7 @@
 #ifndef __STC15_PWM_H__
 #define __STC15_PWM_H__
 #include    "../config.h"
+#include "../GPIO/GPIO.H"
 ////PWM对应管脚初始值
 ////i=PWM_2~PWM_7
 //#define PWM_INIT_HIGHT(i)        PWMCFG|=(1<<(i));
@@ -143,12 +144,19 @@ float get_PWM_N_duty(u8 PWM_N);
 
 
 
-
-
-
+/*************************************************
+* 函数名称: void PWM_Init(u8 GPIO_Px,u8 GPIO_Pin_N,u8 PWM_N,u8 PWM_DIV)
+* 描述: 返回PWM_N的占空比信息
+* 输入: 	u8 GPIO_Px 单片机I/O组
+*					u8 GPIO_Pin_N  选定的单片机I/O组中的引脚号
+*					u8 PWM_N
+*					u8 PWM_DIV
+* 输出: 无
+* 返回值: 无
+* 其他说明: 若没有设置pwm的占空比就调用此函数则返回不确定数值；
+*************************************************/
+void PWM_Init(u8 GPIO_Px,u8 GPIO_Pin_N,u8 PWM_N,u8 PWM_DIV);
 void PWM_Inilize(u8 PWM_N, PWM_InitTypeDef *PWMx);
-
-
 static u8 PWM_SET_PERIOD(u16 period);
 static u8 PWM_SET_T12_PERIOD(u8 PWM_N, u16 period1, u16 period2);
 //u8   PWM_SET_PERIOD(u16 period);

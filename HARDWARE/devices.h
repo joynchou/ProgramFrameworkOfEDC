@@ -1,4 +1,4 @@
-/************************************************************
+ /************************************************************
 * 文件名称:电子大赛程序框架\HARDWARE\DEVICES.H
 * 作者: 周晨阳    
 * 版本: 1.0   
@@ -9,7 +9,7 @@
 * 
 ***********************************************************/
 
-#ifndef _DEVICES_H_
+ #ifndef _DEVICES_H_
 #define _DEVICES_H_
 
 #include "COMMON_HARDWARE/common_HD.h"
@@ -21,6 +21,7 @@
 #include "MOTOR/SERVO/SERVO.H"
 #include "MOTOR/STEP_MOTOR/STEP_MOTOR.H"
 #include "SENSOR/ANGLE/ANGLE.h"
+#include "WIRELESS/NRF24L01/NRF24L01.H"
 #include "SPEAKER/speaker.h"
-
 #endif
+ 

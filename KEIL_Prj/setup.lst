@@ -1,4 +1,4 @@
-C51 COMPILER V8.05a   SETUP                                                                08/07/2017 13:44:48 PAGE 1   
+C51 COMPILER V8.05a   SETUP                                                                08/07/2017 18:56:53 PAGE 1   
 
 
 C51 COMPILER V8.05a, COMPILATION OF MODULE SETUP
@@ -62,7 +62,7 @@ line level    source
   52   3            USART1_printf("%d-%d-%d-%d \r\n", (int)time_buf1[3], (int)time_buf1[4], (int)time_buf1[5], (int)time_bu
              -f1[6]);//年月日  %02d 十进制整数 
   53   3            delay_ms(200);
-C51 COMPILER V8.05a   SETUP                                                                08/07/2017 13:44:48 PAGE 2   
+C51 COMPILER V8.05a   SETUP                                                                08/07/2017 18:56:53 PAGE 2   
 
   54   3          }
   55   2        }

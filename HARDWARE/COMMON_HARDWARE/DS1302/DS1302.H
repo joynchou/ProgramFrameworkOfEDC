@@ -13,7 +13,7 @@
 #define _DS1302_H_
 #include "../BSP/BSP.H"
 
-sbit SCK = P1 ^ 1;
+sbit DS_SCK = P1 ^ 1;
 sbit DS_SDA = P1 ^ 3;
 sbit RST = P1 ^ 2;
 //复位脚
@@ -28,8 +28,8 @@ sbit RST = P1 ^ 2;
 
 
 //时钟信号
-#define SCK_CLR	SCK=0//时钟信号
-#define SCK_SET	SCK=1//电平置高
+#define DS_SCK_CLR	DS_SCK=0//时钟信号
+#define DS_SCK_SET	DS_SCK=1//电平置高
 
 
 #define ds1302_sec_add			0x80		//秒数据地址

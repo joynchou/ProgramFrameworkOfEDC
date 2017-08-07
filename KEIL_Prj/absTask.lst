@@ -1,4 +1,4 @@
-C51 COMPILER V8.05a   ABSTASK                                                              08/07/2017 17:31:49 PAGE 1   
+C51 COMPILER V8.05a   ABSTASK                                                              08/07/2017 18:56:53 PAGE 1   
 
 
 C51 COMPILER V8.05a, COMPILATION OF MODULE ABSTASK
@@ -62,7 +62,7 @@ line level    source
   52   1        {
   53   2      
   54   2          if (getButtonState(BUTTON3))
-C51 COMPILER V8.05a   ABSTASK                                                              08/07/2017 17:31:49 PAGE 2   
+C51 COMPILER V8.05a   ABSTASK                                                              08/07/2017 18:56:53 PAGE 2   
 
   55   2          {
   56   3            buzz(2000, 200);
@@ -126,7 +126,7 @@ line level    source
  114          void distanceUpdata(void) _task_ 6
  115          {
  116   1        float time = 0;
-C51 COMPILER V8.05a   ABSTASK                                                              08/07/2017 17:31:49 PAGE 3   
+C51 COMPILER V8.05a   ABSTASK                                                              08/07/2017 18:56:53 PAGE 3   
 
  117   1        float distance = 0;
  118   1      #define TIME 30
@@ -190,7 +190,7 @@ line level    source
  176   3          }
  177   2          os_wait(K_TMO, 5, 0);
  178   2        }
-C51 COMPILER V8.05a   ABSTASK                                                              08/07/2017 17:31:49 PAGE 4   
+C51 COMPILER V8.05a   ABSTASK                                                              08/07/2017 18:56:53 PAGE 4   
 
  179   1      
  180   1      }

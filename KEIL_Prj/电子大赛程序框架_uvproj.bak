@@ -867,11 +867,6 @@
               <FilePath>..\HARDWARE\COMMON_HARDWARE\L298N\MT_1_L298N.c</FilePath>
             </File>
             <File>
-              <FileName>MPU9250.C</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\HARDWARE\COMMON_HARDWARE\MPU9250\MPU9250.C</FilePath>
-            </File>
-            <File>
               <FileName>MPU9250_SBUF.C</FileName>
               <FileType>1</FileType>
               <FilePath>..\HARDWARE\COMMON_HARDWARE\MPU9250\MPU9250_SBUF.C</FilePath>

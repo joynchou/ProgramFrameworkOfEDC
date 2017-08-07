@@ -577,8 +577,8 @@
       <Focus>0</Focus>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\HARDWARE\COMMON_HARDWARE\DS1302\DS1302.C</PathWithFileName>
-      <FilenameWithoutPath>DS1302.C</FilenameWithoutPath>
+      <PathWithFileName>..\HARDWARE\COMMON_HARDWARE\hc_sr04\hc_sr04.c</PathWithFileName>
+      <FilenameWithoutPath>hc_sr04.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -586,12 +586,12 @@
       <GroupNumber>7</GroupNumber>
       <FileNumber>29</FileNumber>
       <FileType>1</FileType>
-      <tvExp>1</tvExp>
+      <tvExp>0</tvExp>
       <Focus>0</Focus>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\HARDWARE\COMMON_HARDWARE\hc_sr04\hc_sr04.c</PathWithFileName>
-      <FilenameWithoutPath>hc_sr04.c</FilenameWithoutPath>
+      <PathWithFileName>..\HARDWARE\WIRELESS\NRF24L01\NRF24L01.c</PathWithFileName>
+      <FilenameWithoutPath>NRF24L01.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>

@@ -112,28 +112,7 @@ void updateDistance(u8 num)
 	Trig = HIGH;//发出脉冲信号
 	delay_us(5);//此函数不太准，3us实际大概
 	Trig = LOW;
-//	if (extiBit == OK)//如果外部中断处理好了，更新距离
-//	{
-//		extiBit = LOW;//取消标志位
-//
-//#ifdef DEBUG
-//
-//
-//			sprintf(str, "timerValue is %f\r\n", (float)timerValue);
-//			PrintString1(str);
-//#endif // DEBUG
-//
-//			//time = hc_sr04[num].timerValue*4.1666666667e-6;//公式，time的单位为ms，在24mzh下
-//
-//			//hc_sr04[num].distance = (time * 340.0f) / 2;
-//#ifdef DEBUG
-//
-//			sprintf(str, "distance is %f\r\n", hc_sr04[num].distance);
-//			PrintString1(str);
-//#endif // DEBUG
-//
-//	}
-}
+ }
 //************************************
 // Method:    getdistance
 // FullName:  getdistance
@@ -145,50 +124,7 @@ void updateDistance(u8 num)
 double getdistance(u8 num)//获取传感器距离
 {
 
-//	//#define FILTER_TIME  10
-//		//static char filterTimer = FILTER_TIME;
-//		//static u16 ValueData[FILTER_TIME ];
-//
-//	static double time;//相应时长，单位ms
-//	if (!hc_sr04[num].state)
-//	{
-//		return 0;
-//	}
-//	ext0Able();
-//
-//	Trig = HIGH;//发出脉冲信号
-//	delay_us(5);//此函数不太准，3us实际大概
-//	Trig = LOW;
-//	if (extiBit == OK)//如果外部中断处理好了，更新距离
-//	{
-//		extiBit = LOW;//取消标志位
-//
-//		//if (filterTimer-- <= 0)
-//		{
-//			//filterTimer = FILTER_TIME;//复位计数器
-//			//timerValue = filter(ValueData, FILTER_TIME, 65535, 1);
-//#ifdef DEBUG
-//
-//
-//			sprintf(str, "timerValue is %f\r\n", (float)timerValue);
-//			PrintString1(str);
-//#endif // DEBUG
-//			time = timerValue*4.1666666667e-6;//公式，time的单位为ms，在24mzh下
-//
-//			hc_sr04[num].distance = (time * 340.0f) / 2;
-//#ifdef DEBUG
-//
-//			sprintf(str, "distance is %f\r\n", hc_sr04[num].distance);
-//			PrintString1(str);
-//#endif // DEBUG
-//		}
-//		//else
-//		{
-//			//	ValueData[FILTER_TIME - filterTimer] = timerValue;
-//		}
-//
-//	}
-
+ 
 	return hc_sr04[num].distance;//如果没有更新数据则返回上一次更新的值，否则返回最近值
 }
 /********************* INT0中断函数 *************************/

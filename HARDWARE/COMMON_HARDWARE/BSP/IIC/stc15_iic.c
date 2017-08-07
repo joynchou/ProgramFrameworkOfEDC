@@ -12,24 +12,6 @@
 * David 96/10/12 1.0 build this moudle
 ***********************************************************/
 #include    "stc15_iic.h"
-#include <stdio.h>
-#include "../USART1/USART1.h"
-/* ***************************************************** */
-// 函数名称：Delay5US()
-// 函数功能：5微秒延时,如果自己的主频有变，请自行修改
-// 入口参数：无
-// 出口参数：无
-/* ***************************************************** */
-void Delay5US(void)     //@24MHz
-{
-   
-unsigned char i;
-
-	_nop_();
-	_nop_();
-	i = 57;
-	while (--i);
-}
 /* ***************************************************** */
 // 函数名称：IIC_Start()
 // 函数功能：IIC起动
@@ -39,11 +21,11 @@ unsigned char i;
 void IIC_Start(void)
 {
     SDA = 1;
-    Delay5US();
+    delay_us(1);
     SCL = 1;
-    Delay5US();
+    delay_us(1);
     SDA = 0;
-    Delay5US();
+    delay_us(1);
 }
 /* ***************************************************** */
 // 函数名称：IIC_Stop()
@@ -54,9 +36,9 @@ void IIC_Start(void)
 void IIC_Stop(void)
 {
     SDA = 0;
-    Delay5US();
+    delay_us(1);
     SCL = 1;
-    Delay5US();
+    delay_us(1);
     SDA =1;
 }
 /* ***************************************************** */
@@ -69,11 +51,11 @@ void IIC_Ack(void)
 {
     SCL = 0;                // 为产生脉冲准备
     SDA = 0;                // 产生应答信号
-    Delay5US();             // 延时你懂得
+    delay_us(1);             // 延时你懂得
     SCL = 1;
-    Delay5US();
+    delay_us(1);
     SCL = 0;
-    Delay5US();     // 产生高脉冲
+    delay_us(1);     // 产生高脉冲
     SDA = 1;                // 释放总线
 }
 /* ***************************************************** */
@@ -87,11 +69,11 @@ BOOL IIC_RdAck(void)
     BOOL AckFlag;
     u8 uiVal = 0;
     SCL = 0;
-    Delay5US();
+    delay_us(1);
     SDA = 1;
     SCL = 1;
-    Delay5US();
-     while((1 == SDA) && (uiVal < 255))
+    delay_us(1);
+    while((1 == SDA) && (uiVal < 255))
     {
         uiVal ++;
         AckFlag = SDA;
@@ -109,9 +91,9 @@ void IIC_Nack(void)
 {
     SDA = 1;
     SCL = 0;
-    Delay5US();
+    delay_us(1);
     SCL = 1;
-    Delay5US();
+    delay_us(1);
     SCL = 0;
 }
 /* ***************************************************** */
@@ -122,47 +104,24 @@ void IIC_Nack(void)
 /* ***************************************************** */
 u8 OutputOneByte(void)
 {
-//    u8 uByteVal = 0;
-//    u8 iCount;
-//    SDA = 1;
-//    for (iCount = 0; iCount < 8; iCount++)
-//    {
-//        SCL = 0;
-//        Delay5US();
-//        SCL = 1;
-//        Delay5US();
-//        uByteVal <<= 1;
-//        if(SDA)
-//        {
-//            uByteVal |= 0x01;
-//        }
-//    }
-//    SCL = 0;
-//    return(uByteVal);
-	u8 str[8];
-		unsigned char i;
-		unsigned char Data=0;       //定义一个缓冲寄存器。
-		for(i=0;i<8;i++)//有8位数据
-				{
-					SCL=1;//拉高时钟线，为读取下一位数据做准备。
-					Delay5US();
-					Data=Data<<1;//将缓冲字节的数据左移一位，准备读取数据。
-					Delay5US();
-					if (SDA==1)//如果数据线为高平电平。
-					{
-						Data = Data | 0x1;//则给缓冲字节的最低位写1。
-          }
-					else
-					{
-						Data = Data | 0x0;//
-					}
-						
-					 SCL=0;//拉低时钟线，为读取下一位数据做准备。
-					 Delay5US();
-				}
-
-    return Data;//返回读取的一个字节数据。
-		}
+    u8 uByteVal = 0;
+    u8 iCount;
+    SDA = 1;
+    for (iCount = 0; iCount < 8; iCount++)
+    {
+        SCL = 0;
+        delay_us(1);
+        SCL = 1;
+        delay_us(1);
+        uByteVal <<= 1;
+        if(SDA)
+        {
+            uByteVal |= 0x01;
+        }
+    }
+    SCL = 0;
+    return(uByteVal);
+}
 /* ***************************************************** */
 // 函数名称：InputOneByte()
 // 函数功能：向IIC器件写入一个字节
@@ -175,11 +134,11 @@ void InputOneByte(u8 uByteVal)
     for(iCount = 0; iCount < 8; iCount++)
     {
         SCL = 0;
-        Delay5US();
+        delay_us(1);
         SDA = (uByteVal & 0x80) >> 7;
-        Delay5US();
+        delay_us(1);
         SCL = 1;
-        Delay5US();
+        delay_us(1);
         uByteVal <<= 1;
     }
     SCL = 0;

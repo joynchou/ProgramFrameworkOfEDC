@@ -1,21 +1,21 @@
 /***********************************************************
-* ×éÖ¯Ãû³Æ£º
-* ÎÄ¼şÃû³Æ: TM1638.c
-* ×÷Õß:  ÏÄÖ¾Ç¿
-* °æ±¾: v1.0
-* ÈÕÆÚ:
-* ÃèÊö: °´¼ü³õÊ¼»¯¼°Ïà¹Øº¯Êı
-* Ö÷Òªº¯Êı¼°Æä¹¦ÄÜ : 
+* ç»„ç»‡åç§°ï¼š
+* æ–‡ä»¶åç§°: TM1638.c
+* ä½œè€…:  å¤å¿—å¼º
+* ç‰ˆæœ¬: v1.0
+* æ—¥æœŸ:
+* æè¿°: æŒ‰é”®åˆå§‹åŒ–åŠç›¸å…³å‡½æ•°
+* ä¸»è¦å‡½æ•°åŠå…¶åŠŸèƒ½ : 
 *
-* ÀúÊ·ĞŞ¸Ä¼ÇÂ¼:
-* 1.0ĞŞ¸ÄÁËgetButtonNumÖĞµÄÑÓ³ÙÊ±³¤£¬´Ó100ms¸ÄÎª500us
-* 1.1ÓÅ»¯ÁË´ËÇı¶¯°´¼üÉ¨ÃègetButtonNum³ÌĞò£¬Ê¹Ö®¸ü¼Ó¿ìËÙ·´Ó¦
-* <×÷Õß> <Ê±¼ä> <°æ±¾ > <ÃèÊö>
+* å†å²ä¿®æ”¹è®°å½•:
+* 1.0ä¿®æ”¹äº†getButtonNumä¸­çš„å»¶è¿Ÿæ—¶é•¿ï¼Œä»100msæ”¹ä¸º500us
+* 1.1ä¼˜åŒ–äº†æ­¤é©±åŠ¨æŒ‰é”®æ‰«ægetButtonNumç¨‹åºï¼Œä½¿ä¹‹æ›´åŠ å¿«é€Ÿååº”
+* <ä½œè€…> <æ—¶é—´> <ç‰ˆæœ¬ > <æè¿°>
 ***********************************************************/
 #include "TM1638.H"
 #include <math.h>
 
-unsigned char data DisBuffer[8]={0,0,0,0,0,0,0,0};    /*ÏÔÊ¾»º´æÇø*/	//¸÷¸öÊıÂë¹ÜÏÔÊ¾µÄÖµ
+unsigned char data DisBuffer[8]={0,0,0,0,0,0,0,0};    /*æ˜¾ç¤ºç¼“å­˜åŒº*/	//å„ä¸ªæ•°ç ç®¡æ˜¾ç¤ºçš„å€¼
 unsigned char code tab[]={0x3F,0x06,0x5B,0x4F,0x66,0x6D,0x7D,0x07,0x7F,0x6F,0x77,0x7C,0x39,0x5E,0x79,0x71,0x40,0xef};
 
 /*typedef struct
@@ -24,14 +24,14 @@ unsigned char code tab[]={0x3F,0x06,0x5B,0x4F,0x66,0x6D,0x7D,0x07,0x7F,0x6F,0x77
 }Tm1638Button;*/
 
 /**********************************************
- *º¯Êı£ºvoid setTM1638Write(unsigned char	DATA)
- *ÃèÊö£ºĞ´Êı¾İ
- *ÊäÈë£ºunsigned char
- *Êä³ö£ºÎŞ
- *·µ»ØÖµ£ºvoid
- *ÆäËûËµÃ÷£º
+ *å‡½æ•°ï¼švoid setTM1638Write(unsigned char	DATA)
+ *æè¿°ï¼šå†™æ•°æ®
+ *è¾“å…¥ï¼šunsigned char
+ *è¾“å‡ºï¼šæ— 
+ *è¿”å›å€¼ï¼švoid
+ *å…¶ä»–è¯´æ˜ï¼š
  **********************************************/
-void setTM1638Write(unsigned char	DATA)			//Ğ´Êı¾İº¯Êı
+void setTM1638Write(unsigned char	DATA)			//å†™æ•°æ®å‡½æ•°
 {
 	unsigned char i;
 	for(i=0;i<8;i++)
@@ -49,18 +49,18 @@ void setTM1638Write(unsigned char	DATA)			//Ğ´Êı¾İº¯Êı
 }
 
 /**********************************************
- *º¯Êı£ºunsigned char getTM1638Read(void)
- *ÃèÊö£º¶ÁÈ¡Êı¾İ
- *ÊäÈë£ºvoid
- *Êä³ö£ºunsigned char
- *·µ»ØÖµ£ºvoid
- *ÆäËûËµÃ÷£º
+ *å‡½æ•°ï¼šunsigned char getTM1638Read(void)
+ *æè¿°ï¼šè¯»å–æ•°æ®
+ *è¾“å…¥ï¼švoid
+ *è¾“å‡ºï¼šunsigned char
+ *è¿”å›å€¼ï¼švoid
+ *å…¶ä»–è¯´æ˜ï¼š
  **********************************************/
-unsigned char getTM1638Read(void)					//¶ÁÊı¾İº¯Êı
+unsigned char getTM1638Read(void)					//è¯»æ•°æ®å‡½æ•°
 {
 	unsigned char i;
 	unsigned char temp=0;
-	TM1638_DIO=1;	//ÉèÖÃÎªÊäÈë
+	TM1638_DIO=1;	//è®¾ç½®ä¸ºè¾“å…¥
 	for(i=0;i<8;i++)
 	{
 		temp>>=1;
@@ -76,14 +76,14 @@ unsigned char getTM1638Read(void)					//¶ÁÊı¾İº¯Êı
 }		
 
 /**********************************************
- *º¯Êı£ºvoid setTM1638COM(unsigned char cmd)
- *ÃèÊö£º·¢ËÍÃüÁî
- *ÊäÈë£ºunsigned char
- *Êä³ö£ºÎŞ
- *·µ»ØÖµ£ºvoid
- *ÆäËûËµÃ÷£º
+ *å‡½æ•°ï¼švoid setTM1638COM(unsigned char cmd)
+ *æè¿°ï¼šå‘é€å‘½ä»¤
+ *è¾“å…¥ï¼šunsigned char
+ *è¾“å‡ºï¼šæ— 
+ *è¿”å›å€¼ï¼švoid
+ *å…¶ä»–è¯´æ˜ï¼š
  **********************************************/
-void setTM1638COM(unsigned char cmd)		//·¢ËÍÃüÁî×Ö
+void setTM1638COM(unsigned char cmd)		//å‘é€å‘½ä»¤å­—
 {
 	TM1638_STB=0;
 	delay_us(1);
@@ -93,12 +93,12 @@ void setTM1638COM(unsigned char cmd)		//·¢ËÍÃüÁî×Ö
 }
 
 /**********************************************
- *º¯Êı£ºunsgined char getButtonNum(void)
- *ÃèÊö£º·µ»Ø°´ÏÂµÄ°´¼ü±àºÅ
- *ÊäÈë£ºvoid
- *Êä³ö£ºunsigned char
- *·µ»ØÖµ£º·µ»Ø°´ÏÂµÄ°´¼ü±àºÅ
- *ÆäËûËµÃ÷£º
+ *å‡½æ•°ï¼šunsgined char getButtonNum(void)
+ *æè¿°ï¼šè¿”å›æŒ‰ä¸‹çš„æŒ‰é”®ç¼–å·
+ *è¾“å…¥ï¼švoid
+ *è¾“å‡ºï¼šunsigned char
+ *è¿”å›å€¼ï¼šè¿”å›æŒ‰ä¸‹çš„æŒ‰é”®ç¼–å·
+ *å…¶ä»–è¯´æ˜ï¼š
  **********************************************/
 unsigned char getButtonNum(void)
 {
@@ -108,7 +108,7 @@ unsigned char getButtonNum(void)
 	delay_us(500);
 	for(i=0;i<4;i++)
 		c[i]=getTM1638Read();
-	TM1638_STB=1;					//4¸ö×Ö½ÚÊı¾İºÏ³ÉÒ»¸ö×Ö½Ú
+	TM1638_STB=1;					//4ä¸ªå­—èŠ‚æ•°æ®åˆæˆä¸€ä¸ªå­—èŠ‚
 	if(c[0]==0x04) key_value=1;
 	else if(c[0]==0x40) key_value=2;
 	else if(c[1]==0x04) key_value=3;
@@ -131,115 +131,34 @@ unsigned char getButtonNum(void)
 }
 
 /**********************************************
- *º¯Êı£ºvoid Init_TM1638(void)
- *ÃèÊö£ºTM1638³õÊ¼»¯
- *ÊäÈë£º
- *Êä³ö£ºÎŞ
- *·µ»ØÖµ£ºvoid
- *ÆäËûËµÃ÷£º
+ *å‡½æ•°ï¼švoid Init_TM1638(void)
+ *æè¿°ï¼šTM1638åˆå§‹åŒ–
+ *è¾“å…¥ï¼š
+ *è¾“å‡ºï¼šæ— 
+ *è¿”å›å€¼ï¼švoid
+ *å…¶ä»–è¯´æ˜ï¼š
  **********************************************/
 void Init_TM1638(void)
 {
 	unsigned char i;
-	setTM1638COM(0x8a);//ÁÁ¶È
-	setTM1638COM(0x8a);//ÁÁ¶È
-	setTM1638COM(0x40); //Ğ´ Êı¾İÃüÁî
+	setTM1638COM(0x8a);//äº®åº¦
+	setTM1638COM(0x8a);//äº®åº¦
+	setTM1638COM(0x40); //å†™ æ•°æ®å‘½ä»¤
 	TM1638_STB=0;
-	setTM1638Write(0xc0);		//Ğ´µØÖ·ÃüÁî
+	setTM1638Write(0xc0);		//å†™åœ°å€å‘½ä»¤
 	for(i=0;i<16;i++)	
 	setTM1638Write(0xff);
 	TM1638_STB=1;
 }
 
 /**********************************************
- *º¯Êı£ºInti_Str_Motor(float,float,float,unsigned int)
- *ÃèÊö£º¶Ô¶æ»ú½øĞĞ³õÊ¼»¯
- *ÊäÈë£º
- *1.plÎª×îµÍ¿É½ÓÊÕµÄÂö³å¿í¶È£¬µ¥Î»Îªms                  
- *2.phÎª×î¸ß¿É½ÓÊÕµÄÂö³å¿í¶È£¬µ¥Î»Îªms                 
- *3.nÎªÂö³å·Ö¼¶
- *Êä³ö£ºÎŞ
- *·µ»ØÖµ£ºvoid
- *ÆäËûËµÃ÷£º
- **********************************************/
-//unsigned char ButtonNum(void)
-//{		
-//   	unsigned char key_value;
-//LedDisplay(1,3,7,0,2,1,0,2);
-//	delay_ms(1000);
-//	delay_ms(250);
-//	delay_ms(250);
-//	delay_ms(250);
-//	delay_ms(250);
-//	
-//   while(1)
-//   {
-//	key_value=getButtonNum();
-//	switch (key_value) 
-//	{ 
-//		case 1: 
-//		TM1638LedDisplay(0,0,0,0,0,0,0,1); 
-//		break; 
-//		case 2 : 
-//		TM1638LedDisplay(0,0,0,0,0,0,0,2);
-//		break; 
-//		case 3 : 
-//		TM1638LedDisplay(0,0,0,0,0,0,0,3);
-//		break; 
-//		case 4 : 
-//		TM1638LedDisplay(0,0,0,0,0,0,0,4);
-//		break; 
-//		case 5 : 
-//		TM1638LedDisplay(0,0,0,0,0,0,0,5);
-//		break; 
-//		case 6 : 
-//		TM1638LedDisplay(0,0,0,0,0,0,0,6);
-//		break;  
-//		case 7 : 
-//		TM1638LedDisplay(0,0,0,0,0,0,0,7);
-//		break; 
-//		case 8 : 
-//		TM1638LedDisplay(0,0,0,0,0,0,0,8);
-//		break;  
-//		case 9: 
-//		TM1638LedDisplay(0,0,0,0,0,0,0,9); 
-//		break; 
-//		case 10 : 
-//		TM1638LedDisplay(0,0,0,0,0,0,1,0);
-//		break; 
-//		case 11 : 
-//		TM1638LedDisplay(0,0,0,0,0,0,1,1);
-//		break; 
-//		case 12 : 
-//		TM1638LedDisplay(0,0,0,0,0,0,1,2);
-//		break; 
-//		case 13 : 
-//		TM1638LedDisplay(0,0,0,0,0,0,1,3);
-//		break; 
-//		case 14 : 
-//		TM1638LedDisplay(0,0,0,0,0,0,1,4);
-//		break;  
-//		case 15: 
-//		TM1638LedDisplay(0,0,0,0,0,0,1,5);
-//		break; 
-//		case 16 : 
-//		TM1638LedDisplay(0,0,0,0,0,0,1,6);
-//		break;  
-//		default : 
-//		break;//TM1638LedDisplay(0,0,0,0,0,0,0,0); 
-//	}
-//	return key_value;
-// }
-//}
-
-/**********************************************
- *º¯Êı£ºvoid NixieLedLight(unsigned char ddata0,unsigned char ddata1,unsigned char ddata2,unsigned char ddata3,
+ *å‡½æ•°ï¼švoid NixieLedLight(unsigned char ddata0,unsigned char ddata1,unsigned char ddata2,unsigned char ddata3,
                unsigned char ddata4,unsigned char ddata5,unsigned char ddata6,unsigned char ddata7)
- *ÃèÊö£ºLEDÏÔÊ¾
- *ÊäÈë£º´Ó¸ßµ½µÍÒÀ´ÎÊäÈëÊıÖµ¿ÉÊ¹LEDÊıÂë¹Ü´Ó¸ßµ½µÍÒÀ´ÎÏÔÊ¾
- *Êä³ö£ºÎŞ
- *·µ»ØÖµ£ºvoid
- *ÆäËûËµÃ÷£º
+ *æè¿°ï¼šLEDæ˜¾ç¤º
+ *è¾“å…¥ï¼šä»é«˜åˆ°ä½ä¾æ¬¡è¾“å…¥æ•°å€¼å¯ä½¿LEDæ•°ç ç®¡ä»é«˜åˆ°ä½ä¾æ¬¡æ˜¾ç¤º
+ *è¾“å‡ºï¼šæ— 
+ *è¿”å›å€¼ï¼švoid
+ *å…¶ä»–è¯´æ˜ï¼š
  **********************************************/
 void NixieLedLight(unsigned char ddata0,unsigned char ddata1,unsigned char ddata2,unsigned char ddata3,
                unsigned char ddata4,unsigned char ddata5,unsigned char ddata6,unsigned char ddata7)
@@ -280,10 +199,10 @@ void NixieLedLight(unsigned char ddata0,unsigned char ddata1,unsigned char ddata
 	writedata7=((tab[data0]&0x80)>>7)+((tab[data1]&0x80)>>6)+((tab[data2]&0x80)>>5)+((tab[data3]&0x80)>>4)+((tab[data4]&0x80)>>3)
 		+((tab[data5]&0x80)>>2)+((tab[data6]&0x80)>>1)+((tab[data7]&0x80));
 
-	setTM1638COM(0x8a);//ÁÁ¶È
-	setTM1638COM(0x40); //Ğ´Êı¾İÃüÁî
+	setTM1638COM(0x8a);//äº®åº¦
+	setTM1638COM(0x40); //å†™æ•°æ®å‘½ä»¤
 	TM1638_STB=0;
-	setTM1638Write(0xc0);		//Ğ´µØÖ·ÃüÁî
+	setTM1638Write(0xc0);		//å†™åœ°å€å‘½ä»¤
 	
 	setTM1638Write(writedata0);
 	setTM1638Write(0x80);
@@ -308,12 +227,12 @@ void NixieLedLight(unsigned char ddata0,unsigned char ddata1,unsigned char ddata
 }
 
 /**********************************************
- *º¯Êı£ºvoid TM1638LedDisplay(long int value)
- *ÃèÊö£ºLEDÏÔÊ¾
- *ÊäÈë£ºlong int value:¿ÉÊäÈë¸ºÕûÊıµ«²»ÄÜÊäÈë¸¡µãÊı
- *Êä³ö£ºÎŞ
- *·µ»ØÖµ£ºvoid
- *ÆäËûËµÃ÷£º
+ *å‡½æ•°ï¼švoid TM1638LedDisplay(long int value)
+ *æè¿°ï¼šLEDæ˜¾ç¤º
+ *è¾“å…¥ï¼šlong int value:å¯è¾“å…¥è´Ÿæ•´æ•°ä½†ä¸èƒ½è¾“å…¥æµ®ç‚¹æ•°
+ *è¾“å‡ºï¼šæ— 
+ *è¿”å›å€¼ï¼švoid
+ *å…¶ä»–è¯´æ˜ï¼š
  **********************************************/
 void TM1638LedDisplay(long int value)
 {
@@ -353,12 +272,12 @@ void TM1638LedDisplay(long int value)
 
 
 /**********************************************
- *º¯Êı£ºvoid CloseTM1638Display(void)
- *ÃèÊö£º¹Ø±ÕÆÁÄ»
- *ÊäÈë£ºvoid
- *Êä³ö£ºÎŞ
- *·µ»ØÖµ£ºvoid
- *ÆäËûËµÃ÷£º
+ *å‡½æ•°ï¼švoid CloseTM1638Display(void)
+ *æè¿°ï¼šå…³é—­å±å¹•
+ *è¾“å…¥ï¼švoid
+ *è¾“å‡ºï¼šæ— 
+ *è¿”å›å€¼ï¼švoid
+ *å…¶ä»–è¯´æ˜ï¼š
  **********************************************/
 void CloseTM1638Display(void)
 {

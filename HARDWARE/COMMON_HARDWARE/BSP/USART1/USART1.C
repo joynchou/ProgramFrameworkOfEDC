@@ -12,6 +12,8 @@
 * David 96/10/12 1.0 build this moudle
 ***********************************************************/
 #include "USART1.h"
+#include <stdarg.h>
+#include <math.h>
 COMx_Define	COM1,COM2,COM3,COM4;
 void (*interruptFunction)(u8); //指向函数的指针变量
 u8 functionTmp;
@@ -325,7 +327,168 @@ void PrintString4(u8 *puts)
 
 
 
-
+/*--------------------------------------------------
+	函数功能: 整形数据转换成字符串函数，只实现4位整数的转换
+	函数参数: 需要转换的整形数value
+	          转换后的字符串 string
+						radix = 10
+	函数返回: 无
+---------------------------------------------------*/
+static char *itoa(int value, char *string, int radix)
+{
+	uint32     i, d;
+	int     flag = 0;
+	char    *ptr = string;
+	/* This implementation only works for decimal numbers. */
+	if (radix != 10)
+	{
+	    *ptr = 0;
+	    return string;
+	}
+	if (!value)
+	{
+	    *ptr++ = 0x30;
+	    *ptr = 0;
+	    return string;
+	}
+	/* if this is a negative value insert the minus sign. */
+	if (value < 0)
+	{
+	    *ptr++ = '-';
+	    /* Make the value positive. */
+	    value *= -1;
+	}
+	for (i = 10000; i > 0; i /= 10)	//把每整数的每一位分别格式化成字符
+	{
+	    d = value / i;
+	    if (d || flag)
+	    {
+	        *ptr++ = (char)(d + 0x30);
+	        value -= (d * i);
+	        flag = 1;
+	    }
+	}
+	/* Null terminate the string. */
+	*ptr = 0;
+	return string;
+}
+/*---------------------------------------------------------
+	函数功能: 自定义的类似printf功能函数,暂输出4位整数部分及4位小数部分
+	函数参数: 需要发送数据的串口号USARTx
+						需要打印的数据data
+	返回参数: 无
+---------------------------------------------------------*/
+void USART1_printf(uint8 *Data,...)
+{
+	const char *s;
+	char c;
+	int d;
+	float f,x,y;
+	char buf[20];
+	
+	va_list ap;
+	va_start(ap, Data);			//typedef   char  * va_list;  #define   va_start(ap,v)   (ap = (va_list)&v + _INTSIZEOF(v)),v是第一个参数。通过该函数计算第一个实际参数的地址，由ap指针变量保存
+	
+	while ( *Data != 0)     // 判断是否到达字符串结束符
+	{				                          
+		if ( *Data == 0x5c )  //'\'
+		{									  
+			switch ( *++Data )
+			{
+				case 'r':							          //回车符
+					TX1_write2buff(0x0d);
+					Data ++;
+				break;
+				
+				case 'n':							          //换行符
+					TX1_write2buff(0x0a);
+					Data ++;
+				break;
+				
+				default:
+					Data ++;
+				break;
+			}			 
+		}
+		else if ( *Data == '%')
+		{									  //
+			switch ( *++Data )
+			{				
+				
+				case 'c':
+					c = va_arg(ap, char);
+					TX1_write2buff(c);
+					Data++;
+				break;
+				
+				case 's':										  //字符串
+					s = va_arg(ap, const char *);
+					for ( ; *s; s++) 
+					{
+						TX1_write2buff(*s);
+					}
+					Data++;
+				break;
+			
+				case 'd':										//十进制
+					d = va_arg(ap, int);
+					itoa(d, buf, 10);
+					for (s = buf; *s; s++) 
+					{
+						TX1_write2buff(*s);
+					}
+					Data++;
+				break;
+					
+				case 'f':																//浮点数
+					f = va_arg(ap, float);
+					if(f<0)
+					{
+						TX1_write2buff('-');
+						f=fabs(f);													//求浮点数的绝对值
+					}
+					
+					x = f-(unsigned long int)f;						//将小数部分寄存于x
+					d = f-x;
+						
+					itoa(d, buf, 10);
+					for (s = buf; *s; s++) 
+					{
+						TX1_write2buff(*s);									//输出整数部分
+					}
+					
+					TX1_write2buff('.');
+					
+					y =x*10000; 												//可修改，来扩大显示位数到20位  	//一位位补0		
+//					if(y <100000) TX1_write2buff('0');		//防止小数点右边第1位是0
+//					if(y<10000) 	TX1_write2buff('0');		//防止小数点右边第2位是0
+					if(y<1000) 		TX1_write2buff('0');		//防止小数点右边第3位是0
+					if(y<100) 		TX1_write2buff('0');		//防止小数点右边第4位是0
+					if(y<10) 			TX1_write2buff('0');		//防止小数点右边第5位是0
+					if(y<1) 			TX1_write2buff('0');		//防止小数点右边第6位是0				
+					
+					itoa(y, buf, 10);	
+					for (s = buf; *s; s++) 
+					{
+						TX1_write2buff(*s);
+					}
+					
+					Data++;
+				break;					
+					
+			  case '%':
+					TX1_write2buff('%');
+					Data++;
+				break;	
+				
+				default:  Data++;
+				break;
+			}		 
+		} 
+		else TX1_write2buff(*Data++);  //如果没遇到转意字符就正常输出
+	}
+	va_end(ap);
+}
 
 /********************* UART1中断函数************************/
 void UART1_int (void) interrupt UART1_VECTOR

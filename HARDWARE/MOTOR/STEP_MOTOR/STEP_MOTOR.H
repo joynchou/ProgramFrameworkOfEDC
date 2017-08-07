@@ -2,6 +2,14 @@
 #define _STEP_MOTOR_H_
 
 #include "../../COMMON_HARDWARE/common_HD.h"
+//控制引脚定义
+sbit StepMotor_1_DiversionControl =P2^7; 
+sbit StepMotor_1_LockControl     = P2^6;
+sbit StepMotor_2_DiversionControl =P2^5;
+sbit StepMotor_2_LockControl     = P2^4;
+
+#define STEP_MOTOR_NUM 2  //定义需要使用多少个步进电机
+#define	 PI  3.1415f   //pi的值
 
 #define CW 0	//转向，顺时针
 #define CCW 1	//转向，逆时针
@@ -31,14 +39,8 @@ typedef struct
 	enum StepMotorState state;//电机状态
 
 }StepMotor;
-//控制引脚定义
-sbit StepMotor_1_DiversionControl =P2^7; 
-sbit StepMotor_1_LockControl     = P2^6;
-sbit StepMotor_2_DiversionControl =P2^5;
-sbit StepMotor_2_LockControl     = P2^4;
 
 extern void setStepMotorState(u8 motor, enum StepMotorState state);
-
 extern bit setStepMotorWithPulse(u8 motor, u32 pulse, u16 speed);
 extern bit setStepMotorWithDistance(u8 motor, float distance, u16 speed);//旋转指定长度脉冲发生器需要产生的脉冲数,;
 extern bit setStepMotorWithAngle(u8 motor, float angle, u16 speed);

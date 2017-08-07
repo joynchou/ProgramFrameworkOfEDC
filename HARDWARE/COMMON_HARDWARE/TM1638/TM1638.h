@@ -47,9 +47,9 @@
 #define wdpF (segA+segE+segF+segG+segDP)
 
 //引脚定义
-sbit	TM1638_DIO=P1^0;
-sbit	TM1638_CLK=P1^1;
-sbit	TM1638_STB=P1^2;
+sbit	TM1638_DIO=P4^0;
+sbit	TM1638_CLK=P4^1;
+sbit	TM1638_STB=P4^2;
 
 void setTM1638Write(unsigned char	DATA);	//写数据函数
 void setTM1638COM(unsigned char cmd);

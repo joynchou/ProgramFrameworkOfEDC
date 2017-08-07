@@ -54,8 +54,6 @@ void set_PWM_period(u8 PWM_N, u16 Hz)
 	PWM_UNLOCK;
 	PWM_ALL_NO;
 	PWM_SET_PERIOD((u16)(MAIN_Fosc / (Hz*PWM_N_INFO[PWM_N].DIV)));
-	//PWM_SET_PERIOD(5);
-
 	PWM_LOCK;
 
 
@@ -99,8 +97,6 @@ void set_PWM_duty(u8 PWM_N, float duty)
 	PWM_N_INFO[PWM_N].duty = duty;//存储占空比值
 	PWM_UNLOCK;
 	PWM_SET_T12_PERIOD(PWM_N, 10, (u16)(duty *	(MAIN_Fosc / (PWM_N_INFO[PWM_N].period*PWM_N_INFO[PWM_N].DIV))));
-	//PWM_SET_T12_PERIOD(PWM_N, 1,3 );
-
 	PWM_LOCK;
 }
 /*************************************************
@@ -146,7 +142,7 @@ u8 getPWM_DIV(u8 PWM_N)
 // FullName:  open_PWM_ALL
 // Access:    public 
 // Returns:   void
-// Qualifier:
+// Qualifier: 打开所有通道pwm
 // Parameter: void
 //************************************
 void open_PWM_ALL(void)
@@ -160,7 +156,7 @@ void open_PWM_ALL(void)
 // FullName:  close_PWM_ALL
 // Access:    public 
 // Returns:   void
-// Qualifier:
+// Qualifier: 关闭所有通道的PWM
 // Parameter: void
 //************************************
 void close_PWM_ALL(void)
@@ -175,7 +171,7 @@ void close_PWM_ALL(void)
 // FullName:  open_PWM_N
 // Access:    public 
 // Returns:   void
-// Qualifier:
+// Qualifier: 打开pwm_n
 // Parameter: u8 PWM_N
 //************************************
 void open_PWM_N(u8 PWM_N)
@@ -193,7 +189,7 @@ void open_PWM_N(u8 PWM_N)
 // FullName:  close_PWM_N
 // Access:    public 
 // Returns:   void
-// Qualifier:
+// Qualifier: 关闭pwm_n
 // Parameter: u8 PWM_N
 //************************************
 void close_PWM_N(u8 PWM_N)
@@ -209,7 +205,7 @@ void close_PWM_N(u8 PWM_N)
 // FullName:  get_PWM_N_state
 // Access:    public 
 // Returns:   bit
-// Qualifier:
+// Qualifier: 读取PWM_n的状态
 // Parameter: u8 PWM_N
 //************************************
 bit get_PWM_N_state(u8 PWM_N)
@@ -220,7 +216,7 @@ bit get_PWM_N_state(u8 PWM_N)
 
 //========================================================================
 //u8    PWM_Inilize(PWM_InitTypeDef *PWM)
-// 描述:PWM初始化程序
+// 描述:PWM初始化程序，给其他模块需要使用pwm的模块使用
 // 参数:u8 PWM_N:PWM路数标号(2~7) PWM: 结构参数,请参考pwm.h里的定义.
 // 返回: 成功返回0, 错误返回1
 //========================================================================

@@ -13,7 +13,7 @@
 
 #include "fixedPulser.h"
 #define PULSER_NUM	2	//定义需要使用多少个脉冲发生器，最多可产生两路不同频率的脉冲
-#define DEFAULT_PT	HIGH //脉冲发生器的起始电位
+#define DEFAULT_PT	LOW //脉冲发生器的起始电位
 
 #define OPEN_TIMER3_CLKOUT() T4T3M |= 1
 #define OPEN_TIMER4_CLKOUT() T4T3M |= (1 << 4)
@@ -80,12 +80,12 @@ bool setPulse(u8 pulser_num, u16 Hz, u32 count)
 }
 bool openPulser(u8 pulser_num)
 {
+
 	g_pulser[pulser_num].state = ON;
 
 	if (pulser_num == PULSER_1) //pulser2
 	{
 		Timer2_Run();
-		//	PrintString1("pulser 1 is start\n");
 
 	}
 	else   //pulser1
@@ -129,9 +129,14 @@ void PulserInit(void)//初始化程序
 	GPIO_InitStructure.Pin = GPIO_Pin_4;    //指定要初始化的IO, GPIO_Pin_0 ~ GPIO_Pin_7, 或操作!!!!!!!GPIO初始化使用按位或不是逻辑或，之前因为这个被坑了
 	GPIO_Inilize(GPIO_P0, &GPIO_InitStructure);  //初始化
 	g_pulser[PULSER_1].state = OFF;
-	g_pulser[PULSER_2].state = OFF;
+	g_pulser[PULSER_2].state = OFF;     
+	//	P30=0;
+	//P04=0;	
+
+
+
 #ifdef DEBUG
-	PrintString1("two pulser was initialized");
+	//PrintString1("two pulser was initialized\r\n");
 #endif
 }
 

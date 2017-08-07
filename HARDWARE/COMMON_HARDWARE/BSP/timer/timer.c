@@ -18,6 +18,7 @@
 * 另外，经测试发现除了timer4 的高速脉冲无法使用其他的定时器都可以输出高速脉冲
 * 但是要注意使用的时候由于timer2的高速脉冲引脚是串口1的 rx引脚，所以在下载的时候请尽量让此引脚不要接线
 * 否则可能会下载失败
+* 周晨阳 8/5   将timer4 由之前的用户定义定时器改为计数器，给超声波模块测试用
 ***********************************************************/
 //////////////////////定时器典型应用/////////////////////////////////////// 
 /*
@@ -89,6 +90,8 @@ void timerInit()
 	TIM_InitTypeDef		USER_Timer;	//用户自定义定时器使用
 	TIM_InitTypeDef		Pulser_1_Timer;	//
 	TIM_InitTypeDef   Pulser_2_Timer;
+	TIM_InitTypeDef   HC_SR04_Timer;
+
 	u8 Error_Code = 0;
 	//	
 	//  	//用户自定义定时器		
@@ -99,6 +102,15 @@ void timerInit()
 	USER_Timer.TIM_ClkOut = DISABLE;				//是否输出高速脉冲, ENABLE或DISABLE
 	USER_Timer.TIM_Run = DISABLE;				//是否初始化后启动定时器, ENABLE或DISABLE
 	USER_Timer.TIM_Value = 65536UL - (MAIN_Fosc / 1000);		//初值,1000us
+		//  	//用户自定义定时器		
+	HC_SR04_Timer.TIM_Mode = TIM_16BitAutoReload;	//指定工作模式,16位自动重装模式    TIM_16BitAutoReload,TIM_16Bit,TIM_8BitAutoReload,\\																																																								TIM_16BitAutoReloadNoMask
+	HC_SR04_Timer.TIM_Polity = PolityHigh;			//指定中断优先级, PolityHigh,PolityLow
+	HC_SR04_Timer.TIM_Interrupt = DISABLE;				//中断是否允许,   ENABLE或DISABLE
+	HC_SR04_Timer.TIM_ClkSource = TIM_CLOCK_1T;	//指定时钟源,     TIM_CLOCK_1T,TIM_CLOCK_12T,TIM_CLOCK_Ext
+	HC_SR04_Timer.TIM_ClkOut = DISABLE;				//是否输出高速脉冲, ENABLE或DISABLE
+	HC_SR04_Timer.TIM_Run = DISABLE;				//是否初始化后启动定时器, ENABLE或DISABLE
+	HC_SR04_Timer.TIM_Value = 0XFFFF ;		//2.73066ms最大定时时间，在24Mhz下
+
   //脉冲发生器1的定时器
 	Pulser_1_Timer.TIM_Mode = TIM_16BitAutoReload;	//指定工作模式,16位自动重装模式   TIM_16BitAutoReload,TIM_16Bit,TIM_8BitAutoReload,\\ 																																																									TIM_16BitAutoReloadNoMask
 	Pulser_1_Timer.TIM_Polity = PolityHigh;			//指定中断优先级, PolityHigh,PolityLow
@@ -114,7 +126,7 @@ void timerInit()
 	Pulser_2_Timer.TIM_ClkSource = TIM_CLOCK_12T;	//指定时钟源,     TIM_CLOCK_1T,TIM_CLOCK_12T,TIM_CLOCK_Ext
 	//Pulser_2_Timer.TIM_ClkOut = ENABLE;				//是否输出高速脉冲, ENABLE或DISABLE
 	Pulser_2_Timer.TIM_Run = DISABLE;				//是否初始化后启动定时器, ENABLE或DISABLE
-	Timer_Inilize(Timer4, &USER_Timer);
+	Timer_Inilize(Timer4, &HC_SR04_Timer);
 	Timer_Inilize(Timer2, &Pulser_1_Timer);
 	Timer_Inilize(Timer3, &Pulser_2_Timer);
 	//  	//用户自定义定时器		

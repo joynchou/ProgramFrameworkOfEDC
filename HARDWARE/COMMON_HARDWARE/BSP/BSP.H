@@ -13,5 +13,5 @@
 #include "SPI/stc15_spi.h"
 #include "timer/timer.h"
 #include "USART1/USART1.h"
-
+#include <rtx51tny.h>                 /* RTX-51 tiny functions & defines      */
 #endif

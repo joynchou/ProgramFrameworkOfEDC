@@ -240,19 +240,19 @@ void LCD_printsl(unsigned char x, unsigned char y, unsigned char *s_dat)
 }
 void LCD_printNum_I(u8 x, u8 y, int num,u8 numLength)
 {
-	//u8 *str=malloc(numLength); //根据数字位数动态生成
-	u8  str[7];
+	u8 *str=malloc(numLength+2); //根据数字位数动态生成
+//	u8  str[7];
 	sprintf(str, " % 4d", num);
 	LCD_printsl(x, y, str);
-	//free(str);
+	free(str);
 }
 void LCD_printNum_F(u8 x, u8 y, float num,u8 numLength, u8 accuracy)
 {
-	//u8 *str=malloc(numLength+accuracy+1);
-	u8 str[7];
+	u8 *str=malloc(numLength+accuracy+3);
+//	u8 str[7];
 	sprintf(str, " % 4f", num);
 	LCD_printsl(x, y, str);
-	//free(str);
+	free(str);
 }
 
 /*--------------------------------------------------------------*/

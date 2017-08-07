@@ -12,8 +12,6 @@
 
 #include "STEP_MOTOR.H"
 
-#define STEP_MOTOR_NUM 2  //定义需要使用多少个步进电机，步进电机和舵机或者直流电机不能同时使用
-#define	 PI  3.1415f   //pi的值
 
 static  StepMotor g_stepMotor[STEP_MOTOR_NUM];
 

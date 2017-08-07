@@ -11,6 +11,8 @@
 #include "RELAY/RELAY.H"
 #include "TM1638/TM1638.h"
 #include "ADS1115/ADS1115.H"
+#include "DS1302/DS1302.H"
+#include "hc_sr04/hc_sr04.h"
 #include "../SOFTWARE/TASK/COMMON_SOFTWARE/ALGORITHM/DIGITAL_FILTER/FILTER/FILTER.H"
 
 #endif

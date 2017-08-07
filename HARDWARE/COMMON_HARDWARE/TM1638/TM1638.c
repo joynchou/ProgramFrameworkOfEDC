@@ -13,6 +13,7 @@
 * <作者> <时间> <版本 > <描述>
 ***********************************************************/
 #include "TM1638.H"
+#include <math.h>
 
 unsigned char data DisBuffer[8]={0,0,0,0,0,0,0,0};    /*显示缓存区*/	//各个数码管显示的值
 unsigned char code tab[]={0x3F,0x06,0x5B,0x4F,0x66,0x6D,0x7D,0x07,0x7F,0x6F,0x77,0x7C,0x39,0x5E,0x79,0x71,0x40,0xef};
@@ -150,6 +151,17 @@ void Init_TM1638(void)
 	TM1638_STB=1;
 }
 
+/**********************************************
+ *函数：Inti_Str_Motor(float,float,float,unsigned int)
+ *描述：对舵机进行初始化
+ *输入：
+ *1.pl为最低可接收的脉冲宽度，单位为ms                  
+ *2.ph为最高可接收的脉冲宽度，单位为ms                 
+ *3.n为脉冲分级
+ *输出：无
+ *返回值：void
+ *其他说明：
+ **********************************************/
 //unsigned char ButtonNum(void)
 //{		
 //   	unsigned char key_value;
@@ -221,7 +233,7 @@ void Init_TM1638(void)
 //}
 
 /**********************************************
- *函数：void TM1638LedDisplay(unsigned char ddata0,unsigned char ddata1,unsigned char ddata2,unsigned char ddata3,
+ *函数：void NixieLedLight(unsigned char ddata0,unsigned char ddata1,unsigned char ddata2,unsigned char ddata3,
                unsigned char ddata4,unsigned char ddata5,unsigned char ddata6,unsigned char ddata7)
  *描述：LED显示
  *输入：从高到低依次输入数值可使LED数码管从高到低依次显示
@@ -229,8 +241,9 @@ void Init_TM1638(void)
  *返回值：void
  *其他说明：
  **********************************************/
-void TM1638LedDisplay(unsigned char ddata0,unsigned char ddata1,unsigned char ddata2,unsigned char ddata3,
+void NixieLedLight(unsigned char ddata0,unsigned char ddata1,unsigned char ddata2,unsigned char ddata3,
                unsigned char ddata4,unsigned char ddata5,unsigned char ddata6,unsigned char ddata7)
+
 {
 	unsigned char  writedata0,writedata1,writedata2,writedata3,writedata4,writedata5,writedata6,writedata7;
 	unsigned char  data0,data1,data2,data3,data4,data5,data6,data7;
@@ -293,6 +306,51 @@ void TM1638LedDisplay(unsigned char ddata0,unsigned char ddata1,unsigned char dd
 
 
 }
+
+/**********************************************
+ *函数：void TM1638LedDisplay(long int value)
+ *描述：LED显示
+ *输入：long int value:可输入负整数但不能输入浮点数
+ *输出：无
+ *返回值：void
+ *其他说明：
+ **********************************************/
+void TM1638LedDisplay(long int value)
+{
+	unsigned char LedValue[8] = {0},i,singleValue;
+	if(value > -9999999 && value < 99999999)
+	{		
+		if(value >= 0)
+		{
+			for(i = 0;i < 8;i++)
+			{
+				singleValue = value % 10;
+				value /= 10;
+				LedValue[i] = singleValue;
+			}			
+		}
+		else
+		{
+			value = labs(value);
+			for(i = 0;i < 8;i++)
+			{
+				if(value > 0)
+				{
+					singleValue = value % 10;
+					value /= 10;
+					LedValue[i] = singleValue;
+				}
+				else
+				{
+					LedValue[i] = 16;
+					break;
+				}
+			}
+		}
+		NixieLedLight(LedValue[7],LedValue[6],LedValue[5],LedValue[4],LedValue[3],LedValue[2],LedValue[1],LedValue[0]);
+	}
+}
+
 
 /**********************************************
  *函数：void CloseTM1638Display(void)

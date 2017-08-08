@@ -38,21 +38,7 @@ void    UART1_init(unsigned long BandRate)
 }
 void test(void)//器件测试
 {
-	u8 i = 0;
-	Ds1302_Init();
-	USART1_printf("this is a test\r\n");
-	for (i = 0; i < 8; i++)
-	{
-		time_buf[i] = 1;
-	}
-	while (1)
-	{
-		{
-			Ds1302_Read_Time();
-			USART1_printf("%d-%d-%d-%d \r\n", (int)time_buf1[3], (int)time_buf1[4], (int)time_buf1[5], (int)time_buf1[6]);//年月日  %02d 十进制整数 
-			delay_ms(200);
-		}
-	}
+
 }
 void setup(void)
 {
@@ -61,25 +47,26 @@ void setup(void)
 	timerInit();
 	Board_LED_Init();
 	LCD5510_Init();
-	LCD_printsl(0, 0, "Hello!");
-	os_wait(K_TMO, 250, 0);
-	LCD_clr_scr();
 	Button_config();
 	Speaker_Init();
-
- 
+	ADS1115_Config();
+	ultrasonicInit();
+	DS18B20_Init();
+	LCD_printsl(0, 0, "Hello!");
+	os_wait(K_TMO, 250, 0);
+	os_wait(K_TMO, 250, 0);
+	os_wait(K_TMO, 250, 0);
+	os_wait(K_TMO, 250, 0);
+	LCD_clr_scr();
 	//InitJY901(JY901_1);
 	//EnableJY901(JY901_1);
 	//openJY901SbufMode(JY901_1);
-	ADC_config(ADC_P10, ADC_540T);
-	ADS1115_Config();
-	HC_SR04_init();
-	open_HC_SR04(HC_SR04_1);
+	//ADC_config(ADC_P10, ADC_540T);
+	open_Ultrasonic(HC_SR04_1);
+	open_Ultrasonic(US_016_1);
 	open_ADS1115(CHANNEL_1);
 	open_ADS1115(CHANNEL_2);
-	open_ADS1115(CHANNEL_3);
-	open_ADS1115(CHANNEL_4);
-	// test();
+ 	// test();
 
 }
 

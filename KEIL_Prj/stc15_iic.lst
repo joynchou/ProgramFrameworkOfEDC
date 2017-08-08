@@ -1,4 +1,4 @@
-C51 COMPILER V8.05a   STC15_IIC                                                            08/06/2017 17:28:38 PAGE 1   
+C51 COMPILER V8.05a   STC15_IIC                                                            08/07/2017 19:03:26 PAGE 1   
 
 
 C51 COMPILER V8.05a, COMPILATION OF MODULE STC15_IIC
@@ -8,258 +8,260 @@ COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE ..\HARDWARE\COMMON_HARDWARE\BSP\
 
 line level    source
 
-   1          /************************************************************
-   2          * ÎÄ¼þÃû³Æ: µç×Ó´óÈü³ÌÐò¿ò¼Ü\HARDWARE\COMMON_HARDWARE\BSP\IIC\STC15_IIC.C
-   3          * ×÷Õß:
-   4          * °æ±¾:
-   5          * ÈÕÆÚ:     2017/08/03
-   6          * ÃèÊö:iicµÄÈí¼þÇý¶¯³ÌÐò
-   7          * ÀúÊ·ÐÞ¸Ä¼ÇÂ¼:
-   8          * <×÷Õß> <Ê±¼ä> <°æ±¾ > <ÃèÊö>
-   9          *
-  10          ***********************************************************/
-  11          
-  12          #include    "stc15_iic.h"
-  13          #include <stdio.h>
-  14          #include "../USART1/USART1.h"
-  15          /* ***************************************************** */
-  16          // º¯ÊýÃû³Æ£ºDelay5US()
-  17          // º¯Êý¹¦ÄÜ£º5Î¢ÃëÑÓÊ±,Èç¹û×Ô¼ºµÄÖ÷ÆµÓÐ±ä£¬Çë×ÔÐÐÐÞ¸Ä
-  18          // Èë¿Ú²ÎÊý£ºÎÞ
-  19          // ³ö¿Ú²ÎÊý£ºÎÞ
-  20          /* ***************************************************** */
-  21          void Delay5US(void)     //@24MHz
-  22          {
-  23   1      
-  24   1        unsigned char i;
-  25   1      
-  26   1        _nop_();
+   1          
+   2          /************************************************************
+   3          * æ–‡ä»¶åç§°: ç”µå­å¤§èµ›ç¨‹åºæ¡†æž¶\HARDWARE\COMMON_HARDWARE\BSP\IIC\STC15_IIC.C
+   4          * ä½œè€…:
+   5          * ç‰ˆæœ¬:
+   6          * æ—¥æœŸ:     2017/08/03
+   7          * æè¿°:iicçš„è½¯ä»¶é©±åŠ¨ç¨‹åº
+   8          * åŽ†å²ä¿®æ”¹è®°å½•:
+   9          * <ä½œè€…> <æ—¶é—´> <ç‰ˆæœ¬ > <æè¿°>
+  10          *
+  11          ***********************************************************/
+  12          
+  13          #include    "stc15_iic.h"
+  14          #include <stdio.h>
+  15          #include "../USART1/USART1.h"
+  16          /* ***************************************************** */
+  17          // å‡½æ•°åç§°ï¼šDelay5US()
+  18          // å‡½æ•°åŠŸèƒ½ï¼š5å¾®ç§’å»¶æ—¶,å¦‚æžœè‡ªå·±çš„ä¸»é¢‘æœ‰å˜ï¼Œè¯·è‡ªè¡Œä¿®æ”¹
+  19          // å…¥å£å‚æ•°ï¼šæ— 
+  20          // å‡ºå£å‚æ•°ï¼šæ— 
+  21          /* ***************************************************** */
+  22          void Delay5US(void)     //@24MHz
+  23          {
+  24   1      
+  25   1        unsigned char i;
+  26   1      
   27   1        _nop_();
-  28   1        i = 57;
-  29   1        while (--i);
-  30   1      }
-  31          /* ***************************************************** */
-  32          // º¯ÊýÃû³Æ£ºIIC_Start()
-  33          // º¯Êý¹¦ÄÜ£ºIICÆð¶¯
-  34          // Èë¿Ú²ÎÊý£ºÎÞ
-  35          // ³ö¿Ú²ÎÊý£ºÎÞ
-  36          /* ***************************************************** */
-  37          void IIC_Start(void)
-  38          {
-  39   1        SDA = 1;
-  40   1        Delay5US();
-  41   1        SCL = 1;
-  42   1        Delay5US();
-  43   1        SDA = 0;
-  44   1        Delay5US();
-  45   1      }
-  46          /* ***************************************************** */
-  47          // º¯ÊýÃû³Æ£ºIIC_Stop()
-  48          // º¯Êý¹¦ÄÜ£ºIICÍ£Ö¹
-  49          // Èë¿Ú²ÎÊý£ºÎÞ
-  50          // ³ö¿Ú²ÎÊý£ºÎÞ
-  51          /* ***************************************************** */
-  52          void IIC_Stop(void)
-  53          {
-  54   1        SDA = 0;
-C51 COMPILER V8.05a   STC15_IIC                                                            08/06/2017 17:28:38 PAGE 2   
+  28   1        _nop_();
+  29   1        i = 57;
+  30   1        while (--i);
+  31   1      }
+  32          /* ***************************************************** */
+  33          // å‡½æ•°åç§°ï¼šIIC_Start()
+  34          // å‡½æ•°åŠŸèƒ½ï¼šIICèµ·åŠ¨
+  35          // å…¥å£å‚æ•°ï¼šæ— 
+  36          // å‡ºå£å‚æ•°ï¼šæ— 
+  37          /* ***************************************************** */
+  38          void IIC_Start(void)
+  39          {
+  40   1        SDA = 1;
+  41   1        Delay5US();
+  42   1        SCL = 1;
+  43   1        Delay5US();
+  44   1        SDA = 0;
+  45   1        Delay5US();
+  46   1      }
+  47          /* ***************************************************** */
+  48          // å‡½æ•°åç§°ï¼šIIC_Stop()
+  49          // å‡½æ•°åŠŸèƒ½ï¼šIICåœæ­¢
+  50          // å…¥å£å‚æ•°ï¼šæ— 
+  51          // å‡ºå£å‚æ•°ï¼šæ— 
+  52          /* ***************************************************** */
+  53          void IIC_Stop(void)
+  54          {
+C51 COMPILER V8.05a   STC15_IIC                                                            08/07/2017 19:03:26 PAGE 2   
 
-  55   1        Delay5US();
-  56   1        SCL = 1;
-  57   1        Delay5US();
-  58   1        SDA = 1;
-  59   1      }
-  60          /* ***************************************************** */
-  61          // º¯ÊýÃû³Æ£ºIIC_Ack()
-  62          // º¯Êý¹¦ÄÜ£ºIICÓ¦´ð
-  63          // Èë¿Ú²ÎÊý£ºÎÞ
-  64          // ³ö¿Ú²ÎÊý£ºÎÞ
-  65          /* ***************************************************** */
-  66          void IIC_Ack(void)
-  67          {
-  68   1        SCL = 0;                // Îª²úÉúÂö³å×¼±¸
-  69   1        SDA = 0;                // ²úÉúÓ¦´ðÐÅºÅ
-  70   1        Delay5US();             // ÑÓÊ±Äã¶®µÃ
-  71   1        SCL = 1;
-  72   1        Delay5US();
-  73   1        SCL = 0;
-  74   1        Delay5US();     // ²úÉú¸ßÂö³å
-  75   1        SDA = 1;                // ÊÍ·Å×ÜÏß
-  76   1      }
-  77          /* ***************************************************** */
-  78          // º¯ÊýÃû³Æ£ºIIC_RdAck()
-  79          // º¯Êý¹¦ÄÜ£º¶ÁIICÓ¦´ð
-  80          // Èë¿Ú²ÎÊý£ºÎÞ
-  81          // ³ö¿Ú²ÎÊý£ºÊÇ·ñÓ¦´ðÕæÖµ
-  82          /* ***************************************************** */
-  83          BOOL IIC_RdAck(void)
-  84          {
-  85   1        BOOL AckFlag;
-  86   1        u8 uiVal = 0;
-  87   1        SCL = 0;
-  88   1        Delay5US();
-  89   1        SDA = 1;
-  90   1        SCL = 1;
-  91   1        Delay5US();
-  92   1        while ((1 == SDA) && (uiVal < 255))
-  93   1        {
-  94   2          uiVal++;
-  95   2          AckFlag = SDA;
-  96   2        }
-  97   1        SCL = 0;
-  98   1        return AckFlag;     // Ó¦´ð·µ»Ø£º0;²»Ó¦´ð·µ»Ø£º1
-  99   1      }
- 100          /* ***************************************************** */
- 101          // º¯ÊýÃû³Æ£ºIIC_Nack()
- 102          // º¯Êý¹¦ÄÜ£ºIIC²»Ó¦´ð
- 103          // Èë¿Ú²ÎÊý£ºÎÞ
- 104          // ³ö¿Ú²ÎÊý£ºÎÞ
- 105          /* ***************************************************** */
- 106          void IIC_Nack(void)
- 107          {
- 108   1        SDA = 1;
- 109   1        SCL = 0;
- 110   1        Delay5US();
- 111   1        SCL = 1;
- 112   1        Delay5US();
- 113   1        SCL = 0;
- 114   1      }
- 115          /* ***************************************************** */
- 116          // º¯ÊýÃû³Æ£ºOutputOneByte()
-C51 COMPILER V8.05a   STC15_IIC                                                            08/06/2017 17:28:38 PAGE 3   
+  55   1        SDA = 0;
+  56   1        Delay5US();
+  57   1        SCL = 1;
+  58   1        Delay5US();
+  59   1        SDA = 1;
+  60   1      }
+  61          /* ***************************************************** */
+  62          // å‡½æ•°åç§°ï¼šIIC_Ack()
+  63          // å‡½æ•°åŠŸèƒ½ï¼šIICåº”ç­”
+  64          // å…¥å£å‚æ•°ï¼šæ— 
+  65          // å‡ºå£å‚æ•°ï¼šæ— 
+  66          /* ***************************************************** */
+  67          void IIC_Ack(void)
+  68          {
+  69   1        SCL = 0;                // ä¸ºäº§ç”Ÿè„‰å†²å‡†å¤‡
+  70   1        SDA = 0;                // äº§ç”Ÿåº”ç­”ä¿¡å·
+  71   1        Delay5US();             // å»¶æ—¶ä½ æ‡‚å¾—
+  72   1        SCL = 1;
+  73   1        Delay5US();
+  74   1        SCL = 0;
+  75   1        Delay5US();     // äº§ç”Ÿé«˜è„‰å†²
+  76   1        SDA = 1;                // é‡Šæ”¾æ€»çº¿
+  77   1      }
+  78          /* ***************************************************** */
+  79          // å‡½æ•°åç§°ï¼šIIC_RdAck()
+  80          // å‡½æ•°åŠŸèƒ½ï¼šè¯»IICåº”ç­”
+  81          // å…¥å£å‚æ•°ï¼šæ— 
+  82          // å‡ºå£å‚æ•°ï¼šæ˜¯å¦åº”ç­”çœŸå€¼
+  83          /* ***************************************************** */
+  84          BOOL IIC_RdAck(void)
+  85          {
+  86   1        BOOL AckFlag;
+  87   1        u8 uiVal = 0;
+  88   1        SCL = 0;
+  89   1        Delay5US();
+  90   1        SDA = 1;
+  91   1        SCL = 1;
+  92   1        Delay5US();
+  93   1        while ((1 == SDA) && (uiVal < 255))
+  94   1        {
+  95   2          uiVal++;
+  96   2          AckFlag = SDA;
+  97   2        }
+  98   1        SCL = 0;
+  99   1        return AckFlag;     // åº”ç­”è¿”å›žï¼š0;ä¸åº”ç­”è¿”å›žï¼š1
+ 100   1      }
+ 101          /* ***************************************************** */
+ 102          // å‡½æ•°åç§°ï¼šIIC_Nack()
+ 103          // å‡½æ•°åŠŸèƒ½ï¼šIICä¸åº”ç­”
+ 104          // å…¥å£å‚æ•°ï¼šæ— 
+ 105          // å‡ºå£å‚æ•°ï¼šæ— 
+ 106          /* ***************************************************** */
+ 107          void IIC_Nack(void)
+ 108          {
+ 109   1        SDA = 1;
+ 110   1        SCL = 0;
+ 111   1        Delay5US();
+ 112   1        SCL = 1;
+ 113   1        Delay5US();
+ 114   1        SCL = 0;
+ 115   1      }
+ 116          /* ***************************************************** */
+C51 COMPILER V8.05a   STC15_IIC                                                            08/07/2017 19:03:26 PAGE 3   
 
- 117          // º¯Êý¹¦ÄÜ£º´ÓIICÆ÷¼þÖÐ¶Á³öÒ»¸ö×Ö½Ú
- 118          // Èë¿Ú²ÎÊý£ºÎÞ
- 119          // ³ö¿Ú²ÎÊý£º¶Á³öµÄÒ»¸ö×Ö½Ú£¨uByteVal£©
- 120          /* ***************************************************** */
- 121          u8 OutputOneByte(void)
- 122          {
- 123   1        //    u8 uByteVal = 0;
- 124   1        //    u8 iCount;
- 125   1        //    SDA = 1;
- 126   1        //    for (iCount = 0; iCount < 8; iCount++)
- 127   1        //    {
- 128   1        //        SCL = 0;
- 129   1        //        Delay5US();
- 130   1        //        SCL = 1;
- 131   1        //        Delay5US();
- 132   1        //        uByteVal <<= 1;
- 133   1        //        if(SDA)
- 134   1        //        {
- 135   1        //            uByteVal |= 0x01;
- 136   1        //        }
- 137   1        //    }
- 138   1        //    SCL = 0;
- 139   1        //    return(uByteVal);
- 140   1        u8 str[8];
- 141   1        unsigned char i;
- 142   1        unsigned char Data = 0;       //¶¨ÒåÒ»¸ö»º³å¼Ä´æÆ÷¡£
- 143   1        for (i = 0; i < 8; i++)//ÓÐ8Î»Êý¾Ý
- 144   1        {
- 145   2          SCL = 1;//À­¸ßÊ±ÖÓÏß£¬Îª¶ÁÈ¡ÏÂÒ»Î»Êý¾Ý×ö×¼±¸¡£
- 146   2          Delay5US();
- 147   2          Data = Data << 1;//½«»º³å×Ö½ÚµÄÊý¾Ý×óÒÆÒ»Î»£¬×¼±¸¶ÁÈ¡Êý¾Ý¡£
- 148   2          Delay5US();
- 149   2          if (SDA == 1)//Èç¹ûÊý¾ÝÏßÎª¸ßÆ½µçÆ½¡£
- 150   2          {
- 151   3            Data = Data | 0x1;//Ôò¸ø»º³å×Ö½ÚµÄ×îµÍÎ»Ð´1¡£
- 152   3          }
- 153   2          else
- 154   2          {
- 155   3            Data = Data | 0x0;//
- 156   3          }
- 157   2      
- 158   2          SCL = 0;//À­µÍÊ±ÖÓÏß£¬Îª¶ÁÈ¡ÏÂÒ»Î»Êý¾Ý×ö×¼±¸¡£
- 159   2          Delay5US();
- 160   2        }
- 161   1      
- 162   1        return Data;//·µ»Ø¶ÁÈ¡µÄÒ»¸ö×Ö½ÚÊý¾Ý¡£
- 163   1      }
- 164          /* ***************************************************** */
- 165          // º¯ÊýÃû³Æ£ºInputOneByte()
- 166          // º¯Êý¹¦ÄÜ£ºÏòIICÆ÷¼þÐ´ÈëÒ»¸ö×Ö½Ú
- 167          // Èë¿Ú²ÎÊý£º´ýÐ´ÈëµÄÒ»¸ö×Ö½Ú£¨uByteVal£©
- 168          // ³ö¿Ú²ÎÊý£ºÎÞ
- 169          /* ***************************************************** */
- 170          void InputOneByte(u8 uByteVal)
- 171          {
- 172   1        u8 iCount;
- 173   1        for (iCount = 0; iCount < 8; iCount++)
- 174   1        {
- 175   2          SCL = 0;
- 176   2          Delay5US();
- 177   2          SDA = (uByteVal & 0x80) >> 7;
- 178   2          Delay5US();
-C51 COMPILER V8.05a   STC15_IIC                                                            08/06/2017 17:28:38 PAGE 4   
+ 117          // å‡½æ•°åç§°ï¼šOutputOneByte()
+ 118          // å‡½æ•°åŠŸèƒ½ï¼šä»ŽIICå™¨ä»¶ä¸­è¯»å‡ºä¸€ä¸ªå­—èŠ‚
+ 119          // å…¥å£å‚æ•°ï¼šæ— 
+ 120          // å‡ºå£å‚æ•°ï¼šè¯»å‡ºçš„ä¸€ä¸ªå­—èŠ‚ï¼ˆuByteValï¼‰
+ 121          /* ***************************************************** */
+ 122          u8 OutputOneByte(void)
+ 123          {
+ 124   1        //    u8 uByteVal = 0;
+ 125   1        //    u8 iCount;
+ 126   1        //    SDA = 1;
+ 127   1        //    for (iCount = 0; iCount < 8; iCount++)
+ 128   1        //    {
+ 129   1        //        SCL = 0;
+ 130   1        //        Delay5US();
+ 131   1        //        SCL = 1;
+ 132   1        //        Delay5US();
+ 133   1        //        uByteVal <<= 1;
+ 134   1        //        if(SDA)
+ 135   1        //        {
+ 136   1        //            uByteVal |= 0x01;
+ 137   1        //        }
+ 138   1        //    }
+ 139   1        //    SCL = 0;
+ 140   1        //    return(uByteVal);
+ 141   1        u8 str[8];
+ 142   1        unsigned char i;
+ 143   1        unsigned char Data = 0;       //å®šä¹‰ä¸€ä¸ªç¼“å†²å¯„å­˜å™¨ã€‚
+ 144   1        for (i = 0; i < 8; i++)//æœ‰8ä½æ•°æ®
+ 145   1        {
+ 146   2          SCL = 1;//æ‹‰é«˜æ—¶é’Ÿçº¿ï¼Œä¸ºè¯»å–ä¸‹ä¸€ä½æ•°æ®åšå‡†å¤‡ã€‚
+ 147   2          Delay5US();
+ 148   2          Data = Data << 1;//å°†ç¼“å†²å­—èŠ‚çš„æ•°æ®å·¦ç§»ä¸€ä½ï¼Œå‡†å¤‡è¯»å–æ•°æ®ã€‚
+ 149   2          Delay5US();
+ 150   2          if (SDA == 1)//å¦‚æžœæ•°æ®çº¿ä¸ºé«˜å¹³ç”µå¹³ã€‚
+ 151   2          {
+ 152   3            Data = Data | 0x1;//åˆ™ç»™ç¼“å†²å­—èŠ‚çš„æœ€ä½Žä½å†™1ã€‚
+ 153   3          }
+ 154   2          else
+ 155   2          {
+ 156   3            Data = Data | 0x0;//
+ 157   3          }
+ 158   2      
+ 159   2          SCL = 0;//æ‹‰ä½Žæ—¶é’Ÿçº¿ï¼Œä¸ºè¯»å–ä¸‹ä¸€ä½æ•°æ®åšå‡†å¤‡ã€‚
+ 160   2          Delay5US();
+ 161   2        }
+ 162   1      
+ 163   1        return Data;//è¿”å›žè¯»å–çš„ä¸€ä¸ªå­—èŠ‚æ•°æ®ã€‚
+ 164   1      }
+ 165          /* ***************************************************** */
+ 166          // å‡½æ•°åç§°ï¼šInputOneByte()
+ 167          // å‡½æ•°åŠŸèƒ½ï¼šå‘IICå™¨ä»¶å†™å…¥ä¸€ä¸ªå­—èŠ‚
+ 168          // å…¥å£å‚æ•°ï¼šå¾…å†™å…¥çš„ä¸€ä¸ªå­—èŠ‚ï¼ˆuByteValï¼‰
+ 169          // å‡ºå£å‚æ•°ï¼šæ— 
+ 170          /* ***************************************************** */
+ 171          void InputOneByte(u8 uByteVal)
+ 172          {
+ 173   1        u8 iCount;
+ 174   1        for (iCount = 0; iCount < 8; iCount++)
+ 175   1        {
+ 176   2          SCL = 0;
+ 177   2          Delay5US();
+ 178   2          SDA = (uByteVal & 0x80) >> 7;
+C51 COMPILER V8.05a   STC15_IIC                                                            08/07/2017 19:03:26 PAGE 4   
 
- 179   2          SCL = 1;
- 180   2          Delay5US();
- 181   2          uByteVal <<= 1;
- 182   2        }
- 183   1        SCL = 0;
- 184   1      }
- 185          /* ***************************************************** */
- 186          // º¯ÊýÃû³Æ£ºIIC_WrDevAddAndDatAdd()
- 187          // º¯Êý¹¦ÄÜ£ºÏòIICÆ÷¼þÐ´ÈëÆ÷¼þºÍÊý¾ÝµØÖ·
- 188          // Èë¿Ú²ÎÊý£ºÆ÷¼þµØÖ·£¨uDevAdd£©£¬Êý¾ÝµØÖ·£¨uDatAdd£©
- 189          // ³ö¿Ú²ÎÊý£ºÐ´ÈëÊÇ·ñ³É¹¦ÕæÖµ
- 190          /* ***************************************************** */
- 191          BOOL IIC_WrDevAddAndDatAdd(u8 uDevAdd, u8 uDatAdd)
- 192          {
- 193   1        IIC_Start();            // ·¢ËÍ¿ªÊ¼ÐÅºÅ
- 194   1        InputOneByte(uDevAdd);  // ÊäÈëÆ÷¼þµØÖ·
- 195   1        IIC_RdAck();            // ¶ÁÓ¦´ðÐÅºÅ
- 196   1        InputOneByte(uDatAdd);  // ÊäÈëÊý¾ÝµØÖ·
- 197   1        IIC_RdAck();            // ¶ÁÓ¦´ðÐÅºÅ
- 198   1        return TRUE;
- 199   1      }
- 200          /* ***************************************************** */
- 201          // º¯ÊýÃû³Æ£ºIIC_WrDatToAdd()
- 202          // º¯Êý¹¦ÄÜ£ºÏòIICÆ÷¼þÐ´Êý¾Ý
- 203          // Èë¿Ú²ÎÊý£ºÆ÷¼þID(uDevID)¡¢Êý¾Ý´æ´¢ÆðÊ¼µØÖ·(uStaAddVal)
- 204          //           ´ý´æÊý¾Ý(*p)¡¢Á¬Ðø´æ´¢Êý¾ÝµÄ¸öÊý(uiLenVal)
- 205          // ³ö¿Ú²ÎÊý£ºÎÞ
- 206          /* ***************************************************** */
- 207          void IIC_WrDatToAdd(u8 uDevID, u8 uStaAddVal, u8 *p, u8 ucLenVal)
- 208          {
- 209   1        u8 iCount;
- 210   1        IIC_WrDevAddAndDatAdd(uDevID | IIC_WRITE, uStaAddVal);
- 211   1        // IIC_WRITE ÎªÐ´ÃüÁîºó×º·û
- 212   1        for (iCount = 0; iCount < ucLenVal; iCount++)
- 213   1        {
- 214   2          InputOneByte(*p++);
- 215   2          IIC_RdAck();
- 216   2        }
- 217   1        IIC_Stop();
- 218   1      }
- 219          /* ***************************************************** */
- 220          // º¯ÊýÃû³Æ£ºIIC_RdDatFromAdd()
- 221          // º¯Êý¹¦ÄÜ£ºÏòIICÆ÷¼þ¶ÁÊý¾Ý
- 222          // Èë¿Ú²ÎÊý£ºÆ÷¼þID(uDevID)¡¢Êý¾Ý´æ´¢µØÖ·(uStaAddVal)
- 223          //           ´ý´æÊý¾Ý(*p)¡¢Á¬Ðø´æ´¢Êý¾ÝµÄ¸öÊý(uiLenVal)
- 224          // ³ö¿Ú²ÎÊý£ºÎÞ
- 225          /* ***************************************************** */
- 226          void IIC_RdDatFromAdd(u8 uDevID, u8 uStaAddVal, u8 *p, u8 uiLenVal)
- 227          {
- 228   1        u8 iCount;
- 229   1        IIC_WrDevAddAndDatAdd(uDevID | IIC_WRITE, uStaAddVal);
- 230   1        IIC_Start();
- 231   1        InputOneByte(uDevID | IIC_READ);
- 232   1        // IIC_READ ÎªÐ´ÃüÁîºó×º·û
- 233   1        IIC_RdAck();
- 234   1        for (iCount = 0; iCount < uiLenVal; iCount++)
- 235   1        {
- 236   2          *p++ = OutputOneByte();
- 237   2          if (iCount != (uiLenVal - 1))
- 238   2          {
- 239   3            IIC_Ack();
- 240   3          }
-C51 COMPILER V8.05a   STC15_IIC                                                            08/06/2017 17:28:38 PAGE 5   
+ 179   2          Delay5US();
+ 180   2          SCL = 1;
+ 181   2          Delay5US();
+ 182   2          uByteVal <<= 1;
+ 183   2        }
+ 184   1        SCL = 0;
+ 185   1      }
+ 186          /* ***************************************************** */
+ 187          // å‡½æ•°åç§°ï¼šIIC_WrDevAddAndDatAdd()
+ 188          // å‡½æ•°åŠŸèƒ½ï¼šå‘IICå™¨ä»¶å†™å…¥å™¨ä»¶å’Œæ•°æ®åœ°å€
+ 189          // å…¥å£å‚æ•°ï¼šå™¨ä»¶åœ°å€ï¼ˆuDevAddï¼‰ï¼Œæ•°æ®åœ°å€ï¼ˆuDatAddï¼‰
+ 190          // å‡ºå£å‚æ•°ï¼šå†™å…¥æ˜¯å¦æˆåŠŸçœŸå€¼
+ 191          /* ***************************************************** */
+ 192          BOOL IIC_WrDevAddAndDatAdd(u8 uDevAdd, u8 uDatAdd)
+ 193          {
+ 194   1        IIC_Start();            // å‘é€å¼€å§‹ä¿¡å·
+ 195   1        InputOneByte(uDevAdd);  // è¾“å…¥å™¨ä»¶åœ°å€
+ 196   1        IIC_RdAck();            // è¯»åº”ç­”ä¿¡å·
+ 197   1        InputOneByte(uDatAdd);  // è¾“å…¥æ•°æ®åœ°å€
+ 198   1        IIC_RdAck();            // è¯»åº”ç­”ä¿¡å·
+ 199   1        return TRUE;
+ 200   1      }
+ 201          /* ***************************************************** */
+ 202          // å‡½æ•°åç§°ï¼šIIC_WrDatToAdd()
+ 203          // å‡½æ•°åŠŸèƒ½ï¼šå‘IICå™¨ä»¶å†™æ•°æ®
+ 204          // å…¥å£å‚æ•°ï¼šå™¨ä»¶ID(uDevID)ã€æ•°æ®å­˜å‚¨èµ·å§‹åœ°å€(uStaAddVal)
+ 205          //           å¾…å­˜æ•°æ®(*p)ã€è¿žç»­å­˜å‚¨æ•°æ®çš„ä¸ªæ•°(uiLenVal)
+ 206          // å‡ºå£å‚æ•°ï¼šæ— 
+ 207          /* ***************************************************** */
+ 208          void IIC_WrDatToAdd(u8 uDevID, u8 uStaAddVal, u8 *p, u8 ucLenVal)
+ 209          {
+ 210   1        u8 iCount;
+ 211   1        IIC_WrDevAddAndDatAdd(uDevID | IIC_WRITE, uStaAddVal);
+ 212   1        // IIC_WRITE ä¸ºå†™å‘½ä»¤åŽç¼€ç¬¦
+ 213   1        for (iCount = 0; iCount < ucLenVal; iCount++)
+ 214   1        {
+ 215   2          InputOneByte(*p++);
+ 216   2          IIC_RdAck();
+ 217   2        }
+ 218   1        IIC_Stop();
+ 219   1      }
+ 220          /* ***************************************************** */
+ 221          // å‡½æ•°åç§°ï¼šIIC_RdDatFromAdd()
+ 222          // å‡½æ•°åŠŸèƒ½ï¼šå‘IICå™¨ä»¶è¯»æ•°æ®
+ 223          // å…¥å£å‚æ•°ï¼šå™¨ä»¶ID(uDevID)ã€æ•°æ®å­˜å‚¨åœ°å€(uStaAddVal)
+ 224          //           å¾…å­˜æ•°æ®(*p)ã€è¿žç»­å­˜å‚¨æ•°æ®çš„ä¸ªæ•°(uiLenVal)
+ 225          // å‡ºå£å‚æ•°ï¼šæ— 
+ 226          /* ***************************************************** */
+ 227          void IIC_RdDatFromAdd(u8 uDevID, u8 uStaAddVal, u8 *p, u8 uiLenVal)
+ 228          {
+ 229   1        u8 iCount;
+ 230   1        IIC_WrDevAddAndDatAdd(uDevID | IIC_WRITE, uStaAddVal);
+ 231   1        IIC_Start();
+ 232   1        InputOneByte(uDevID | IIC_READ);
+ 233   1        // IIC_READ ä¸ºå†™å‘½ä»¤åŽç¼€ç¬¦
+ 234   1        IIC_RdAck();
+ 235   1        for (iCount = 0; iCount < uiLenVal; iCount++)
+ 236   1        {
+ 237   2          *p++ = OutputOneByte();
+ 238   2          if (iCount != (uiLenVal - 1))
+ 239   2          {
+ 240   3            IIC_Ack();
+C51 COMPILER V8.05a   STC15_IIC                                                            08/07/2017 19:03:26 PAGE 5   
 
- 241   2        }
- 242   1        IIC_Nack();
- 243   1        IIC_Stop();
- 244   1      }
+ 241   3          }
+ 242   2        }
+ 243   1        IIC_Nack();
+ 244   1        IIC_Stop();
+ 245   1      }
+ 246          
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE

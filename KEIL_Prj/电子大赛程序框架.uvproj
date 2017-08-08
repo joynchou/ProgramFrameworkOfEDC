@@ -906,6 +906,21 @@
               <FileType>1</FileType>
               <FilePath>..\HARDWARE\WIRELESS\NRF24L01\NRF24L01.c</FilePath>
             </File>
+            <File>
+              <FileName>RTC.C</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\HARDWARE\COMMON_HARDWARE\RTC\RTC.C</FilePath>
+            </File>
+            <File>
+              <FileName>DS18B20.C</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\HARDWARE\COMMON_HARDWARE\DS18B20\DS18B20.C</FilePath>
+            </File>
+            <File>
+              <FileName>74LS165.C</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\HARDWARE\COMMON_HARDWARE\74H\74LS165.C</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

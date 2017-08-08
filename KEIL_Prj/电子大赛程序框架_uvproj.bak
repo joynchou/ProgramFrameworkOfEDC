@@ -897,14 +897,24 @@
               <FilePath>..\HARDWARE\COMMON_HARDWARE\74H\74HC595.C</FilePath>
             </File>
             <File>
-              <FileName>DS1302.C</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\HARDWARE\COMMON_HARDWARE\DS1302\DS1302.C</FilePath>
-            </File>
-            <File>
               <FileName>hc_sr04.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\HARDWARE\COMMON_HARDWARE\hc_sr04\hc_sr04.c</FilePath>
+            </File>
+            <File>
+              <FileName>NRF24L01.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\HARDWARE\WIRELESS\NRF24L01\NRF24L01.c</FilePath>
+            </File>
+            <File>
+              <FileName>RTC.C</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\HARDWARE\COMMON_HARDWARE\RTC\RTC.C</FilePath>
+            </File>
+            <File>
+              <FileName>DS18B20.C</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\HARDWARE\COMMON_HARDWARE\DS18B20\DS18B20.C</FilePath>
             </File>
           </Files>
         </Group>

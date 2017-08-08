@@ -20,7 +20,7 @@ void close_Speaker(u8 value)
 // FullName:  buzz
 // Access:    public 
 // Returns:   void
-// Qualifier: 
+// Qualifier: 蜂鸣器驱动
 // Parameter: u16 time:音调的持续时长，ms
 //						u16 type:音调的频率
 //************************************
@@ -49,17 +49,41 @@ void buzz(u16 type,u16 time)
 		}
 
 }
+//************************************
+// Method:    buzzSucceed
+// FullName:  buzzSucceed
+// Access:    public 
+// Returns:   void
+// Qualifier: 完成的提示音
+// Parameter: void
+//************************************
 void buzzSucceed(void)
 {
 	buzz(530, 150);
 	buzz(660, 150);
 	buzz(788, 150);
 }
+//************************************
+// Method:    buzzWait
+// FullName:  buzzWait
+// Access:    public 
+// Returns:   void
+// Qualifier: 普通提示音
+// Parameter: void
+//************************************
 void buzzWait(void)
 {
 	buzz(530, 150);
 
 }
+//************************************
+// Method:    buzzFailed
+// FullName:  buzzFailed
+// Access:    public 
+// Returns:   void
+// Qualifier: 失败提示音
+// Parameter: void
+//************************************
 void buzzFailed(void)
 {
 	buzz(788, 150);
@@ -67,6 +91,14 @@ void buzzFailed(void)
 	buzz(530, 150);
 
 }
+//************************************
+// Method:    Speaker_Init
+// FullName:  Speaker_Init
+// Access:    public 
+// Returns:   void
+// Qualifier: 蜂鸣器初始化，带提示音
+// Parameter: void
+//************************************
 void Speaker_Init(void)
 {
    PulserInit();

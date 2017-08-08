@@ -1,5 +1,4 @@
 #include <math.h>
-
 #include "FILTER.H"
 
 
@@ -77,7 +76,7 @@ double KalmanFilter(const double ResrcData, double ProcessNiose_Q, double Measur
 // FullName:  limitingFilter
 // Access:    public 
 // Returns:   float
-// Qualifier: 
+// Qualifier: //1.限幅滤波算法（程序判断滤波算法）
 // Parameter: float value:需要滤波的数据
 // Parameter: float A：可接受的最大数据差
 //************************************
@@ -110,12 +109,12 @@ float limitingFilter(float value, float A)
 // FullName:  movingAverageFilter
 // Access:    public 
 // Returns:   float
-// Qualifier: 此滤波器自动记录上一次的结果
+// Qualifier: //滑动平均滤波,窗口值请改宏定义
 // Parameter: float value：需要滤波的数值
 //************************************
 float movingAverageFilter(float value)
 {
-#define FILTER_N 100
+#define FILTER_N 180
 	static float filter_buf[FILTER_N + 1];
 	u8 i;
 	float filter_sum = 0;
@@ -147,7 +146,7 @@ D、缺点：
  // FullName:  shudderingFilter
  // Access:    public 
  // Returns:   float
- // Qualifier:
+ // Qualifier: 名称：消抖滤波法
  // Parameter: float value：传进来的数值，如果不是float请强制转换成float
  // Parameter: u8 filter_n：计数器的上限值，值越大滤波的结果越稳定，越小越不稳定，但是值太大数据会失真
  //************************************
@@ -155,7 +154,7 @@ float shudderingFilter(float value, u8 filter_n)
 {
 
 	static u16 i = 0;//计数器
-	static float lastValue;//上一次的结果
+	static float lastValue=0;//上一次的结果
 	int newValue;//这一次的新的结果;
 	newValue = value;//传值
 	if (!(fabs(newValue - lastValue) < 0.0001f))//如果上一次的结果不等于这一次的结果

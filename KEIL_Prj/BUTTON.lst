@@ -1,4 +1,4 @@
-C51 COMPILER V8.05a   BUTTON                                                               08/07/2017 18:56:54 PAGE 1   
+C51 COMPILER V8.05a   BUTTON                                                               08/08/2017 18:21:31 PAGE 1   
 
 
 C51 COMPILER V8.05a, COMPILATION OF MODULE BUTTON
@@ -62,7 +62,7 @@ line level    source
   51          * 输入: 无
   52          * 输出: 无
   53          * 返回值: 无
-C51 COMPILER V8.05a   BUTTON                                                               08/07/2017 18:56:54 PAGE 2   
+C51 COMPILER V8.05a   BUTTON                                                               08/08/2017 18:21:31 PAGE 2   
 
   54          * 其他说明: 此按键检测程序没有使用到定时器，
   55          *           将在后续的工程中改进此函数

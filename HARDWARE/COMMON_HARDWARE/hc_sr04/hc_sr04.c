@@ -16,6 +16,7 @@
 #include "hc_sr04.h"
 #include <stdio.h>
 #include "../SOFTWARE/TASK/COMMON_SOFTWARE/ALGORITHM/DIGITAL_FILTER/FILTER/FILTER.H"
+#include "../ADS1115/ADS1115.H"
 typedef struct
 {
 	double distance;
@@ -23,19 +24,19 @@ typedef struct
 	u16 timerValue;
 
 }HC_SR04;
-static HC_SR04 hc_sr04[1];
+static HC_SR04 ultrasonic[2];
 static u8 extiBit = 0;
 u8 str[20];
-void HC_SR04_init(void)
+void ultrasonicInit(void)
 {
-	GPIO_InitTypeDef hc_sr04_GPIO;
+	GPIO_InitTypeDef ultrasonic_GPIO;
 	EXTI_InitTypeDef  hc_sr04_EXTI;
-	hc_sr04_GPIO.Mode = GPIO_PullUp;
-	hc_sr04_GPIO.Pin = GPIO_Pin_3;
-	GPIO_Inilize(GPIO_P3, &hc_sr04_GPIO);
-	hc_sr04_GPIO.Mode = GPIO_HighZ; //外部中断要使用这个模式
-	hc_sr04_GPIO.Pin = GPIO_Pin_2;
-	GPIO_Inilize(GPIO_P3, &hc_sr04_GPIO);
+	ultrasonic_GPIO.Mode = GPIO_PullUp;
+	ultrasonic_GPIO.Pin = GPIO_Pin_3;
+	GPIO_Inilize(GPIO_P3, &ultrasonic_GPIO);
+	ultrasonic_GPIO.Mode = GPIO_HighZ; //外部中断要使用这个模式
+	ultrasonic_GPIO.Pin = GPIO_Pin_2;
+	GPIO_Inilize(GPIO_P3, &ultrasonic_GPIO);
 	hc_sr04_EXTI.EXTI_Interrupt = ENABLE;
 	hc_sr04_EXTI.EXTI_Mode = EXT_MODE_RiseFall;
 	hc_sr04_EXTI.EXTI_Polity = PolityHigh;
@@ -55,29 +56,29 @@ void HC_SR04_init(void)
 // Qualifier: 打开此模块的开关
 // Parameter: u8 num
 //************************************
-void open_HC_SR04(u8 num)
+void open_Ultrasonic(u8 num)
 {
 
-	hc_sr04[num].state = ON;
+	ultrasonic[num].state = ON;
 
 
 }
-void close_HC_SR04(u8 num)
+void close_Ultrasonic(u8 num)
 {
-	hc_sr04[num].state = OFF;
+	ultrasonic[num].state = OFF;
 }
-u8 getHC_SR04_State(u8 num)
+u8 getUltrasonicState(u8 num)
 {
-	return hc_sr04[num].state;
+	return ultrasonic[num].state;
 
 }
 void setTimerValue(u8 num, u16 value)
 {
-	hc_sr04[num].timerValue = value;
+	ultrasonic[num].timerValue = value;
 }
 void setDistance(u8 num,float value)
 {
-	hc_sr04[num].distance = value;
+	ultrasonic[num].distance = value;
 }
 //************************************
 // Method:    getTimerValue
@@ -89,7 +90,7 @@ void setDistance(u8 num,float value)
 //************************************
 u16 getTimerValue(u8 num)
 {
-	return hc_sr04[num].timerValue;
+	return ultrasonic[num].timerValue;
 
 }
 //************************************
@@ -103,15 +104,27 @@ u16 getTimerValue(u8 num)
 void updateDistance(u8 num)
 {
 	static double time;//相应时长，单位ms
-	if (!hc_sr04[num].state)
+	if (!ultrasonic[num].state)
 	{
 		return ;
 	}
-	ext0Able();
+	if (num==HC_SR04_1)
+	{
+		ext0Able();
 
-	Trig = HIGH;//发出脉冲信号
-	delay_us(5);//此函数不太准，3us实际大概
-	Trig = LOW;
+		Trig = HIGH;//发出脉冲信号
+		delay_us(5);//此函数不太准，3us实际大概
+		Trig = LOW;
+	}
+	else if (num == US_016_1)
+	{
+		ultrasonic[US_016_1].timerValue = getADS1115ConvsionData(CHANNEL_1);
+		delay_us(5);//此函数不太准，3us实际大概
+	}
+	else
+	{
+
+	}
  }
 //************************************
 // Method:    getdistance
@@ -125,7 +138,7 @@ double getdistance(u8 num)//获取传感器距离
 {
 
  
-	return hc_sr04[num].distance;//如果没有更新数据则返回上一次更新的值，否则返回最近值
+	return ultrasonic[num].distance;//如果没有更新数据则返回上一次更新的值，否则返回最近值
 }
 /********************* INT0中断函数 *************************/
 static void Ext_INT0(void) interrupt INT0_VECTOR		//进中断时已经清除标志
@@ -149,8 +162,8 @@ static void Ext_INT0(void) interrupt INT0_VECTOR		//进中断时已经清除标志
 	{
 
 		Timer4_Stop();
-		hc_sr04[0].timerValue = TH4;
-		hc_sr04[0].timerValue = hc_sr04[0].timerValue * 256 + TL4;
+		ultrasonic[0].timerValue = TH4;
+		ultrasonic[0].timerValue = ultrasonic[0].timerValue * 256 + TL4;
 #ifdef DEBUG
 		USART1_printf("valueL is %d\r\n", (u16)TL4);
 		USART1_printf("valueH is %d\r\n", (u16)TH4);

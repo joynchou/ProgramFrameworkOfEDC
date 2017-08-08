@@ -1,4 +1,4 @@
-C51 COMPILER V8.05a   SETUP                                                                08/07/2017 18:56:53 PAGE 1   
+C51 COMPILER V8.05a   SETUP                                                                08/08/2017 21:15:12 PAGE 1   
 
 
 C51 COMPILER V8.05a, COMPILATION OF MODULE SETUP
@@ -48,59 +48,45 @@ line level    source
   38   1      }
   39          void test(void)//器件测试
   40          {
-  41   1        u8 i = 0;
-  42   1        Ds1302_Init();
-  43   1        USART1_printf("this is a test\r\n");
-  44   1        for (i = 0; i < 8; i++)
-  45   1        {
-  46   2          time_buf[i] = 1;
-  47   2        }
-  48   1        while (1)
-  49   1        {
-  50   2          {
-  51   3            Ds1302_Read_Time();
-  52   3            USART1_printf("%d-%d-%d-%d \r\n", (int)time_buf1[3], (int)time_buf1[4], (int)time_buf1[5], (int)time_bu
-             -f1[6]);//年月日  %02d 十进制整数 
-  53   3            delay_ms(200);
-C51 COMPILER V8.05a   SETUP                                                                08/07/2017 18:56:53 PAGE 2   
+  41   1      
+  42   1      }
+  43          void setup(void)
+  44          {
+  45   1      
+  46   1        UART1_init(9600);
+  47   1        timerInit();
+  48   1        Board_LED_Init();
+  49   1        LCD5510_Init();
+  50   1        Button_config();
+  51   1        Speaker_Init();
+  52   1        ADS1115_Config();
+  53   1        ultrasonicInit();
+  54   1        DS18B20_Init();
+C51 COMPILER V8.05a   SETUP                                                                08/08/2017 21:15:12 PAGE 2   
 
-  54   3          }
-  55   2        }
-  56   1      }
-  57          void setup(void)
-  58          {
-  59   1      
-  60   1        UART1_init(9600);
-  61   1        timerInit();
-  62   1        Board_LED_Init();
-  63   1        LCD5510_Init();
-  64   1        LCD_printsl(0, 0, "Hello!");
-  65   1        os_wait(K_TMO, 250, 0);
-  66   1        LCD_clr_scr();
-  67   1        Button_config();
-  68   1        Speaker_Init();
-  69   1      
-  70   1       
-  71   1        //InitJY901(JY901_1);
-  72   1        //EnableJY901(JY901_1);
-  73   1        //openJY901SbufMode(JY901_1);
-  74   1        ADC_config(ADC_P10, ADC_540T);
-  75   1        ADS1115_Config();
-  76   1        HC_SR04_init();
-  77   1        open_HC_SR04(HC_SR04_1);
-  78   1        open_ADS1115(CHANNEL_1);
-  79   1        open_ADS1115(CHANNEL_2);
-  80   1        open_ADS1115(CHANNEL_3);
-  81   1        open_ADS1115(CHANNEL_4);
-  82   1        // test();
-  83   1      
-  84   1      }
-  85          
+  55   1        LCD_printsl(0, 0, "Hello!");
+  56   1        os_wait(K_TMO, 250, 0);
+  57   1        os_wait(K_TMO, 250, 0);
+  58   1        os_wait(K_TMO, 250, 0);
+  59   1        os_wait(K_TMO, 250, 0);
+  60   1        LCD_clr_scr();
+  61   1        //InitJY901(JY901_1);
+  62   1        //EnableJY901(JY901_1);
+  63   1        //openJY901SbufMode(JY901_1);
+  64   1        //ADC_config(ADC_P10, ADC_540T);
+  65   1        open_Ultrasonic(HC_SR04_1);
+  66   1        open_Ultrasonic(US_016_1);
+  67   1        open_ADS1115(CHANNEL_1);
+  68   1        open_ADS1115(CHANNEL_2);
+  69   1        // test();
+  70   1      
+  71   1      }
+  72          
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    240    ----
-   CONSTANT SIZE    =     71    ----
+   CODE SIZE        =    164    ----
+   CONSTANT SIZE    =     39    ----
    XDATA SIZE       =   ----      13
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----

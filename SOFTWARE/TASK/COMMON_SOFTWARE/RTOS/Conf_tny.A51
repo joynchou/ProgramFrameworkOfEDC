@@ -33,10 +33,10 @@ $NOMOD51 DEBUG
 INT_REGBANK	EQU	1	; default is Registerbank 1
 ;
 ;  Define Hardware-Timer tick time in 8051 machine cycles.
-INT_CLOCK	EQU	2500	; default is 10000 cycles
+INT_CLOCK	EQU	2000	; default is 10000 cycles
 ;
 ;  Define Round-Robin Timeout in Hardware-Timer ticks.
-TIMESHARING	EQU     10	; default is 5 Hardware-Timer ticks.
+TIMESHARING	EQU     20	; default is 5 Hardware-Timer ticks.
 ;		                ; 0 disables Round-Robin Task Switching
 ;
 ;  Long User Interrupt Routines: set to 1 if your application contains 

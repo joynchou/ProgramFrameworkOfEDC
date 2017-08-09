@@ -8,11 +8,11 @@ void taskStart() _task_ 0
 {
 	setup();
 	blink(3);
-	os_create_task(10);
-//	os_create_task(BUTTON_SCAN);
-//	os_create_task(BUTTON_SOUND);
-//	os_create_task(TEMPERATURE_UPDATE);
-//	os_create_task(TIME_UPDATE);
+	os_create_task(5);
+	os_create_task(BUTTON_SCAN);
+	os_create_task(BUTTON_SOUND);
+	//	os_create_task(TEMPERATURE_UPDATE);
+	//	os_create_task(TIME_UPDATE);
 	os_delete_task(0);
 
 }
@@ -31,8 +31,8 @@ void printTmp()  _task_  9
 	for (;;)
 	{
 		getDS18B20_Temperature(0);
-//		DataScope_Get_Channel_Data(getDS18B20_Temperature(0));
-//		sendScopeData(1);
+		//		DataScope_Get_Channel_Data(getDS18B20_Temperature(0));
+		//		sendScopeData(1);
 		os_wait(K_TMO, 30, 0);
 	}
 }
@@ -42,7 +42,7 @@ void Distance(void)  _task_ 10
 
 	float value;
 	float actValue;
-	float Data[TIME+1];
+	float Data[TIME + 1];
 	float time = 0;
 	float distance = 0;
 
@@ -61,7 +61,7 @@ void Distance(void)  _task_ 10
 		}
 		Data[TIME] = filter(Data, TIME, 65535, 0);//中位值平均滤波
 		time = Data[TIME] * 4.166667e-6;//公式，time的单位为ms，在24mzh下
-		distance = (time * (331.4f+0.607*getDS18B20_Temperature(0))) / 20;
+		distance = (time * (331.4f + 0.607*getDS18B20_Temperature(0))) / 20;
 		setDistance(HC_SR04_1, distance);
 		DataScope_Get_Channel_Data(distance, 1);
 		sendScopeData(1);
@@ -81,7 +81,7 @@ void Distance(void)  _task_ 10
 		//distance = Data[TIME]*0.015625f;
 		//setDistance(US_016_1, distance);
 		//DataScope_Get_Channel_Data(distance, 1);
- 	//	sendScopeData(1);
+	//	sendScopeData(1);
 		//os_wait(K_TMO, 100, 0);
 
 	}
